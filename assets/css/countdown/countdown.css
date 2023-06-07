@@ -1,0 +1,47 @@
+
+.time-countdown{
+	margin: 10px 0 20px;
+}
+.time-countdown .box [class*=t-]{
+	border: 1px solid #333;
+	text-transform: uppercase;
+	margin-right: 10px;
+	font-size: 14px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.time-countdown .box .top{
+	padding: 10px 15px;
+	font-weight: bold;
+	border-bottom: 1px solid #333;
+}
+.time-countdown .box .bottom{
+	padding: 5px 10px;
+	text-align: center;
+	height: 50px;
+}
+.t-start .bottom div:first-child,
+.t-end .bottom div:first-child{
+	line-height: 20px;
+}
+.time-countdown .box .bottom div:first-child{
+	font-weight: bold;
+}
+.time-countdown .t-submit{
+	display: block;
+	padding: 10px;
+	line-height: 20px;
+	background: #ec1d32;
+	color: #fff;
+	font-weight: bold;
+	margin-bottom: 10px;
+	border: 1px solid #ec1d32 !important;
+}
+.time-countdown .title{
+	color: #ec1d32;
+	font-size: 34px;
+	font-weight: bold;
+	line-height: 34px;
+}
+
+

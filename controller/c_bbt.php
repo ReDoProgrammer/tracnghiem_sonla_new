@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @author honestphan
+ * @copyright 2012
+ */
+//G?i t?p tin giao di?n trong thu m?c view/theme/template tuong ?ng
+include('model/m_bbt.php');
+include('controller/c_right.php');
+include('controller/c_left.php');
+include('controller/c_thongke.php');
+$page = $_GET['act'];
+ switch($page){
+    
+    
+    //case them lien he
+    case 'add':
+    session_start();
+    require ('language/add_bbt.php');
+     
+     $heading_title = heading_title;
+     $ma_lien_he = ma_lien_he;
+     $tieu_de = tieu_de;
+     $ten = ten;
+     $dia_chi = dia_chi;
+     $email = email;
+     $dien_thoai = dien_thoai;
+     $noi_dung = noi_dung;
+     $ma_bao_mat = ma_bao_mat;
+     
+     $_SESSION['ten'] = $_POST['ho_ten'];
+     $_SESSION['files'] = $_POST['files'];
+	 $_SESSION['dc'] = $_POST['dia_chi'];
+	 $_SESSION['dt'] = $_POST['dien_thoai'];
+	 $_SESSION['email'] = $_POST['email'];
+	  $_SESSION['mt'] = $_POST['mo_ta'];
+     $_SESSION['tieude'] = $_POST['tieu_de'];
+
+
+     $_SESSION['noidung'] = $_POST['noi_dung'];
+ 
+     $link_list = 'index.php?module=bbt&act=list';
+     $captcha = 'system/captcha.php?type=math';
+         
+    
+         
+      
+    if($_SERVER['REQUEST_METHOD']=='POST')
+    {
+        
+    insertbbt($_POST);
+    $_SESSION['success'] = edit_success;
+    //chuyen huong ve list
+    header('LOCATION: '.$link_list);    
+    }
+    
+        $heading_title = title;
+        $title = title;
+    	require('view/theme/default/template/home/header.tpl'); 
+        
+
+        require('view/theme/default/template/bbt/add.tpl');
+    	require('view/theme/default/template/home/right.tpl'); 	
+    	require('view/theme/default/template/home/footer.tpl');    
+        break;
+ 
+//key list
+        case'list':
+       
+        $heading_title = title;
+        $title = title;
+       	require('view/theme/default/template/home/header.tpl'); 
+       
+   
+         require('view/theme/default/template/bbt/list.tpl');
+    	require('view/theme/default/template/home/right.tpl'); 
+    	
+    	require('view/theme/default/template/home/footer.tpl');    
+        break;
+
+ }
+
+    
+
+?>

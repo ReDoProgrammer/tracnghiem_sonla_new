@@ -1,0 +1,325 @@
+<?php
+
+/**
+ * @author ReDo
+ * @copyright 2023
+ */
+
+include_once('m_db.php');
+include_once('m_question.php');
+include_once('m_option.php');
+include_once('m_exam_config.php');
+include_once('m_exam_result.php');
+include_once('m_exam_result_detail.php');
+include_once('classes/m_message.php');
+
+function exResultPagination($id)
+{
+    $sql = "SELECT q.id,q.title,erd.question_answer,erd.option_id
+            FROM exam_result_details erd   
+            INNER JOIN questions q ON erd.question_id = q.id         
+            WHERE exam_result_id = '" . $id . "'    
+    ";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result && mysql_num_rows($result)) {
+
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->title = "Lấy thông tin phân trang thành công!";
+        $msg->content = $arr;
+    } else {
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->title = "Lấy thông tin phân trang thất bại!";
+        $msg->content = "Lỗi: ".mysql_error();
+    }
+    return $msg;
+}
+
+
+//hàm lấy thông tin tổng quan của 1 bài thi cụ thể
+function exResultSummary($result_id)
+{
+    session_start();
+    $p = $_SESSION['profile'];
+    $sql = "SELECT 
+            er.id, e.exam_code, e.title, e.duration,e.mark_per_question,
+            COUNT(CASE WHEN erd.question_answer = erd.option_id THEN 1 END) AS correct,
+            COUNT(CASE WHEN erd.question_answer != erd.option_id AND erd.option_id !=0 THEN 1 END) AS wrong,
+            COUNT(CASE WHEN erd.option_id = 0 THEN 1 END) AS unchoosed,
+            COUNT(CASE WHEN erd.option_id !=0 THEN 1 END) AS choosed,
+            COUNT( erd.exam_result_id ) AS total_questions,
+            er.spent_duration,
+            DATE_FORMAT(er.created_at, '%d/%m/%Y %H:%i') AS exam_date
+            FROM exams e
+            INNER JOIN exam_results er ON er.exam_id = e.id
+            INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id
+            WHERE er.member_id = '" . $p['id'] . "'
+            AND er.id = '" . $result_id . "'
+            GROUP BY er.id, e.exam_code, e.title";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result && mysql_num_rows($result) > 0) {
+        $msg->statusCode = 200;
+        $msg->title = "Lấy thông tin tổng quan kết quả thi thành công!";
+        $msg->icon = "success";
+        $msg->content = mysql_fetch_array($result);
+    } else {
+        $msg->statusCode = 500;
+        $msg->title = "Lấy lịch sử thi thất bại!";
+        $msg->icon = "error";
+        $msg->content = "Lỗi: " . mysql_error();
+    }
+    return $msg;
+}
+function exHistory($page, $pageSize, $search)
+{
+    session_start();
+    $p = $_SESSION['profile'];
+    $sql = "SELECT 
+            er.id, e.exam_code, e.title, er.times,
+            COUNT(CASE WHEN erd.question_answer = erd.option_id THEN 1 END) AS correct,
+            COUNT( erd.exam_result_id ) AS total,
+            DATE_FORMAT(er.created_at, '%d/%m/%Y %H:%i') AS exam_date
+            FROM exams e
+            INNER JOIN exam_results er ON er.exam_id = e.id
+            INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id
+            WHERE er.member_id = '" . $p['id'] . "'
+            GROUP BY er.id, e.exam_code, e.title";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $count = mysql_num_rows($result);
+        if ($count > 0) {
+            $arr = array();
+            while ($local = mysql_fetch_array($result)) {
+                $arr[] = $local;
+            }
+            $msg->statusCode = 200;
+            $msg->title = "Lấy lịch sử thi thành công!";
+            $msg->icon = "success";
+            $msg->content = $arr;
+        } else {
+            $msg->statusCode = 404;
+            $msg->title = "Bạn chưa tham gia cuộc thi nào";
+            $msg->icon = "warning";
+            $msg->content = $p['id'];
+        }
+    } else {
+        $msg->statusCode = 500;
+        $msg->title = "Lấy lịch sử thi thất bại!";
+        $msg->icon = "error";
+        $msg->content = "Lỗi: " . mysql_error();
+    }
+    return $msg;
+}
+
+
+function save($exam_id,$result,$times,$spent_duration)
+{
+    $msg = new Message();
+    session_start();
+    $p = $_SESSION['profile'];
+    $er = erSave($exam_id, $p['id'],$times,$spent_duration);
+    if ($er->statusCode != 201) {
+        return $er;
+    }
+    foreach ($result as $r) {
+        $option = getCorrectOption($r['id']);
+        if ($option->statusCode != 200) {
+            return $option;
+        }
+
+        $is = erdSave($er->content, $r['id'], $option->content['id'], $r['checked'], $p['id']);
+        if ($is->statusCode != 201) {
+            return $is;
+        }
+    }
+
+    $msg = new Message();
+    $msg->icon = "success";
+    $msg->statusCode = 201;
+    $msg->title = "Lưu kết quả bài thi thành công!";
+    $msg->content = $er->content;
+    return $msg;
+}
+
+
+function HasHot()
+{
+    $result = mysql_query("SELECT * FROM exams WHERE is_hot = 1", dbconnect());
+    $msg = new Message();
+    if ($result) {
+
+        $count = mysql_num_rows($result);
+        if ($count > 0) {
+            $msg->icon = "success";
+            $msg->statusCode = 200;
+            $msg->title = "Có bài thi tiêu điểm!";
+        } else {
+            $msg->icon = "error";
+            $msg->statusCode = 404;
+            $msg->title = "Không có bài thi tiêu điểm!";
+        }
+    } else {
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->title = "Kiểm tra tồn tại bài thi tiêu điểm thất bại!";
+        $msg->content = "Lỗi: " . mysql_error();
+    }
+    return $msg;
+}
+function GetHotExam()
+{
+    $result = mysql_query("SELECT *
+    FROM exams 
+    WHERE is_hot = 1
+    -- AND end >= CURRENT_TIMESTAMP()
+    ", dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $count = mysql_num_rows($result);
+        if ($count > 0) {
+            $msg->statusCode = 200;
+            $msg->title = "Có cuộc thi tiêu điểm";
+            $msg->icon = "success";
+            $msg->content = mysql_fetch_array($result);
+        } else {
+            $msg->statusCode = 404;
+            $msg->title = "Hiện tại không có cuộc thi tiêu điểm nào";
+            $msg->icon = "warning";
+            $msg->content = "NOT FOUND";
+        }
+    } else {
+        $msg->statusCode = 500;
+        $msg->title = "Kiểm tra hot exam thất bại!";
+        $msg->icon = "error";
+        $msg->content = "Lỗi: " . mysql_error();
+    }
+    return $msg;
+}
+function GetQuestions($exam_id)
+{
+    $msg = new Message();
+
+    $exam = ExDetail($exam_id);
+
+    if ($exam->statusCode != 200) {
+        $msg->icon = "error";
+        $msg->statusCode = $exam->statusCode;
+        $msg->title = "Load danh sách câu hỏi thất bại!";
+        $msg->content = $exam->content;
+        return $msg;
+    }
+
+    $config = GetConfigs($exam_id);
+    if ($config->statusCode != 200) {
+        $msg->icon = "error";
+        $msg->statusCode = $exam->statusCode;
+        $msg->title = "Load danh sách câu hỏi thất bại!";
+        $msg->content = "Lỗi lấy chi tiết cấu hình. " . $config->content;
+        return $msg;
+    }
+
+    $ranks = $config->content;
+    $number_of_questions = $exam->content['number_of_questions'];
+    $random_questions = $exam->content['random_questions'] == 1;
+    $random_options = $exam->content['random_options'] == 1;
+
+
+
+    $arr = array();
+    foreach ($ranks as $c) {
+        $limit = round(($c['percent'] / 100) * $number_of_questions);
+        $qIds = GetQuestionsByTopic($c["topic_id"], $limit, $random_questions, $random_options)->content;
+        $arr = array_merge($arr, $qIds);
+    }
+
+    $msg->icon = 'success';
+    $msg->title = "Load danh sách id của câu hỏi của đề thi thành công!";
+    $msg->statusCode = 200;
+    $msg->content = $arr;
+    return $msg;
+}
+
+
+function ExDetail($id)
+{
+    $msg = new Message();
+
+    $result = mysql_query("SELECT 
+                e.id,e.title,e.thumbnail,e.duration,
+                e.number_of_questions,
+                e.mark_per_question,
+                e.times,
+                DATE_FORMAT(e.begin, '%d/%m/%Y %H:%i') AS begin,
+                DATE_FORMAT(e.end, '%d/%m/%Y %H:%i') AS end,       
+                e.random_questions,
+                e.random_options
+            FROM exams e
+            JOIN exam_configs ef ON ef.exam_id = e.id
+            WHERE e.id = '" . $id . "' 
+            GROUP BY e.id,e.title,e.thumbnail,e.duration,e.number_of_questions,e.mark_per_question,e.times,e.begin,e.end,e.random_questions,e.random_options
+            ", dbconnect());
+
+
+    if ($result) {
+        $exam = mysql_fetch_array($result);
+        $msg->statusCode = 200;
+        $msg->title = "Load chi tiết bài thi thành công!";
+        $msg->icon = "success";
+        $msg->content = $exam;
+    } else {
+        $msg->statusCode = 500;
+        $msg->title = "Load chi tiết bài thi thất bại!";
+        $msg->icon = "error";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
+
+
+function EarliestExam()
+{
+    $exam = mysql_query("SELECT * 
+                FROM exams 
+                WHERE begin > CURRENT_TIMESTAMP()
+                ORDER BY begin
+                LIMIT 1
+                ", dbconnect());
+    return mysql_fetch_array($exam);
+}
+
+function Top10Exams()
+{
+    $sql = "SELECT e.id, title, thumbnail, 
+        DATE_FORMAT(begin , '%d/%m/%Y' ) AS begin , 
+        DATE_FORMAT(end , '%d/%m/%Y' ) AS end , 
+        description,
+        CASE
+            WHEN BEGIN < CURRENT_TIMESTAMP( )
+            AND END < CURRENT_TIMESTAMP( )
+            THEN 1
+            WHEN BEGIN < CURRENT_TIMESTAMP( )
+            AND END > CURRENT_TIMESTAMP( )
+            THEN 0
+            ELSE -1
+        END AS status
+        FROM exams e
+        INNER JOIN exam_configs c ON c.exam_id = e.id
+        GROUP BY e.id,title, thumbnail
+        ORDER BY id DESC
+        LIMIT 10";
+    $local_list = mysql_query($sql, dbconnect());
+    $result = array();
+    while ($local = mysql_fetch_array($local_list)) {
+        $result[] = $local;
+    }
+    return $result;
+}

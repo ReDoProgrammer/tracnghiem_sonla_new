@@ -1,0 +1,36 @@
+﻿body {
+    font-family: 'Roboto Condensed' !important;
+    font-weight: 300;
+    font-size: 14px !important;
+}
+table.table th, table.table td
+{
+    vertical-align: middle !important;
+}
+.field-validation-error
+{
+    color: #ff0000;
+}
+.field-validation-valid
+{
+    display: none;
+}
+.input-validation-error
+{
+    border: 1px solid #ff0000 !important;
+    background-color: #ffeeee !important;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+.validation-summary-valid
+{
+    display: none;
+}
+.alert-link
+{
+    color: #843534 !important;
+}

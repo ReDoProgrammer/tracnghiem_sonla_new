@@ -1,0 +1,65 @@
+#This file was created by nbinh88@gmail.com
+#Email: nbinh88@gmail.com
+#block ip attack
+order allow,deny
+allow from all
+deny from 79.142.64.17
+
+#Options All
+#Options - MultiViews
+RewriteEngine on
+RewriteBase /kh
+
+#RewriteCond %{HTTP_REFERER} !^$
+#RewriteCond %{HTTP_REFERER} !^^http://(www\.)?cd4design\.net/.*$ [NC]
+#RewriteRule \.(gif|jpg|swf|flv|png|jpeg)$ http://cd4design.net/view/logo.png  [R=302,L]
+
+#Rewriterule ^binh.html$    ./index.php?module=categories&act=listbytype&catid=8
+
+#danh muc san pham left
+Rewriterule ^([0-9]*)-([a-zA-Z0-9_-]+).html$    ./index.php?module=sanpham&act=listbytype&catid=$1 [L,QSA]
+#het danh muc san pham
+
+#chi tiet san pham
+Rewriterule ^sp([0-9]*)-([a-zA-Z0-9_-]+).html$    ./index.php?module=sanpham&act=view&id=$1 [L,QSA]
+#het chi tiet san pham
+
+#danh muc download
+Rewriterule ^dl-([0-9]*)-([a-zA-Z0-9_-]+).html$    ./index.php?module=categories&act=listbytype&catid=$1 [L,QSA]
+#het danh muc download
+
+#menu
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+Rewriterule ^index.html$		./index.php?module=home
+Rewriterule ^lien-he.html$		./index.php?module=lienhe&act=add
+Rewriterule ^gioi-thieu.html$		./index.php?module=about&act=view&id=1
+Rewriterule ^san-pham.html$		./index.php?module=sanpham&act=list
+Rewriterule ^download.html$		./index.php?module=categories&act=list
+Rewriterule ^tin-tuc.html$		./index.php?module=news&act=list
+Rewriterule ^van-ban.html$		./index.php?module=vanban&act=list
+Rewriterule ^thu-vien-anh.html$	./index.php?module=album&act=list
+Rewriterule ^video-clip.html$		./index.php?module=video&act=list
+Rewriterule ^them-dia-chi-moi.html$	./?m=address&act=add
+Rewriterule ^tai-khoan.html$		./?m=member&act=account
+Rewriterule ^dang-ki-thanh-vien.html$   ./index.php?module=member&act=regedit
+Rewriterule ^tim-kiem.html$   ./?m=search&act=normal
+Rewriterule ^busy.html$                     ./?m=notification&act=busy
+#het menu
+#link
+Rewriterule ^gioi-thieu.html$		./?m=info&act=content&id=1
+Rewriterule ^huong-dan-su-dung.html$	./?m=info&act=content&id=2
+Rewriterule ^chinh-sach-bao-mat.html$	./?m=info&act=content&id=3
+Rewriterule ^quy-dinh-su-dung.html$	./?m=info&act=content&id=4
+
+
+Rewriterule ^([0-9]*)_([a-zA-Z0-9_-]+).html$     ./?m=cat&id=$1  [L,QSA]
+Rewriterule ^([0-9]*)/([a-zA-Z0-9_-]+).html$     ./?m=cat&id=$1  [L,QSA]
+Rewriterule ^bs-([0-9]*)([a-zA-Z0-9_-]+).html$     ./?m=address&act=view_more&id=$1 [L,QSA]
+Rewriterule ^add-additional-([0-9]*)([a-zA-Z0-9_-]+).html$    ./?m=additional&act=add&id=$1 [L,QSA]
+Rewriterule ^ca-khuc-ve-son-la-([0-9]*)([a-zA-Z0-9_-]+).html$    ./?m=song&act=view&id=$1 [L,QSA]
+Rewriterule ^ca-khuc-ve-son-la-([0-9]*)([a-zA-Z0-9_-]+),video.html$    ./?m=song&act=view&id=$1&type=video [L,QSA]
+Rewriterule ^amnhac$    ./?m=song&act=list [L,QSA]
+Rewriterule ^info-([0-9]*)-([a-zA-Z0-9_-]+).html$     ./?m=content&act=view&id=$1  [L,QSA]
+Rewriterule ^type-([0-9]*)-([a-zA-Z0-9_-]+).html$       ./?m=content&act=type&type=$1  [L,QSA]
+Rewriterule ^content-([0-9]*)-([a-zA-Z0-9_-]+).html$		./index.php?module=news&act=view&id=$1  [L,QSA]
