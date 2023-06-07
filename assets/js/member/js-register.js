@@ -9,12 +9,12 @@ $(function () {
     ConfigInputs();
     LoadProvinces();
     if (ADDRESS) {
-        $('#slProvinces').on('change', function () {
+        $('.slProvinces').on('change', function () {
             LoadDistrictsByPro($(this).val());
             LoadWorkPlaces($(this).val());
         })
 
-        $('#slDistricts').on('change', function () {
+        $('.slDistricts').on('change', function () {
             LoadWardsByDist($(this).val())
         })
     }
@@ -25,16 +25,16 @@ $(function () {
         LoadPositions();
     }
     if (WORKPLACE) {
-        LoadWorkPlaces($('#slProvinces option:selected').val());
+        LoadWorkPlaces($('.slProvinces option:selected').val());
     }
 
 
 
-    $('#btnSubmitRegister').prop('disabled', true);
-    $('#divWarningMsg').hide();
+    $('.btnSubmitRegister').prop('disabled', true);
+    $('.divWarningMsg').hide();
 
     //kiểm tra username đã tồn tại trong hệ thống hay chưa
-    $('#txtUsername').focusout(function () {
+    $('.txtUsername').focusout(function () {
         if ($(this).val().trim().length > 0) {
             $.ajax({
                 url: 'controller/member/check-username-exists.php',
@@ -43,10 +43,10 @@ $(function () {
                 success: function (count) {
                     isPassport = count == 0;
                     if (count > 0) {
-                        $('#divWarningMsg').slideDown(200);
-                        $('#divWarningMsg span').text('Tài khoản này đã tồn tại trên hệ thống!');
+                        $('.divWarningMsg').slideDown(200);
+                        $('.divWarningMsg span').text('Tài khoản này đã tồn tại trên hệ thống!');
                     } else {
-                        $('#divWarningMsg').slideUp(200);
+                        $('.divWarningMsg').slideUp(200);
                     }
                 }
             })
@@ -55,7 +55,7 @@ $(function () {
 
 
     //kiểm tra email đã tồn tại trên hệ thống hay chưa
-    $('#txtEmail').focusout(function () {
+    $('.txtEmail').focusout(function () {
         if ($(this).val().trim().length > 0) {
             if (validateEmail($(this).val())) {
                 $.ajax({
@@ -65,16 +65,16 @@ $(function () {
                     success: function (count) {
                         isPassport = count == 0;
                         if (count > 0) {
-                            $('#divWarningMsg').slideDown(200);
-                            $('#divWarningMsg span').text('Email này đã tồn tại trên hệ thống');
+                            $('.divWarningMsg').slideDown(200);
+                            $('.divWarningMsg span').text('Email này đã tồn tại trên hệ thống');
                         } else {
-                            $('#divWarningMsg').slideUp(200);
+                            $('.divWarningMsg').slideUp(200);
                         }
                     }
                 })
             } else {
-                $('#divWarningMsg').slideDown(200);
-                $('#divWarningMsg span').text('Email không hợp lệ');
+                $('.divWarningMsg').slideDown(200);
+                $('.divWarningMsg span').text('Email không hợp lệ');
                 isPassport = false;
             }
 
@@ -82,7 +82,7 @@ $(function () {
     })
 
     //kiểm tra xem sdt đã tồn tại trên hệ thống hay chưa
-    $('#txtPhone').focusout(function () {
+    $('.txtPhone').focusout(function () {
         if ($(this).val().trim().length > 0) {
             if (validatePhoneNumber($(this).val())) {
                 $.ajax({
@@ -92,16 +92,16 @@ $(function () {
                     success: function (count) {
                         isPassport = count == 0;
                         if (count > 0) {
-                            $('#divWarningMsg').slideDown(200);
-                            $('#divWarningMsg span').text('Số điện thoại này đã tồn tại trên hệ thống');
+                            $('.divWarningMsg').slideDown(200);
+                            $('.divWarningMsg span').text('Số điện thoại này đã tồn tại trên hệ thống');
                         } else {
-                            $('#divWarningMsg').slideUp(200);
+                            $('.divWarningMsg').slideUp(200);
                         }
                     }
                 })
             } else {
-                $('#divWarningMsg').slideDown(200);
-                $('#divWarningMsg span').text('Số điện thoại không hợp lệ');
+                $('.divWarningMsg').slideDown(200);
+                $('.divWarningMsg span').text('Số điện thoại không hợp lệ');
                 isPassport = false;
             }
 
@@ -111,73 +111,75 @@ $(function () {
 })
 
 
-$('#btnSubmitRegister').click(function () {
-    let fullname = $('#txtFullname').val().trim();
-    let username = $('#txtUsername').val().trim();
-    let password = $('#txtPassword').val().trim();
-    let confirm_password = $('#txtConfirmPassword').val().trim();
-    let email = $('#txtEmail').val().trim();
-    let phone = $('#txtPhone').val().trim();
+$('.btnSubmitRegister').click(function () {
+    let fullname = $('input[name=txtFullname1]').val().trim();   
+    let username = $('input[name=txtUsername]').val().trim();
+    let password = $('.txtPassword').val().trim();
+    let confirm_password = $('.txtConfirmPassword').val().trim();
+    let email = $('.txtEmail').val().trim();
+    let phone = $('.txtPhone').val().trim();
+    console.log({fullname,username,password,confirm_password,email,phone});
+    return;
 
-    let gender = GENDER ? $('#rbtN').is(':checked') ? -1 : $('#rbtM').is(':checked') ? 1 : 0 : -1;
-    let birthdate = BIRTHDATE ? $('#txtBirthdate').val() : '';
-    let province_code = ADDRESS ? $('#slProvinces option:selected').val() : '';
-    let district_code = ADDRESS ? $('#slDistricts option:selected').val() : '';
-    let ward_code = ADDRESS ? $('#slWards option:selected').val() : '';
-    let address = ADDRESS ? $('#txtAddress').val().trim() : '';
-    let job_id = JOB ? $('#slJobs option:selected').val() : '';
-    let position_id = POSITION ? $('#slPositions option:selected').val() : '';
-    let workplace_id = WORKPLACE ? $('#slWorkPlaces option:selected').val() : '';
+    let gender = GENDER ? $('.rbtN').is(':checked') ? -1 : $('.rbtM').is(':checked') ? 1 : 0 : -1;
+    let birthdate = BIRTHDATE ? $('.txtBirthdate').val() : '';
+    let province_code = ADDRESS ? $('.slProvinces option:selected').val() : '';
+    let district_code = ADDRESS ? $('.slDistricts option:selected').val() : '';
+    let ward_code = ADDRESS ? $('.slWards option:selected').val() : '';
+    let address = ADDRESS ? $('.txtAddress').val().trim() : '';
+    let job_id = JOB ? $('.slJobs option:selected').val() : '';
+    let position_id = POSITION ? $('.slPositions option:selected').val() : '';
+    let workplace_id = WORKPLACE ? $('.slWorkPlaces option:selected').val() : '';
 
 
 
     if (fullname.length == 0) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Vui lòng cung cấp họ tên của bạn');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Vui lòng cung cấp họ tên của bạn');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (username.length == 0) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Vui lòng nhập tài khoản bạn muốn đăng ký với hệ thống');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Vui lòng nhập tài khoản bạn muốn đăng ký với hệ thống');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (password.length == 0 || confirm_password.length == 0) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Vui lòng nhập đầy đủ 2 lần mật khẩu');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Vui lòng nhập đầy đủ 2 lần mật khẩu');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (password !== confirm_password) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Mật khẩu 2 lần nhập không trùng khớp');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Mật khẩu 2 lần nhập không trùng khớp');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (JOB && job_id == null) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Vui lòng chọn nghề nghiệp!');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Vui lòng chọn nghề nghiệp!');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
 
     if (POSITION && position_id == null) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Vui lòng chọn chức vụ!');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Vui lòng chọn chức vụ!');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (WORKPLACE && workplace_id == null) {
-        $('#divWarningMsg').slideDown(200);
-        $('#divWarningMsg span').text('Vui lòng chọn đơn vị công tác!');
-        $('#divWarningMsg').delay(3000).slideUp(2000);
+        $('.divWarningMsg').slideDown(200);
+        $('.divWarningMsg span').text('Vui lòng chọn đơn vị công tác!');
+        $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
@@ -318,9 +320,9 @@ function LoadPositions() {
             if (data.statusCode == 200) {
                 let positions = data.content;
                 positions.forEach(p => {
-                    $('#slPositions').append(`<option value="${p.id}">${p.name}</option>`);
+                    $('.slPositions').append(`<option value="${p.id}">${p.name}</option>`);
                 })
-                $('#slPositions').selectpicker('refresh');
+                $('.slPositions').selectpicker('refresh');
             }
         }
     })
@@ -332,12 +334,12 @@ var isPassport = true;
 var avatar = null;
 
 
-$("#ckbAgreement").change(function () {
-    $('#btnSubmitRegister').prop('disabled', !this.checked);
+$(".ckbAgreement").change(function () {
+    $('.btnSubmitRegister').prop('disabled', !this.checked);
 });
 
-$("#btnImportAvatar").on("click", function (e) {
-    var fileDialog = $('<input type="file"  accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">');
+$(".btnImportAvatar").on("click", function (e) {
+    var fileDialog = $('<input style="z-index:9999;" type="file"  accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">');
     fileDialog.click();
     fileDialog.on("change", onFileSelected);
     return false;
@@ -347,7 +349,7 @@ var onFileSelected = function (e) {
     if ($(this)[0].files && $(this)[0].files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $('#avatar .content img').attr('src', e.target.result);
+            $('.avatar .content img').attr('src', e.target.result);
         }
         avatar = $(this)[0].files[0];
         reader.readAsDataURL($(this)[0].files[0]);
@@ -361,9 +363,9 @@ function LoadJobs() {
         type: 'get',
         success: function (jobs) {
             jobs.forEach(j => {
-                $('#slJobs').append(`<option value="${j.id}">${j.name}</option>`)
+                $('.slJobs').append(`<option value="${j.id}">${j.name}</option>`)
             })
-            $('#slJobs').selectpicker('refresh');
+            $('.slJobs').selectpicker('refresh');
         }
     })
 }
@@ -378,11 +380,11 @@ function LoadProvinces() {
                 if (p.default_pro == 1) {
                     default_pro = p.code;
                 }
-                $('#slProvinces').append(`<option value="${p.code}">${p.full_name}</option>`);
+                $('.slProvinces').append(`<option value="${p.code}">${p.full_name}</option>`);
             })
-            $(`#slProvinces option[value=${default_pro}]`).attr('selected', 'selected');
+            $(`.slProvinces option[value=${default_pro}]`).attr('selected', 'selected');
             if (ADDRESS) {
-                $(`#slProvinces`).trigger('change');
+                $(`.slProvinces`).trigger('change');
             }
 
         }
@@ -395,12 +397,12 @@ function LoadDistrictsByPro(province_code) {
         type: 'get',
         data: { province_code },
         success: function (districts) {
-            $('#slDistricts').empty();
+            $('.slDistricts').empty();
             districts.forEach(d => {
-                $('#slDistricts').append(`<option value="${d.code}">${d.full_name}</option>`);
+                $('.slDistricts').append(`<option value="${d.code}">${d.full_name}</option>`);
             })
-            $(`#slDistricts`).selectpicker('refresh');
-            $(`#slDistricts`).trigger('change');
+            $(`.slDistricts`).selectpicker('refresh');
+            $(`.slDistricts`).trigger('change');
         }
     })
 }
@@ -411,12 +413,12 @@ function LoadWardsByDist(district_code) {
         type: 'get',
         data: { district_code },
         success: function (wards) {
-            $('#slWards').empty();
+            $('.slWards').empty();
             wards.forEach(w => {
-                $('#slWards').append(`<option value="${w.code}">${w.full_name}</option>`);
+                $('.slWards').append(`<option value="${w.code}">${w.full_name}</option>`);
             })
-            $(`#slWards`).selectpicker('refresh');
-            $(`#slWards`).trigger('change');
+            $(`.slWards`).selectpicker('refresh');
+            $(`.slWards`).trigger('change');
         }
     })
 }
@@ -427,13 +429,13 @@ function LoadWorkPlaces(province_code) {
         type: 'get',
         data: { province_code },
         success: function (data) {
-            $('#slWorkPlaces').empty();
+            $('.slWorkPlaces').empty();
             if (data.statusCode == 200) {
                 let wps = data.content;
                 wps.forEach(w => {
-                    $('#slWorkPlaces').append(`<option value="${w.id}">${w.name}</option>`);
+                    $('.slWorkPlaces').append(`<option value="${w.id}">${w.name}</option>`);
                 })
-                $('#slWorkPlaces').selectpicker('refresh');
+                $('.slWorkPlaces').selectpicker('refresh');
             } else {
 
             }
