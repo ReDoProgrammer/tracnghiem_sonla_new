@@ -220,20 +220,38 @@ $('#btnSubmitRegister').click(function () {
         processData: false,
         contentType: false,
         success: function (msg) {
+        
             Swal.fire({
-                title: msg.title,    
-                text: 'Bạn có muốn tới trang đăng nhập?',       
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Tới trang đăng nhập',
-                denyButtonText: `Về lại trang chủ`,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "index.php?module=member&act=login";
-                } else if (result.isDenied) {
-                    window.location.href = "index.php?module=home&act=index";
-                }
-              })
+                icon:msg.icon,
+                title: msg.title,
+                showDenyButton: false,
+                showCancelButton: false,
+                confirmButtonText: 'OK!'
+                
+            }).then(async (result) => {
+                let ip_address = '';
+                await $.getJSON('https://api.ipify.org?format=json', function (data) {
+                    ip_address = data.ip;
+                });
+
+                $.ajax({
+                    url: 'controller/member/login.php',
+                    type: 'post',
+                    data: { 
+                        username_or_email:username, 
+                        login_password:password,
+                        ip_address },
+                    success: function (data) {
+                        console.log(data)
+                        if (data.statusCode == 200) {                           
+                            window.location.href = "index.php?module=home&act=index";
+                        } 
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR)
+                    }
+                })
+            })
         }
     })
 
