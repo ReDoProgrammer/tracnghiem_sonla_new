@@ -4,11 +4,16 @@ $(document).ready(function(){
         type:'get',
         success:function(data){
             if(data.statusCode == 200){
+                console.log(data.content)
                 let p = data.content;
                 if(p.avatar && p.avatar.trim().length > 0){
                    $('.pf_avatar').attr('src',p.avatar);
                    $('.pf_avatar').attr('alt',p.fullname);
                    $('.pf_avatar').attr('title',p.fullname);
+                   $('a.user').css("background-image", `url(${p.avatar})`);        
+                }else{
+                    $('.pf_avatar').attr('src','assets/images/no_avatar.png');
+                    $('a.user').css("background-image", `url(assets/images/no_avatar.png)`);        
                 }
                 localStorage.setItem('candidate',p.id);
 
@@ -35,7 +40,7 @@ $(document).ready(function(){
                 $('.pf_applied_date').text(p.applied_date);
                 $('.pf_lasttime_login').text(`${p.lasttime_login}`);  
                 $("a.user").css("background-color");  
-                $('a.user').css("background-image", `url(${p.avatar})`);        
+                
             }
         },
         error: function (jqXHR, exception) {
