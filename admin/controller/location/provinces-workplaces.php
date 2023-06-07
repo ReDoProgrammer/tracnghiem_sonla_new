@@ -5,7 +5,9 @@
  * @copyright 2023
  */
 
+
 include_once('../../model/m_location.php');
-$provinces = LoadProvinces();
+
+$pws = ProvincesWorkplaces();
 header("Content-Type: application/json");
-echo json_encode($provinces);
+echo json_encode("1234");

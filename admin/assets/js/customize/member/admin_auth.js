@@ -13,21 +13,27 @@ $('#btnLogin').click(function () {
     }
 
     $.ajax({
-        url:'controller/member/login.php',
-        type:'post',
-        data:{username,password},
-        success:function(msg){
-            if(msg.statusCode == 200){
+        url: 'controller/member/login.php',
+        type: 'post',
+        data: { username, password },
+        success: function (msg) {
+            if (msg.statusCode == 200) {
                 $(location).prop('href', 'index.php?module=home&act=list')
-            }else{
+            } else {
                 $('#msgLoginTitle').text(msg.title);
                 $('#msgLoginContent').text(msg.content);
                 return;
             }
-            
+
         },
-        error:function(err){
+        error: function (err) {
             console.log(err);
         }
     })
+})
+
+$('#txtPassword').keypress(function (e) {
+    if (e.which === 13) {
+        $('#btnLogin').click();
+    }
 })

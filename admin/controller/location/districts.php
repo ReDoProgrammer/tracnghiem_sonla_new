@@ -5,8 +5,7 @@
  * @copyright 2023
  */
 
-include('../../model/m_db.php');
-include('../../model/m_location.php');
+ include_once('../../model/m_location.php');
 $province_code = $_GET['province_code'];
 $districts = LoadDistrictsByPro($province_code);
 header("Content-Type: application/json");
