@@ -6,8 +6,8 @@
  */
 
 
-include_once('../../model/m_location.php');
+ include('../../model/m_location.php');
 
-$pws = ProvincesWorkplaces();
+$pws = LoadProvinces();
 header("Content-Type: application/json");
-echo json_encode("1234");
+echo json_encode($pws);
