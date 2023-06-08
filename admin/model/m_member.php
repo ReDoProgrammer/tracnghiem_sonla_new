@@ -1,7 +1,7 @@
 <?php
-include('m_db.php');
-include('classes/m_message.php');
-include('classes/m_profile.php');
+include_once('m_db.php');
+include_once('classes/m_message.php');
+include_once('classes/m_profile.php');
 function login($username, $password)
 {
     $sql = "SELECT * from members WHERE username ='" . $username . "' ";
@@ -36,7 +36,7 @@ function login($username, $password)
                 $msg->title = "Forbidden!";
                 $msg->icon = "warning";
             } else {
-                $m = mysql_fetch_array(mysql_query($sql, dbconnect()));               
+                $m = mysql_fetch_array(mysql_query($sql, dbconnect()));
                 if ($m) {
                     $sql = "SELECT 
                     m.id as id,
@@ -86,5 +86,63 @@ function login($username, $password)
             }
         }
     }
+    return $msg;
+}
+
+function reset_password($id,$default_password){
+    $sql = "UPDATE members 
+            SET password = '".md5($default_password)."' 
+            WHERE id = '".$id."'";
+    $result = mysql_query($sql,dbconnect());
+
+    $msg = new Message();
+    if($result){
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->title = "Khôi phục mật khẩu thành công!";
+    }else{
+        $msg->icon = "error";
+        $msg->title = "Khôi phục mật khẩu thất bại!";
+        $msg->statusCode = 500;
+        $msg->content = "Lỗi: ".mysql_error();
+    }
+    return $msg;
+}
+
+
+function mbList($wp,$search, $page, $pageSize)
+{
+    $sql = "SELECT id,username,fullname,phone,email,
+            DATE_FORMAT(applied_date,'%d/%m/%Y %T') AS applied_date,
+            DATE_FORMAT(lasttime_login,'%d/%m/%Y %T') AS lasttime_login    
+            FROM members
+            WHERE (username LIKE '%" . $search . "%'
+            OR  fullname LIKE '%" . $search . "%'
+            OR  phone LIKE '%" . $search . "%'
+            OR  email LIKE '%" . $search . "%')
+            AND (
+                get_workplace = 0
+                OR workplace_id = '".$wp."' 
+            )
+            LIMIT " . ($page - 1) * $pageSize . "," . $pageSize ;
+
+    $local_list = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($local_list) {
+        $result = array();
+        while ($local = mysql_fetch_array($local_list)) {
+            $result[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Load danh sách thành viên thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $result;
+    } else {
+        $msg->icon = "error";
+        $msg->title = "Load danh sách thành viên thất bại!";
+        $msg->statusCode = 500;
+        $msg->content = "Lỗi: " . mysql_error();
+    }
+
     return $msg;
 }

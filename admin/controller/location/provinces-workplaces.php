@@ -7,7 +7,7 @@
 
 
  include('../../model/m_location.php');
-
-$pws = LoadProvinces();
+$search = $_GET['search'];
+$pws = ProvincesWorkplaces($search);
 header("Content-Type: application/json");
 echo json_encode($pws);
