@@ -171,7 +171,8 @@
                         <ul class="treeview-menu">
                             <li><a href="index.php?module=member&amp;act=list">
                                     <i class="fa fa-circle-o"></i> Danh Sách Thành Viên </a></li>
-
+                             <li><a href="index.php?module=member&amp;act=config">
+                                    <i class="fa fa-circle-o"></i> Cấu hình thông tin thành Viên </a></li>
                             <li><a href="index.php?module=adv&amp;act=list"><i class="fa fa-circle-o"></i> Quảng Cáo</a>
                             </li>
                             <li><a href="index.php?module=lienket&amp;act=list"><i class="fa fa-circle-o"></i> Liên Kết

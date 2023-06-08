@@ -82,6 +82,6 @@
         </div>
     </section>
 </div>
-<?php include('detail.tpl');?>
+<?php include('modal-detail.tpl');?>
  <?php include('view/template/common/footer.tpl'); ?>
  <script src="assets/js/customize/member/js-list.js"></script>

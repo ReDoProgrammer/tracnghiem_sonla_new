@@ -20,7 +20,6 @@ $(document).on('click', "a[name='member-detail']", function (e) {
         data:{id},
         success:function(data){
             if(data.statusCode == 200){
-                console.log(data.content);
                 $('#modalMemberDetail').modal();
                 let m = data.content;
                 if(m.avatar.length > 0){
@@ -135,7 +134,7 @@ function LoadProvincesWithWorkplaces() {
 
 function LoadMembers() {
     $.ajax({
-        url: 'controller/member/members-list.php',
+        url: 'controller/member/list.php',
         type: 'get',
         data: {
             search: $('#txtSearch').val(),
