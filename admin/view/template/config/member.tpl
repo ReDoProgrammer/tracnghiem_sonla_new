@@ -18,7 +18,7 @@
                          <table class="table table-condensed">
                             <thead>
                             <tr>
-                                <th>Ngày sinh</th>
+                                <th>Trường dữ liệu</th>
                                 <th>Trạng thái</th>
                             </tr>
                             </thead>
