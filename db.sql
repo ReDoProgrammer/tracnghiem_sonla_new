@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jun 06, 2023 at 10:40 PM
+-- Generation Time: Jun 09, 2023 at 01:36 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -473,24 +473,46 @@ CREATE TABLE `configs` (
   `cf_value` longtext NOT NULL,
   `cf_mod` varchar(100) NOT NULL COMMENT 'Áp dụng cho bảng nào',
   `cf_fnc` varchar(100) NOT NULL COMMENT 'Chức nang',
+  `cf_title` varchar(100) NOT NULL COMMENT 'Tiêu đề hiển thị',
+  `cf_tag` varchar(50) NOT NULL COMMENT 'Thẻ HTML',
   `created_at` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,
   `updated_at` timestamp NOT NULL default '0000-00-00 00:00:00',
   `updated_by` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `cf_key` (`cf_key`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 -- 
 -- Dumping data for table `configs`
 -- 
 
-INSERT INTO `configs` VALUES (1, 'GET_BIRTHDATE', '0', 'MEMBER', 'REGISTER', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (2, 'GET_ADDRESS', '0', 'MEMBER', 'REGISTER', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (3, 'GET_GENDER', '0', 'MEMBER', 'REGISTER', '2023-06-05 22:20:50', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (5, 'GET_JOB', '0', 'MEMBER', 'REGISTER', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (6, 'GET_POSITION', '0', 'MEMBER', 'REGISTER', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (4, 'GET_WORKPLACE', '0', 'MEMBER', 'REGISTER', '2023-06-05 09:52:33', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (10, 'RULES', '\r\n            <h1 class="title_contact">Nội quy diễn đàn – Mạng xã hội Medihub.vn</h1>\r\n            \r\n            <p>\r\n                Mạng xã hội Medihub.vn nói chung và trang con Diễn dàn của Mạng xã hội Medihub.vn (Diễn đàn) nói riêng được xây dựng nhằm mục đích tạo ra một sân chơi cho tất cả thành viên tham gia có thể giao lưu, chia sẻ những thông tin hữu ích về Y tế - Chăm sóc sức khỏe.\r\n               <br> Tất cả mọi người đều có thể đăng ký làm thành viên của Diễn đàn và phải tuân thủ các quy định của Diễn đàn. <br>Cụ thể như sau:\r\n            </p>\r\n\r\n            <p class="text_bold marginT15">I. QUY ĐỊNH DÀNH CHO THÀNH VIÊN:</p>\r\n\r\n         \r\n            <p class="text_bold">1. Nội quy chung</p>\r\n            <p>- Tuân thủ luật pháp của Nhà nước CHXHCN Việt Nam khi tham gia Diễn đàn.</p>\r\n            <ul class="list_item">\r\n                <li><span class="text_red">KHÔNG</span> chia sẻ/đăng bất cứ thông tin nào đi ngược lại với thuần phong – mỹ tục, pháp luật và văn hoá Việt Nam.</li>\r\n                <li><span class="text_red">KHÔNG</span> đăng tải/thảo luận bất cứ chủ đề nào liên quan đến: Chính trị, chống lại nhà nước Việt Nam; Tiết lộ bí mật quốc gia, gây phương hại đến an ninh xã hội; Mua bán hàng hoá, dịch vụ thuộc danh mục cấm theo quy định của pháp luật.</li>\r\n                <li>Tuyệt đối <span class="text_red">NGHIÊM CẤM</span> mọi hành vi tuyên truyền, chống phá và xuyên tạc chính quyền hay đường lối của Nhà nước CHXHCN Việt Nam.</li>\r\n                <li><span class="text_red">KHÔNG</span> tuyên truyền, kích động bạo lực, tội ác, tệ nạn xã hội; Gây mâu thuẫn giữa các dân tộc, sắc tộc, tôn giáo.</li>\r\n\r\n            </ul>\r\n\r\n            <p>- Tuân thủ các quy định của Ban Quản trị Diễn đàn về:</p>\r\n            <ul class="list_item">\r\n                <li>Đăng ký thành viên: \r\n                    <ul>\r\n                        <li style="list-style: none">*  Khai báo đầy đủ thông tin trong form đăng ký; Tự bảo quản mật khẩu và các thông tin riêng tư.</li> \r\n                        <li style="list-style: none">*  Tên đăng nhập và hình đại diện:\r\n                            <ul>\r\n                                <li style="list-style: none">\r\n                                    <i class=" fa fa-check fa-sm" aria-hidden="true"></i> 	Tên đăng nhập được xác định là của riêng cá nhân thành viên.\r\n                                </li>\r\n                                <li style="list-style: none">\r\n                                    <i class="fa fa-check fa-sm" aria-hidden="true"></i>   <span class="text_red">KHÔNG</span>  được liên quan đến các danh nhân, các vị lãnh đạo Đảng và Nhà nước.\r\n                                </li>\r\n                                <li style="list-style: none">\r\n                                    <i class="fa fa-check fa-sm" aria-hidden="true"></i>	<span class="text_red">KHÔNG</span>  chứa nội dung phản động, bài xích tôn giáo, khiêu dâm, bạo lực, đi ngược lại thuần phong mỹ tục, truyền thống và văn hóa Việt Nam.\r\n                                </li>\r\n                                <li style="list-style: none">\r\n                                    <i class="fa fa-check fa-sm" aria-hidden="true"></i>	<span class="text_red">KHÔNG</span>  xúc phạm, khích bác hay làm mất uy tín người khác.\r\n                                </li>\r\n                                <li style="list-style: none">\r\n                                    <i class="fa fa-check fa-sm" aria-hidden="true"></i>	<span class="text_red">KHÔNG</span>  trùng với các thành viên khác hay gần giống Ban Quản trị Diễn đàn.\r\n                                </li>\r\n                            </ul>\r\n                        </li> \r\n                        <li style="list-style: none">*  Chữ ký: Ngắn gọn; <span class="text_red">KHÔNG</span>  sử dụng hình ảnh làm chữ ký; <span class="text_red">KHÔNG</span>  bôi đậm, đánh dấu màu hoặc dùng font chữ lớn trong chữ ký.</li>\r\n                    </ul>\r\n                </li>\r\n                <li>\r\n                    Ứng xử giữa các thành viên:\r\n                    <ul>\r\n                        <li style="list-style: none">*  Tôn trọng các thành viên khác, thể hiện thái độ lịch sự, nghiêm túc, có văn hóa trong trao đổi, thảo luận trên Diễn đàn. </li>\r\n                      \r\n                        <li style="list-style: none">*  <span class="text_red">KHÔNG</span>  có hành động khiêu khích, chửi bới giữa các thành viên dưới bất kỳ hình thức nào. </li>\r\n                        <li style="list-style: none">*  <span class="text_red">KHÔNG</span>  gây mất đoàn kết giữa các thành viên trong Diễn đàn. <span class="text_red">KHÔNG</span>  mạo danh người khác.</li>\r\n                        <li style="list-style: none">*  <span class="text_red">KHÔNG</span>  khuyến khích, cổ vũ các thành viên khác sử dụng hay lạm dụng thuốc, phẫu thuật thẩm mỹ, uống rượu bia, chất kích thích...</li>\r\n                        <li style="list-style: none">*  Thận trọng khi đưa ra các lời khuyên về chăm sóc sức khỏe, chữa bệnh đối với các thành viên khác.</li>\r\n                    </ul>\r\n                </li>\r\n\r\n                <li><span class="text_red">KHÔNG</span>  phá hoại, làm ảnh hưởng đến trang web, băng thông, cơ sở dữ liệu, gây gián đoạn hoặc quá tải hệ thống Diễn đàn.</li>\r\n                <li><span class="text_red">KHÔNG</span>  quấy rối thành viên, Ban Quản trị qua bài viết, email, tin nhắn...</li>\r\n\r\n\r\n            </ul>\r\n            <p class="text_bold">2. Nghiêm cấm</p>\r\n            <p>- Tuyệt đối <span style="color: #e30613">KHÔNG</span>  quảng cáo cho các loại hình dịch vụ y tế, thuốc mới; <span style="color: #e30613">KHÔNG</span>  quảng cáo và giới thiệu những thuốc kích dục, thuốc gây nghiện, thuốc cấm theo luật định hiện hành.</p>\r\n            <p>- Tuyệt đối <span style="color: #e30613">KHÔNG</span>  kê đơn và bán thuốc online; <span style="color: #e30613">KHÔNG</span>  hướng dẫn những biện pháp, kỹ thuật chăm sóc, thăm dò, điều trị về mặt y tế mà chỉ dành cho môi trường bệnh viện và các cơ sở y tế có đủ điều kiện và an toàn khi thực hiện.</p>\r\n            <p>-<span style="color: #e30613"> NGHIÊM CẤM</span> đăng bài vu khống, làm ảnh hưởng đến uy tín của cá nhân, tổ chức, doanh nghiệp. Khiếu nại về các dịch vụ y tế, phản ánh hoặc cảnh báo về thuốc và dịch vụ y tế phải có bằng chứng rõ ràng;</p>\r\n            <p>- <span style="color: #e30613">KHÔNG</span>  chê bai vô căn cứ các sản phẩm/dịch vụ khác; <span style="color: #e30613">KHÔNG</span>  đưa thông tin thiếu chuyên môn, thiếu dẫn chứng khoa học, thiếu kinh nghiệm thực tế của bản thân; <span style="color: #e30613">KHÔNG</span>  đăng mua bán sản phẩm.</p>\r\n\r\n            <p class="text_bold marginT15">II. QUY ĐỊNH VỀ BÀI VIẾT:</p>\r\n\r\n            <p class="text_bold">1. Nội dung</p>\r\n            <p>- <span style="color: #e30613">KHÔNG</span>  lấy nội dung từ các website không được Bộ Thông tin và Truyền thông cấp phép hoạt động như một trang báo điện tử; chỉ được phép đăng lại bài từ các trang báo điện tử chính thống đã được cấp phép, khi đăng lại bài cần ghi rõ nguồn và tác giả nguyên bản (nếu có).</p>\r\n            <p>- <span style="color: #e30613">KHÔNG</span>  đăng các thông tin có thể gây hại cho sức khỏe, gây hoang mang cho người khác; <span style="color: #e30613">KHÔNG</span>  khuyến cáo sử dụng các phương pháp chăm sóc sức khỏe hay điều trị bệnh thiếu khoa học hay chưa được kiểm chứng.</p>\r\n            <p>- <span style="color: #e30613">KHÔNG</span>  đăng các bài có nội dung nhạy cảm về tình dục, sinh lý... trái với thuần phong mỹ tục, văn hóa Việt Nam.</p>\r\n            <p>- Khuyến khích tất cả thành viên chia sẻ các nội dung hữu ích về y tế - chăm sóc sức khỏe đã được nghiên cứu, thu thập, tổng hợp, dịch thuật… từ các nguồn uy tín.</p>\r\n            <p>- Các thành viên chỉ được phép đăng bài xin tư vấn về sức khỏe - y tế, các tranh cãi khác ngoài chuyên môn y tế sẽ được xem là <span style="color: #e30613">KHÔNG</span>  phù hợp và có thể bị xóa.</p>\r\n            <p>- Khi viết bài/đăng bài, khuyến khích các thành viên sử dụng kiến thức phổ thông cho cộng đồng, <span style="color: #e30613">KHÔNG</span>  dùng từ chuyên môn sâu nếu không cần thiết.</p>\r\n            <p>- Các thành viên phải tự chịu trách nhiệm về những thông tin, nội dung mà mình đăng tải nhằm mục đích giới thiệu, chia sẻ với các thành viên khác. Trường hợp có bất cứ vấn đề gì xảy ra, Ban Quản trị <span style="color: #e30613">KHÔNG</span>  chịu trách nhiệm về các nội dung trên.</p>\r\n            <p class="text_bold">2. Hình thức</p>\r\n            <p>- Sử dụng tiếng Việt có dấu khi đăng bài lên Diễn đàn. Tiêu đề bài viết <span style="color: #e30613">KHÔNG</span>  được viết HOA quá nhiều (quá 40% tiêu đề), <span style="color: #e30613">KHÔNG</span>  chèn các ký tự lạ. </p>\r\n            <p>- Nội dung <span style="color: #e30613">KHÔNG</span>  được sử dụng cỡ chữ quá to, in đậm, in hoa (caps lock), gạch dưới trong phần lớn toàn bộ bài viết.</p>\r\n            <p>- <span style="color: #e30613">KHÔNG</span>  sử dụng hình ảnh phản cảm, đồi trụy, trái với thuần phong mỹ tục Việt Nam.</p>\r\n            <p>- Đăng bài viết đúng nơi quy định; <span style="color: #e30613">KHÔNG</span>  đăng bài có nội dung trùng lặp ở các chuyên mục khác nhau. </p>\r\n            <p class="text_bold marginT15">III. XỬ LÝ VI PHẠM</p>\r\n            <p>\r\n                Tham gia vào Mạng xã hội Medihub.vn nói chung và Diễn đàn nói riêng, các thành viên cần tôn trọng Nội quy Diễn đàn cũng như tuân thủ theo sự điều hành của Ban Quản trị. Những bài viết/thành viên nào vi phạm các quy định trên sẽ bị xử lý như sau:\r\n            </p>\r\n            <p class="text_bold">1. Với bài viết vi phạm </p>\r\n            <p>- Thay đổi những từ ngữ <span style="color: #e30613">KHÔNG</span>  phù hợp, lọc bỏ quảng cáo (nếu có), tạm ngừng hiển thị chờ kiểm duyệt tùy theo mức độ vi phạm. </p>\r\n            <p>- Chuyển chuyên mục hoặc xóa bài ngay lập tức mà <span style="color: #e30613">KHÔNG</span>  cần báo trước. </p>\r\n            <p class="text_bold">2. Với thành viên vi phạm  </p>\r\n            <p>- Nhắc nhở, cảnh cáo </p>\r\n            <p>- Khoá tài khoản tạm thời hoặc vĩnh viễn </p>\r\n            <p>- Truất quyền thành viên, đề nghị truy tố theo luật định </p>\r\n            <p>Lưu ý: Nội quy Diễn đàn Mạng xã hội Medihub.vn sẽ được cập nhật tùy theo tình hình thực tế, mong các thành viên thường xuyên tham khảo Quy định. </p>\r\n            <p>Hy vọng các thành viên sẽ cùng Ban Quản trị chung tay xây dựng cộng đồng Mạng xã hội Medihub.vn nói chung và Diễn đàn nói riêng văn minh, lịch sự, chia sẻ nhiều thông tin hữu ích, đúng đắn đến cho cộng đồng. </p>\r\n         \r\n', 'MEMBER', 'REGISTER', '2023-06-06 21:01:02', 0, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (1, 'GET_BIRTHDATE', '0', 'MEMBER', 'REGISTER', 'Ngày sinh', 'input:text', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (2, 'GET_ADDRESS', '0', 'MEMBER', 'REGISTER', 'Địa chỉ', '', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (3, 'GET_GENDER', '0', 'MEMBER', 'REGISTER', 'Giới tính', '', '2023-06-05 22:20:50', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (5, 'GET_JOB', '0', 'MEMBER', 'REGISTER', 'Nghề nghiệp', '', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (6, 'GET_POSITION', '0', 'MEMBER', 'REGISTER', 'Chức vụ', '', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (4, 'GET_WORKPLACE', '0', 'MEMBER', 'REGISTER', 'Đơn vị công tác', '', '2023-06-05 09:52:33', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (10, 'RULES', 'https://www.google.com/maps?ll=21.32752,103.9095&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=1570758637398736261', 'MEMBER', 'PRE_REGISTER', 'Nội quy đăng ký thành viên', '', '2023-06-06 21:01:02', 0, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (29, 'SITE_ICON', '/assets/imagesimages/gui/logo-doan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (30, 'SITE_LOGO', '/assets/imagesimages/gui/logo-tinhdoan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (11, 'DEFAULT_PASSWORD', 'Password@123', 'MEMBER', 'PROFILE', 'Mật khẩu mặc định', '', '2023-06-08 16:31:19', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (12, 'SITE_NAME', 'Hệ thống thi trắc nghiệm tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Tên site <span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:46:06', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (13, 'SITE_URL', 'https://khuyenhoc.sonla.gov.vn', 'GLOBAL', 'BASIC', '<label>Site url<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:46:06', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (14, 'SITE_EMAIL', 'khuyenhocsonla@gmail.com', 'GLOBAL', 'BASIC', '<label>Site url<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:47:24', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (15, 'SITE_META', 'Hệ thống thi trắc nghiệm tỉnh Sơn La,Hệ thống thi trắc nghiệm tỉnh Sơn La,Hệ thống thi trắc nghiệm tỉnh Sơn La,Hệ thống thi trắc nghiệm tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Meta keyword <span class="style2">(*)</span></label>', 'textarea', '2023-06-08 18:47:24', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (16, 'SITE_DESCRIPTION', 'Hệ thống thi trắc nghiệm tỉnh Sơn La,Hệ thống thi trắc nghiệm tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Description keyword <span class="style2">(*)</span></label>', 'textarea', '2023-06-08 18:48:31', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (17, 'SITE_AUTHOR', 'ICT', 'GLOBAL', 'BASIC', '<label>Tác giả<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:48:31', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (18, 'SITE_COPYRIGHT', 'ICT', 'GLOBAL', 'BASIC', '<label>Bản quyền tác giả<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:49:39', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (19, 'SITE_HOMEPHONE', '02123.857.571', 'GLOBAL', 'BASIC', '<label>Máy Bàn:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:49:39', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (20, 'SITE_PHONE', '0911397764', 'GLOBAL', 'BASIC', '<label>Di Động:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:50:43', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (21, 'SITE_FAX', '0212.3857.602', 'GLOBAL', 'BASIC', '<label>Máy Fax:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:50:43', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (22, 'SITE_LICENSE', '12/GP-TTĐT', 'GLOBAL', 'BASIC', '<label>Giấy Phép:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:51:56', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (23, 'SITE_OWNER', 'Tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Cơ Quan Chủ Quản:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:51:56', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (24, 'SITE_GOOGLEMAP', 'https://www.google.com/maps?ll=21.32752,103.9095&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=1570758637398736261', 'GLOBAL', 'BASIC', '<label>Bản Đồ Goog Map:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:53:05', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (25, 'SITE_FACEBOOK', 'https://www.facebook.com?page=icttracnghiem', 'GLOBAL', 'BASIC', '<label>Link Facebook:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:53:05', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (26, 'SITE_ADDRESS', 'Số 06, ngõ 2A, phố Xuân Thủy, tổ 8, phường Chiềng Lề, thành phố Sơn La, tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Địa chỉ <span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:54:15', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (27, 'SITE_BANNER', '/assets/imagesimages/gui/banner.jpg', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 18:54:15', 18, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -508,7 +530,7 @@ CREATE TABLE `counter_ips` (
 -- Dumping data for table `counter_ips`
 -- 
 
-INSERT INTO `counter_ips` VALUES ('127.0.0.1', '2023-06-05 14:38:48');
+INSERT INTO `counter_ips` VALUES ('127.0.0.1', '2023-06-08 21:35:57');
 
 -- --------------------------------------------------------
 
@@ -538,7 +560,7 @@ CREATE TABLE `counter_values` (
 -- Dumping data for table `counter_values`
 -- 
 
-INSERT INTO `counter_values` VALUES (1, 155, 1, 154, 1, 23, 1, 6, 6, 2023, 1514, 101973, '2017-10-07 22:46:46', 58234);
+INSERT INTO `counter_values` VALUES (1, 158, 3, 157, 2, 23, 6, 6, 11, 2023, 1519, 101978, '2017-10-07 22:46:46', 58234);
 
 -- --------------------------------------------------------
 
@@ -2818,13 +2840,17 @@ CREATE TABLE `members` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 -- 
 -- Dumping data for table `members`
 -- 
 
-INSERT INTO `members` VALUES (18, 'admin', 'd23e7597c7119f058b6e53d9764ae958', 'assets/images/avatar/logo.png', 'Quản trị ', 'nbinh88@gmail.com', '0916020488', '1987-06-19', 0, 1, 1, 1, 1, 1, '2013-11-13 00:00:00', 1, '2023-06-05 21:03:44', '113.166.230.47', 1, 'gfxvn.info', '14', '116', '03652', 'Tổ 4', 1, 1, 1, 0, '');
+INSERT INTO `members` VALUES (18, 'admin', '2138cb5b0302e84382dd9b3677576b24', 'assets/images/avatar/logo.png', 'Quản trị ', 'nbinh88@gmail.com', '0916020488', '1987-06-19', 0, 1, 1, 1, 1, 1, '2013-11-13 00:00:00', 1, '2023-06-08 16:23:11', '113.166.230.47', 1, 'gfxvn.info', '14', '116', '03652', 'Tổ 4', 1, 1, 1, 0, '');
+INSERT INTO `members` VALUES (24, 'taikhoan', '2138cb5b0302e84382dd9b3677576b24', '', 'ho va ten', 'taikhoan@gmail.com', '0988548781', '0000-00-00', 0, 0, 0, 0, 0, 0, '2023-06-07 15:37:52', 0, '0000-00-00 00:00:00', '', 0, '', '', '', '', '', 0, 0, 0, 0, '');
+INSERT INTO `members` VALUES (25, 'tk1', '2138cb5b0302e84382dd9b3677576b24', '', 'tk1', 'tk1@gmail.com', '0877548798', '0000-00-00', 0, 0, 0, 0, 0, 0, '2023-06-07 15:38:57', 0, '0000-00-00 00:00:00', '', 0, '', '', '', '', '', 0, 0, 0, 0, '');
+INSERT INTO `members` VALUES (26, 'tk2', '2138cb5b0302e84382dd9b3677576b24', '', 'tk2', 'tk2@gmail.com', '0855485485', '0000-00-00', 0, 0, 0, 0, 0, 0, '2023-06-07 15:40:41', 0, '0000-00-00 00:00:00', '', 0, '', '', '', '', '', 0, 0, 0, 0, '');
+INSERT INTO `members` VALUES (27, 'tk3', '2138cb5b0302e84382dd9b3677576b24', '', 'tk3', 'tk3@gmail.com', '0984759865', '0000-00-00', 0, 0, 0, 0, 0, 0, '2023-06-07 15:42:44', 0, '2023-06-07 15:58:18', '113.166.230.47', 0, '', '', '', '', '', 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -2881,7 +2907,7 @@ CREATE TABLE `nhat_ky` (
   `agent` varchar(250) NOT NULL,
   `action_ip` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1959 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1960 ;
 
 -- 
 -- Dumping data for table `nhat_ky`
@@ -4845,6 +4871,7 @@ INSERT INTO `nhat_ky` VALUES (1955, 0, '', 'Đăng nhập hệ thống', 1685067
 INSERT INTO `nhat_ky` VALUES (1956, 0, '', 'Đăng nhập hệ thống', 1685067128, 'login', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36', '127.0.0.1');
 INSERT INTO `nhat_ky` VALUES (1957, 0, '', 'Đăng nhập hệ thống', 1685067136, 'login', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36', '127.0.0.1');
 INSERT INTO `nhat_ky` VALUES (1958, 0, '', 'Đăng nhập hệ thống', 1685067210, 'login', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36', '127.0.0.1');
+INSERT INTO `nhat_ky` VALUES (1959, 0, '', 'Săm soi khu vực thông báo', 1686139001, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
 
 -- --------------------------------------------------------
 
