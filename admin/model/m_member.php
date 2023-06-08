@@ -2,6 +2,66 @@
 include_once('m_db.php');
 include_once('classes/m_message.php');
 include_once('classes/m_profile.php');
+
+function detail($id){
+    $sql = "SELECT
+                m.id,m.username,m.avatar,m.fullname,m.email,m.phone,
+                m.get_birthdate,
+                DATE_FORMAT(m.birthdate,'%d/%m/%Y') AS birthdate,
+
+                m.get_gender,
+                CASE 
+                    WHEN gender = 1 THEN 'Nam'
+                    WHEN gender = 0 THEN 'Nữ'
+                    ELSE 'Khác'
+                END AS gender,
+
+                m.get_job,
+                j.name AS job,
+
+                m.get_position,
+                p.name AS position,
+
+                m.get_workplace,
+                w.name AS workplace,
+               
+                m.get_address,
+                CASE
+                    WHEN LENGTH(m.address) THEN CONCAT(m.address,', ',w.full_name,', ',d.full_name,', ',pr.full_name)
+                    ELSE CONCAT(w.full_name,', ',d.full_name,', ',pr.full_name)
+                END AS address           
+            FROM members m 
+            LEFT JOIN jobs j ON m.job_id = j.id
+            LEFT JOIN positions p ON m.job_id = p.id
+            LEFT JOIN workplaces wp ON m.workplace_id = wp.id
+            LEFT JOIN provinces pr ON m.province_code = pr.code
+            LEFT JOIN districts d ON m.district_code = d.code
+            LEFT JOIN wards w ON m.ward_code = w.code
+            WHERE m.id = '".$id."'";
+
+        $result = mysql_query($sql,dbconnect());
+
+        $msg = new Message();
+        if($result){
+            if(mysql_num_rows($result)>0){
+                $msg->statusCode = 200;
+                $msg->icon = "success";
+                $msg->title = "Lấy thông tin tài khoản thành công!";
+                $msg->content = mysql_fetch_array($result);
+            }else{
+                $msg->statusCode = 404;
+                $msg->icon = "error";
+                $msg->title = "Không tìm thấy tài khoản này trên hệ thống!";
+            }
+        }else{
+            $msg->statusCode = 500;
+            $msg->icon = "success";
+            $msg->title = "Lấy thông tin tài khoản thất bại";
+            $msg->content = mysql_error();
+        }
+        return $msg;
+}
+
 function login($username, $password)
 {
     $sql = "SELECT * from members WHERE username ='" . $username . "' ";

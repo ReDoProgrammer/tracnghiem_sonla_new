@@ -11,7 +11,27 @@ $(function () {
     })
 })
 
-
+$(document).on('click', "a[name='member-detail']", function (e) {
+    e.preventDefault();
+    let id = $(this).closest('tr').attr('id');
+    $.ajax({
+        url:'controller/member/detail.php',
+        type:'get',
+        data:{id},
+        success:function(data){
+            if(data.statusCode == 200){
+                console.log(data.content);
+                $('#modalMemberDetail').modal();
+            }else{
+                Swal.fire({
+                    icon: data.icon,
+                    title: data.title,
+                    text: data.content
+                })
+            }
+        }
+    })
+})
 
 $(document).on('click', "a[name='reset-password']", function (e) {
     e.preventDefault();
@@ -114,7 +134,7 @@ function LoadMembers() {
                     let tr = `<tr id = "${m.id}">
                         <td class="text-center">${++idx}</td>
                         <td class="fw-bold text-primary">
-                            <a href="#" onclick="GetMember(event)">${m.username}</a>
+                            <a href="#" name="member-detail">${m.username}</a>
                         </td>
                         <td>${m.fullname}</td>
                         <td>${m.phone}</td>
