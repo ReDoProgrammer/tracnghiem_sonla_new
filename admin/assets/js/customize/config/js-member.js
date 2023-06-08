@@ -14,7 +14,7 @@ function LoadRegisterConfigs() {
                     let tr = `<tr id="${c.id}">
                                 <td class="fw-bold text-warning">${c.cf_title}</td>
                                 <td>
-                                    <input type="checkbox" ${c.cf_value == 1 ? 'checked' : ''}> <span class="text-info">Kích hoạt</span></label>
+                                    <input type="checkbox" ${c.cf_value == 1 ? 'checked' : ''}> <span class="text-info">${c.cf_value == 1?'Kích hoạt':'Không kích hoạt'}</span></label>
                                 </td>
                             </tr>`;
                     $('#tblData').append(tr);
