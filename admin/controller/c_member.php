@@ -23,11 +23,5 @@ switch ($page) {
         }
         require('view/template/member/list.tpl');
         return;
-    case 'config':
-        if (!isset($_SESSION['admin'])) {
-            header('LOCATION: index.php?module=member&act=login');
-            exit();
-        }
-        require('view/template/config/member-config.tpl');
-        return;
+    
 }
