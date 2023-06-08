@@ -1,25 +1,22 @@
 <html lang="vi" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
 
 <head>
-     <title>TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN</title>
-    <meta name="description" content="thi truc tuyen, online, truc tuyen">
-    <meta name="author" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN">
-    <meta name="copyright" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN [sopcop@sonla.gov.vn]">
-    <meta name="generator" content="NukeViet v4.3">
+     <title class="site_name" style="text-transform: uppercase;">TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN</title>
+    <meta name="description" class="site_description" content="thi truc tuyen, online, truc tuyen">
+    <meta name="site_name" class="site_name" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN">
+    <meta name="copyright" class="site_copyright" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN [sopcop@sonla.gov.vn]">
+    <meta name="generator" class="site_author" content="NukeViet v4.3">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta property="og:title" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN">
     <meta property="og:type" content="website">
-    <meta property="og:description" content="thi truc tuyen, online, truc tuyen">
-    <meta property="og:site_name" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN">
-    <meta property="og:url" content="https://tinhdoan.thionline.com.vn/vi/">
-    <link rel="shortcut icon" href="assets/images/logo-doan.png">
-    <link rel="canonical" href="https://tinhdoan.thionline.com.vn/vi/">
+    <meta property="og:description" class="site_description" content="thi truc tuyen, online, truc tuyen">
+    <meta property="og:site_name" class="site_name" content="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN">
+    <meta property="og:url" class="site_url" content="https://tinhdoan.thionline.com.vn/vi/">
+    <link rel="shortcut icon" href="assets/images/logo-doan.png" class="site_icon">
+    <link rel="canonical" class="site_url" href="https://tinhdoan.thionline.com.vn/vi/">
     <link rel="alternate" href="/vi/news/rss/" title="Bài viết" type="application/rss+xml">
-    <link rel="alternate" href="/vi/news/rss/chuyen-muc-1/" title="Bài viết - Chuyên mục 1" type="application/rss+xml">
-    <link rel="alternate" href="/vi/news/rss/chuyen-muc-2/" title="Bài viết - Chuyên mục 2" type="application/rss+xml">
-    <link rel="alternate" href="/vi/news/rss/chuyen-muc-3/" title="Bài viết - Chuyên mục 3" type="application/rss+xml">
-    <link rel="alternate" href="/vi/news/rss/chuyen-muc-4/" title="Bài viết - Chuyên mục 4" type="application/rss+xml">
+    
     <link rel="preload" as="script" href="assets/js/jquery.min.js?t=1683896486">
     <link rel="preload" as="script" href="assets/js/vi.js?t=1683896486">
     <link rel="preload" as="script" href="assets/js/global.js?t=1683896486">

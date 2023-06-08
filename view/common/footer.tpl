@@ -23,7 +23,7 @@
                         <div class="col-xs-24 col-sm-24 col-md-24" style="text-align:center;">
                             <div class="panel-body">
                                 <div class="footer-widget">
-                                    <h4><span id="site_name" style="text-transform: uppercase;"></span></h4>
+                                    <h4><span class="site_name" style="text-transform: uppercase;"></span></h4>
                                     <ul class="company_info" itemscope="" itemtype="http://schema.org/LocalBusiness">
                                         <li class="hide hidden">
                                             <span
@@ -35,22 +35,20 @@
                                                     class="fa fa-map-marker"></em><span>Địa chỉ: <span
                                                         itemprop="address" itemscope=""
                                                         itemtype="http://schema.org/PostalAddress">
-                                                        <span itemprop="addressLocality" class="company-address" id="site_address">
-                                                           
-                                                        </span>
+                                                        <span itemprop="addressLocality" class="company-address site_address"></span>
                                                         </span>
                                                         </span>
                                                         </a></li>
                                         <li><em class="fa fa-phone"></em><span>Điện thoại: <span
-                                                    itemprop="telephone" id="site_phone"></span></span></li>
+                                                    itemprop="telephone" class="site_phone"></span></span></li>
                                         <li><em class="fa fa-fax"></em><span>Fax: <span
-                                                    itemprop="faxNumber" id="site_fax"></span></span></li>
+                                                    itemprop="faxNumber" class="site_fax"></span></span></li>
                                         <li><em class="fa fa-envelope"></em><span>Email: <a
                                                     href=""><span
-                                                        itemprop="email" id="site_email">bantcxdd.tdsl@gmail.com</span></a></span></li>
+                                                        itemprop="email" class="site_email"></span></a></span></li>
                                         <li><em class="fa fa-globe"></em><span>Website: <a
                                                     href="" target="_blank"><span
-                                                        itemprop="url" site_url>https://tinhdoan.thionline.com.vn</span></a></span>
+                                                        itemprop="url" class="site_url"></span></a></span>
                                         </li>
                                     </ul>
                                 </div>

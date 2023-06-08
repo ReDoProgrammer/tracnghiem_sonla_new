@@ -9,7 +9,9 @@
                     <div class="row">
                         <div class="col-sm-24 col-lg-4 col-md-4">
                             <div class="logo">
-                                <a class="logo-wrapper" title="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" href="index.php?module=home&act=index"><img src="assets/images/logo-tinhdoan.png" alt="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN"></a>
+                                <a class="logo-wrapper" title="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" href="index.php?module=home&act=index">
+                                    <img src="assets/images/logo-tinhdoan.png" alt="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" class="site_logo">
+                                </a>
                             </div>
                         </div>
                         <div class="col-sm-24 col-lg-20 col-md-20">
@@ -59,7 +61,7 @@
 </header>
 
 <div id="mySidenav" class="sidenav menu_mobile hidden-md hidden-lg">
-    <span class="close_menu" style="background-image: url(assets/images/logo-tinhdoan.png);"></span>
+    <span class="close_menu site_logo" style="background-image: url(assets/images/logo-tinhdoan.png);"></span>
     <div class="content_memu_mb">
         <div class="link_list_mobile">
             <ul class="ct-mobile">

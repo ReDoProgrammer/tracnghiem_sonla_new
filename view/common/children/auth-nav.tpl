@@ -10,8 +10,9 @@
                     <div class="row">
                         <div class="col-sm-24 col-lg-4 col-md-4">
                             <div class="logo">
-                                <a class="logo-wrapper" title="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" href="/vi/"><img
-                                        src="assets/images/logo-tinhdoan.png" alt="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN"></a>
+                                <a class="logo-wrapper" title="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" href="/vi/">
+                                    <img src="assets/images/logo-tinhdoan.png" alt="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" class="site_logo">
+                                </a>
                             </div>
                         </div>
                         <div class="col-sm-24 col-lg-20 col-md-20">
@@ -47,7 +48,7 @@
                                     <div class="mini-cart text-xs-center">
                                         <span>
                                             <a title="" 
-                                                class="pointer button user" 
+                                                class="pointer button user site_logo" 
                                                 data-toggle="tip"
                                                 data-target="#userBlock_nv0" data-click="y"
                                                 style="background-image:url(assets/images/no_avatar.png)">
