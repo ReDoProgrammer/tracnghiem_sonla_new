@@ -22,6 +22,22 @@ $(document).on('click', "a[name='member-detail']", function (e) {
             if(data.statusCode == 200){
                 console.log(data.content);
                 $('#modalMemberDetail').modal();
+                let m = data.content;
+                if(m.avatar.length > 0){
+                    $('#mbAvatar').attr('src',m.avatar);
+                }
+                $('#mbUsername').text(m.username);
+                $('#mbFullname').text(m.fullname);
+                $('#mbEmail').text(m.email);
+                $('#mbPhone').text(m.phone);
+                $('#mbBirthdate').html(m.get_birthdate==1?m.birthdate:`<i class="fa fa-square-o" aria-hidden="true"></i> Không hiển thị`);
+                $('#mbGender').html(m.get_gender==1?m.gender:`<i class="fa fa-square-o" aria-hidden="true"></i> Không hiển thị`);
+                $('#mbAddress').html(m.get_address==1?m.address:`<i class="fa fa-square-o" aria-hidden="true"></i> Không hiển thị`);
+                $('#mbWorkplace').html(m.get_workplace==1?m.workplace:`<i class="fa fa-square-o" aria-hidden="true"></i> Không hiển thị`);
+                $('#mbJob').html(m.get_job==1?m.job:`<i class="fa fa-square-o" aria-hidden="true"></i> Không hiển thị`);
+                $('#mbPosition').html(m.get_position==1?m.position:`<i class="fa fa-square-o" aria-hidden="true"></i> Không hiển thị`);
+                $('#mbAppliedDate').text(m.applied_date);
+                $('#mbLasttimeLogin').text(m.lasttime_login);
             }else{
                 Swal.fire({
                     icon: data.icon,

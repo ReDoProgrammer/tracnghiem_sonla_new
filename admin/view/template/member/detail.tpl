@@ -9,7 +9,7 @@
       <div class="modal-body panel-body">
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-              <img src="/assets/imagesimages/no_avatar.png" class="img-thumbnail" alt="Cinque Terre" id="mbAvatar">
+              <img src="/assets/imagesimages/no_avatar.png" class="img-thumbnail" alt="Cinque Terre" id="mbAvatar" style="width:100%; height:auto;">
             </div>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
               <div class="row">

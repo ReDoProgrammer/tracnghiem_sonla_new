@@ -23,13 +23,15 @@ function detail($id){
                 p.name AS position,
 
                 m.get_workplace,
-                w.name AS workplace,
+                wp.name AS workplace,
                
                 m.get_address,
                 CASE
                     WHEN LENGTH(m.address) THEN CONCAT(m.address,', ',w.full_name,', ',d.full_name,', ',pr.full_name)
                     ELSE CONCAT(w.full_name,', ',d.full_name,', ',pr.full_name)
-                END AS address           
+                END AS address,
+                DATE_FORMAT(applied_date,'%d/%m/%Y %T') AS applied_date,
+                DATE_FORMAT(lasttime_login,'%d/%m/%Y %T') AS lasttime_login            
             FROM members m 
             LEFT JOIN jobs j ON m.job_id = j.id
             LEFT JOIN positions p ON m.job_id = p.id
