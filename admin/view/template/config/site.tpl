@@ -10,12 +10,12 @@
       <li class="active">Cấu hình thành viên</li>
     </ol>
   </section>
-  <section class="content animated fadeIn">
+  <section class="content animated fadeIn" id="site_configs">
     <div class="row">
       <div class="col-sm-12">
         <div class="box box-warning">
           <div class="container">
-            <div class="row">
+            <div class="row mt-5">
               <div class="col-md-2"></div>
               <div class="col-md-8">
                 <div class="form-group">
@@ -125,6 +125,11 @@
             </div>
           </div>
         </div>
+        <div class="box-footer text-center">
+            <button class="btn btn-sm btn-primary btn-flat" style="margin-top:4px" id="btnUpdateSiteConfigs">
+              <i class="fa fa-save"></i> Cập nhật cấu hình
+            </button>           
+        </div>	
       </div>
     </div>
   </section>
