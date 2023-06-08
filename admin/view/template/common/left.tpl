@@ -179,7 +179,7 @@
                                     Website</a>
                             </li>
 
-                            <li><a href="index.php?module=hethong&amp;act=edit"><i class="fa fa-circle-o"></i> Cấu Hình
+                            <li><a href="index.php?module=config&amp;act=site"><i class="fa fa-circle-o"></i> Cấu Hình
                                     Website</a>
                             </li>
                         </ul>

@@ -37,12 +37,12 @@ function cfList($mod,$fnc){
             $arr[] = $local;
         }
         $msg->icon = "success";
-        $msg->title = "Lấy thông tin cấu hình thông tin đăng ký thành công!";
+        $msg->title = "Load danh sách cấu hình theo module thành công!";
         $msg->statusCode = 200;
         $msg->content = $arr;
     }else{
         $msg->icon = "error";
-        $msg->title = "Lấy thông tin cấu hình đăng ký thất bại!";
+        $msg->title = "Load danh sách cấu hình theo module thất bại!";
         $msg->statusCode = 500;
         $msg->content = mysql_error();
     }

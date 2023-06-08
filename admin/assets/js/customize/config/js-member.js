@@ -4,7 +4,7 @@ $(function () {
 
 function LoadRegisterConfigs() {
     $.ajax({
-        url: 'controller/config/member-register.php',
+        url: 'controller/config/list.php',
         type: 'get',
         data: { mod: 'MEMBER', fnc: 'REGISTER' },
         success: function (data) {
