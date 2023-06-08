@@ -8,8 +8,27 @@
  include_once('m_db.php');
  include_once('classes/m_message.php');
 
+function cfChangeState($id,$state){
+   $sql = "UPDATE configs SET cf_value = '".$state."' WHERE id = '".$id."'";
+   $result = mysql_query($sql,dbconnect());
+
+   $msg = new Message();
+   if($result && mysql_affected_rows()>0){
+        $msg->statusCode = 200;
+        $msg->title = "Cập nhật trạng thái thành công!";
+        $msg->icon = "success";
+   }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Cập nhật trạng thái thất bại!";
+        $msg->content = mysql_error();
+   }
+   return $msg;
+}
+
+
 function cfList($mod,$fnc){
-    $sql = "SELECT cf_key,cf_value FROM configs WHERE cf_mod = '".$mod."' AND cf_fnc='".$fnc."'";
+    $sql = "SELECT id,cf_key,cf_value,cf_title FROM configs WHERE cf_mod = '".$mod."' AND cf_fnc='".$fnc."'";
     $result = mysql_query($sql,dbconnect());
     $msg = new Message();
     if($result && mysql_num_rows($result)>0){

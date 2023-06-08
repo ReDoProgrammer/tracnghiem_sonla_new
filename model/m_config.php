@@ -9,7 +9,7 @@
  include_once('classes/m_message.php');
 
 function cfList($mod,$fnc){
-    $sql = "SELECT cf_key,cf_value FROM configs WHERE cf_mod = '".$mod."' AND cf_fnc='".$fnc."'";
+    $sql = "SELECT id,cf_key,cf_value,cf_title FROM configs WHERE cf_mod = '".$mod."' AND cf_fnc='".$fnc."'";
     $result = mysql_query($sql,dbconnect());
     $msg = new Message();
     if($result && mysql_num_rows($result)>0){
