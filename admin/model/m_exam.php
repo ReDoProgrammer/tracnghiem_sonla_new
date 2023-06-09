@@ -11,27 +11,13 @@ include('classes/m_message.php');
 
 function LoadResultByExamsAndWorkplaces($exam, $workplaces)
 {
-    $sql = "SELECT m.id AS member_id, m.fullname AS member_fullname, e.id AS exam_id, e.title AS exam_title, tms.num_correct_answers
-    FROM (
-        SELECT er.member_id, er.exam_id, COUNT(*) AS num_correct_answers
-        FROM exam_results er
-        JOIN exam_result_details erd ON er.id = erd.exam_result_id
-        WHERE erd.question_answer = erd.option_id
-        GROUP BY er.member_id, er.exam_id
-    ) AS tms
-    JOIN members m ON tms.member_id = m.id
-    JOIN exams e ON tms.exam_id = e.id
-    WHERE tms.num_correct_answers = (
-        SELECT MAX(tms2.num_correct_answers)
-        FROM (
-            SELECT er2.member_id, er2.exam_id, COUNT(*) AS num_correct_answers
-            FROM exam_results er2
-            JOIN exam_result_details erd2 ON er2.id = erd2.exam_result_id
-            WHERE erd2.question_answer = erd2.option_id
-            GROUP BY er2.member_id, er2.exam_id
-        ) AS tms2
-        WHERE tms2.member_id = tms.member_id AND tms2.exam_id = tms.exam_id
-    )
+    $sql = "
+        SELECT m.id,m.fullname,
+        HAVING COUNT(CASE WHEN ed.question_answer = ed.option_id THEN 1 END)
+        FROM members m
+        INNER JOIN exam_results er ON er.member_id = m.id
+        INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id 
+        INNER JOIN exams e ON er.exam_id = e.id
     ";
 }
 function all()
