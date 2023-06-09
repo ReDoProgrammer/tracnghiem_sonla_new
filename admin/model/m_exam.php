@@ -9,11 +9,37 @@
 include_once('m_db.php');
 include('classes/m_message.php');
 
-function all(){
+function LoadResultByExamsAndWorkplaces($exam, $workplaces)
+{
+    $sql = "SELECT m.id AS member_id, m.fullname AS member_fullname, e.id AS exam_id, e.title AS exam_title, tms.num_correct_answers
+    FROM (
+        SELECT er.member_id, er.exam_id, COUNT(*) AS num_correct_answers
+        FROM exam_results er
+        JOIN exam_result_details erd ON er.id = erd.exam_result_id
+        WHERE erd.question_answer = erd.option_id
+        GROUP BY er.member_id, er.exam_id
+    ) AS tms
+    JOIN members m ON tms.member_id = m.id
+    JOIN exams e ON tms.exam_id = e.id
+    WHERE tms.num_correct_answers = (
+        SELECT MAX(tms2.num_correct_answers)
+        FROM (
+            SELECT er2.member_id, er2.exam_id, COUNT(*) AS num_correct_answers
+            FROM exam_results er2
+            JOIN exam_result_details erd2 ON er2.id = erd2.exam_result_id
+            WHERE erd2.question_answer = erd2.option_id
+            GROUP BY er2.member_id, er2.exam_id
+        ) AS tms2
+        WHERE tms2.member_id = tms.member_id AND tms2.exam_id = tms.exam_id
+    )
+    ";
+}
+function all()
+{
     $sql = "SELECT id,title FROM exams";
-    $result = mysql_query($sql,dbconnect());
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result){
+    if ($result) {
         $arr = array();
         while ($local = mysql_fetch_array($result)) {
             $arr[] = $local;
@@ -22,7 +48,7 @@ function all(){
         $msg->icon = "success";
         $msg->title = "Lấy danh sách cuộc thi thành công!";
         $msg->content = $arr;
-    }else{
+    } else {
         $msg->statusCode = 500;
         $msg->icon = "error";
         $msg->title = "Lấy danh sách cuộc thi thất bại!";
@@ -37,11 +63,11 @@ function change_random_options($id, $random_options)
     //Cập nhật tất cả các bài thi khác thành không tiêu điểm
     $msg = new Message();
 
-    $checked = $random_options ==1?0:1;
+    $checked = $random_options == 1 ? 0 : 1;
 
     $result = mysql_query("UPDATE exams SET random_options = '" . $checked . "' WHERE id= " . $id, dbconnect());
 
-    if ($result && mysql_affected_rows()>0) {
+    if ($result && mysql_affected_rows() > 0) {
         $msg->statusCode = 200;
         $msg->icon = "success";
         $msg->title = "Cập nhật trạng thái đảo đáp án của bài thi thành công!";
@@ -162,7 +188,7 @@ function create($title, $thumbnail, $description, $duration, $number_of_question
     $msg = new Message();
     if ($result && mysql_affected_rows() > 0) {
         $chk = setCode(mysql_insert_id());
-        if($chk->statusCode !=200){
+        if ($chk->statusCode != 200) {
             return $chk;
         }
         $msg->statusCode = 201;
@@ -224,15 +250,16 @@ function delete($id)
     return $msg;
 }
 
-function setCode($id){
-    $idx =  $id<1000000?"0".(string)$id:
-            $id<100000?"00".(string)$id:
-            $id<10000?"000".(string)$id:
-            $id<1000?"0000".(string)$id:
-            $id<100?"00000".(string)$id:
-            $id<10?"000000".(string)$id:$id;
-   
-    $exam_code = "EX".date("Y").$idx;
+function setCode($id)
+{
+    $idx =  $id < 1000000 ? "0" . (string)$id :
+        $id < 100000 ? "00" . (string)$id :
+        $id < 10000 ? "000" . (string)$id :
+        $id < 1000 ? "0000" . (string)$id :
+        $id < 100 ? "00000" . (string)$id :
+        $id < 10 ? "000000" . (string)$id : $id;
+
+    $exam_code = "EX" . date("Y") . $idx;
 
     $result = mysql_query("UPDATE exams 
     SET exam_code='" . $exam_code . "'

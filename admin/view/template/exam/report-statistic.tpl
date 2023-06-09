@@ -1,9 +1,6 @@
 <?php include('view/template/common/header.tpl'); ?>
 <?php include('view/template/common/left.tpl'); ?>
 
-
-
-
 <div class="content-wrapper" style="clear: both; min-height: 864px;" id="content">
     <section class="content-header">
         <h1 style="font-size: 20px; font-family: Roboto Condensed">
@@ -19,21 +16,11 @@
             <div class="col-sm-12">
                 <div class="box box-warning">
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="margin-top:5px">
-                                <select class="selectpicker" id="slExams" data-live-search="true" multiple>
-                                   >
-                                </select>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="margin-top:5px">
-                                <select class="selectpicker" id="slUnits" data-live-search="true" multiple>
-                                  
-                                </select>
-                            </div>
+                        <div class="row">                            
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:5px">
                                 <div class="input-group input-group-sm">                                    
-                                    <input type="text" class="form-control" id="txtSearch"
-                                        placeholder="Từ khóa tìm kiếm cuộc thi" />
+                                    <select class="selectpicker" id="slExams" data-live-search="true" multiple></select>
+                                    <select class="selectpicker" id="slUnits" data-live-search="true" multiple></select>
                                     <span class="input-group-btn">
                                         <button class="btn btn-info btn-flat" id="btnSearch">
                                             <i class="fa fa-search" aria-hidden="true"></i>
@@ -135,6 +122,7 @@
 <?php include('view/template/common/footer.tpl'); ?>
 <script src="assets/js/customize/exam/js-list.js"></script>
 <script src="assets/js/customize/workplace/js-provinces-workplaces.js"></script>
+<script src="assets/js/customize/exam/js-report.js"></script>
 
 
 
