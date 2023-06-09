@@ -4,11 +4,11 @@
 <div class="content-wrapper" style="clear: both; min-height: 864px;" id="content">
     <section class="content-header">
         <h1 style="font-size: 20px; font-family: Roboto Condensed">
-            Báo cáo & thống kê
+            Báo cáo lịch sử thi
         </h1>
         <ol class="breadcrumb">
             <li><a href="index.php?module=home">Trang Chủ</a></li>
-            <li class="active">Báo cáo & thống kê</li>
+            <li class="active">Báo cáo lịch sử thi</li>
         </ol>
     </section>
     <section class="content animated fadeIn">
@@ -18,10 +18,10 @@
                     <div class="box-body">
                         <div class="row">                 
                             <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="margin-top:5px">
-                                <select class="selectpicker" id="slExams" data-live-search="true" multiple></select>
+                                <select class="selectpicker" id="slExams" data-live-search="true" multiple style="width:100% important;"></select>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="margin-top:5px">
-                                <select class="selectpicker" id="slUnits" data-live-search="true" multiple></select>
+                                <select class="selectpicker" id="slUnits" data-live-search="true" multiple style="width:100% important;"></select>
                             </div>           
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:5px">
                                 <div class="input-group input-group-sm">                                
@@ -31,9 +31,7 @@
                                         <button class="btn btn-info btn-flat" id="btnSearch">
                                             <i class="fa fa-search" aria-hidden="true"></i>
                                             Tìm Kiếm!
-                                        </button>
-                                        <button class="btn btn-primary bg-primary btn-flat btn-margin ml-2" id="btnAddNew"><i
-                                                class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Thêm mới</button>
+                                        </button>                                        
                                     </span>
                                 </div>
                             </div>                           
@@ -90,6 +88,8 @@
                                                  <th class="text-center">
                                                    Thời gian làm bài
                                                 </th>
+                                                <th class="text-center">
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody id="tblData">
@@ -123,12 +123,13 @@
                 </div>
             </div>
         </div>
+        
     </section>
 </div>
 <?php include('view/template/common/footer.tpl'); ?>
 <script src="assets/js/customize/exam/js-list.js"></script>
 <script src="assets/js/customize/workplace/js-provinces-workplaces.js"></script>
-<script src="assets/js/customize/exam/js-report.js"></script>
+<script src="assets/js/customize/exam/js-report-history.js"></script>
 
 
 

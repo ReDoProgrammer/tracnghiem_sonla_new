@@ -8,7 +8,54 @@
 
 include_once('m_db.php');
 include('classes/m_message.php');
+function History($page,$search,$pageSize,$workplaces,$exams){
+    // $workplaces = json_decode(stripslashes($workplaces), true);
+    // $exams = (array)json_decode(stripslashes($exams), true);
+        // $result =get_object_vars($workplaces);
+        $arr = array($workplaces);
+       
+        return $arr;
+        
+    $sql = "SELECT m.id,m.username,m.fullname,
+                CASE 
+                    WHEN m.gender = 1 THEN 'Nam'
+                    WHEN m.gender = 0 THEN 'Nữ'
+                    ELSE 'Khác'
+                END AS gender,
+                m.get_birthdate,DATE_FORMAT( m.get_birthdate,'%d/%m/%Y') AS birthdate,
+                m.phone,m.email,
+                m.get_job,j.name AS job,
+                m.get_workplace,wp.name AS workplace,
+                m.get_position,p.name AS position,
+                e.title AS exam,
+                er.times,
+                (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question) AS mark ,
+                DATE_FORMAT(er.started_at,'%d/%m/%Y %T') AS exam_date,
+                er.spent_duration 
+            FROM members m
+            LEFT JOIN jobs j ON m.job_id = j.id
+            LEFT JOIN workplaces wp ON m.workplace_id = wp.id
+            LEFT JOIN positions p ON m.position_id = p.id
+            JOIN exam_results er ON er.member_id = m.id
+            JOIN exam_result_details erd ON erd.exam_result_id = er.id 
+            JOIN exams e ON er.exam_id = e.id 
+            WHERE   (m.username LIKE '%".$search."%'
+                    OR m.fullname LIKE '%".$search."%'
+                    OR m.phone LIKE '%".$search."%'
+                    OR m.email LIKE '%".$search."%'
+                    OR wp.name LIKE '%".$search."%'
+                    OR j.name LIKE '%".$search."%') ";
+            if(count($workplaces)>0){
+                $sql.=" AND wp.id IN ".$workplaces;
+            }
+            if(count($exams)>0){
+                $sql.=" AND e.id IN ".$exams;
+            }
+            $sql.=" GROUP BY m.id";
 
+          
+    return $result;
+}
 function LoadResultByExamsAndWorkplaces($exam, $workplaces)
 {
     $sql = "
