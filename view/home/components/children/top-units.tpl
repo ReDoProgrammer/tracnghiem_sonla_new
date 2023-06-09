@@ -19,7 +19,7 @@
                             <th class="text-center">Số lần thi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="notification-list">
                         <tr>
                             <td class="text-center" style="vertical-align: middle;">
                                 1
