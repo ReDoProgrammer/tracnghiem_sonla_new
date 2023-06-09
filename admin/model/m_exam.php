@@ -9,6 +9,28 @@
 include_once('m_db.php');
 include('classes/m_message.php');
 
+function all(){
+    $sql = "SELECT id,title FROM exams";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Lấy danh sách cuộc thi thành công!";
+        $msg->content = $arr;
+    }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Lấy danh sách cuộc thi thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 //hàm thay đổi thuộc tính đảo đáp án của cuộc thi
 function change_random_options($id, $random_options)
 {

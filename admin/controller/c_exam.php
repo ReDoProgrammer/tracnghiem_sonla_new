@@ -15,5 +15,8 @@ switch ($page) {
   case 'list':
     require('view/template/exam/index.tpl');
     break;
+  case 'report-statistic':
+    require('view/template/exam/report-statistic.tpl');
+    break;
 }
 ?>

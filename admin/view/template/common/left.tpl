@@ -96,6 +96,8 @@
                                         class="fa fa-chevron-right fa-fw"></i>Quản lý chủ đề</a></li>
                             <li><a href="index.php?module=question&amp;act=view"><i
                                         class="fa fa-chevron-right fa-fw"></i>Quản lý câu hỏi</a></li>
+                            <li><a href="index.php?module=exam&amp;act=report-statistic"><i
+                                        class="fa fa-chevron-right fa-fw"></i>Báo cáo thống kê</a></li>
                         </ul>
                     </li>
 
