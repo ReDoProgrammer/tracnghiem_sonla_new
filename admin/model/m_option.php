@@ -8,6 +8,37 @@
 class Option
 {
 
+    function get($question_id, $random_options)
+{
+
+
+    $sql = "SELECT id,content,correct FROM options WHERE question_id = '" . $question_id . "'";
+    if ($random_options == 1) {
+        $sql .= "  ORDER BY RAND()";
+    }
+
+    $options = mysql_query($sql, dbconnect());
+
+    $msg = new Message();
+    if ($options) {
+        $result = array();
+        while ($local = mysql_fetch_array($options)) {
+            $result[] = $local;
+        }
+
+        $msg->icon = 'success';
+        $msg->title = "Load danh sách đáp án thành công!";
+        $msg->content = $result;
+        $msg->statusCode = 200;
+    } else {
+        $msg->icon = 'error';
+        $msg->title = "Load danh sách đáp án thất bại!";
+        $msg->content = "Lỗi: " . mysql_error();
+        $msg->statusCode = 500;
+    }
+    return $msg;
+}
+
     function get_options_by_question($question_id)
     {
         $sql = "SELECT id,content,correct FROM options WHERE question_id = " . $question_id;

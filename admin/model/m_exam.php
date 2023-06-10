@@ -8,15 +8,71 @@
 
 include_once('m_db.php');
 include('classes/m_message.php');
-function History($page,$search,$pageSize,$workplaces,$exams){
-    // $workplaces = json_decode(stripslashes($workplaces), true);
-    // $exams = (array)json_decode(stripslashes($exams), true);
-        // $result =get_object_vars($workplaces);
-        $arr = array($workplaces);
-       
-        return $arr;
-        
-    $sql = "SELECT m.id,m.username,m.fullname,
+function exResultPagination($id)
+{
+    $sql = "SELECT q.id,q.title,erd.question_answer,erd.option_id
+            FROM exam_result_details erd   
+            INNER JOIN questions q ON erd.question_id = q.id         
+            WHERE exam_result_id = '" . $id . "'    
+    ";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result && mysql_num_rows($result)) {
+
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->title = "Lấy thông tin phân trang thành công!";
+        $msg->content = $arr;
+    } else {
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->title = "Lấy thông tin phân trang thất bại!";
+        $msg->content = "Lỗi: ".mysql_error();
+    }
+    return $msg;
+}
+
+
+//hàm lấy thông tin tổng quan của 1 bài thi cụ thể
+function exResultSummary($result_id,$candidate)
+{
+    $sql = "SELECT 
+            er.id, e.exam_code, e.title, e.duration,e.mark_per_question,
+            COUNT(CASE WHEN erd.question_answer = erd.option_id THEN 1 END) AS correct,
+            COUNT(CASE WHEN erd.question_answer != erd.option_id AND erd.option_id !=0 THEN 1 END) AS wrong,
+            COUNT(CASE WHEN erd.option_id = 0 THEN 1 END) AS unchoosed,
+            COUNT(CASE WHEN erd.option_id !=0 THEN 1 END) AS choosed,
+            COUNT( erd.exam_result_id ) AS total_questions,
+            er.spent_duration,
+            DATE_FORMAT(er.created_at, '%d/%m/%Y %H:%i') AS exam_date
+            FROM exams e
+            INNER JOIN exam_results er ON er.exam_id = e.id
+            INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id
+            WHERE er.member_id = '" . $candidate . "'
+            AND er.id = '" . $result_id . "'
+            GROUP BY er.id";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result && mysql_num_rows($result) > 0) {
+        $msg->statusCode = 200;
+        $msg->title = "Lấy thông tin tổng quan kết quả thi thành công!";
+        $msg->icon = "success";
+        $msg->content = mysql_fetch_array($result);
+    } else {
+        $msg->statusCode = 500;
+        $msg->title = "Lấy lịch sử thi thất bại!";
+        $msg->icon = "error";
+        $msg->content = "Lỗi: " . mysql_error();
+    }
+    return $msg;
+}
+function History($page, $search, $pageSize, $workplaces, $exams)
+{
+    $sql = "SELECT m.id AS candidate,er.id AS result_id,m.username,m.fullname,
                 CASE 
                     WHEN m.gender = 1 THEN 'Nam'
                     WHEN m.gender = 0 THEN 'Nữ'
@@ -30,6 +86,7 @@ function History($page,$search,$pageSize,$workplaces,$exams){
                 e.title AS exam,
                 er.times,
                 (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question) AS mark ,
+                COUNT(erd.question_id)*e.mark_per_question AS total_marks,
                 DATE_FORMAT(er.started_at,'%d/%m/%Y %T') AS exam_date,
                 er.spent_duration 
             FROM members m
@@ -39,22 +96,48 @@ function History($page,$search,$pageSize,$workplaces,$exams){
             JOIN exam_results er ON er.member_id = m.id
             JOIN exam_result_details erd ON erd.exam_result_id = er.id 
             JOIN exams e ON er.exam_id = e.id 
-            WHERE   (m.username LIKE '%".$search."%'
-                    OR m.fullname LIKE '%".$search."%'
-                    OR m.phone LIKE '%".$search."%'
-                    OR m.email LIKE '%".$search."%'
-                    OR wp.name LIKE '%".$search."%'
-                    OR j.name LIKE '%".$search."%') ";
-            if(count($workplaces)>0){
-                $sql.=" AND wp.id IN ".$workplaces;
-            }
-            if(count($exams)>0){
-                $sql.=" AND e.id IN ".$exams;
-            }
-            $sql.=" GROUP BY m.id";
+            WHERE   (m.username LIKE '%" . $search . "%'
+                    OR m.fullname LIKE '%" . $search . "%'
+                    OR m.phone LIKE '%" . $search . "%'
+                    OR m.email LIKE '%" . $search . "%'
+                    OR wp.name LIKE '%" . $search . "%'
+                    OR j.name LIKE '%" . $search . "%') ";
+    if ($workplaces) {
+        $sql .= " AND wp.id IN (";
+        for ($i = 0; $i < count($workplaces); $i++) {
+            $sql .= $i < count($workplaces) - 1 ? $workplaces[$i] . "," : $workplaces[$i];
+        }
+        $sql .= ")";
+    }
+    if ($exams) {
+        $sql .= " AND e.id IN (";
+        for ($i = 0; $i < count($exams); $i++) {
+            $sql .= $i < count($exams) - 1 ? $exams[$i] . "," : $exams[$i];
+        }
+        $sql .= ")";
+    }
+    $sql .= " GROUP BY m.id,er.id
+    LIMIT " . ($page - 1) * $page . "," . $pageSize . "";
 
-          
-    return $result;
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->title = "Lấy danh sách lịch sử thi thành công!";
+        $msg->content = $arr;
+    } else {
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Load lịch sử thi thất bại!";
+        $msg->content = mysql_error();
+    }
+
+    return $msg;
 }
 function LoadResultByExamsAndWorkplaces($exam, $workplaces)
 {

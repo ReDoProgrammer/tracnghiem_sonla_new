@@ -18,6 +18,9 @@ switch ($page) {
   case 'history':
     require('view/template/exam/history.tpl');
     break;
+  case 'history-detail':
+    require('view/template/exam/history-detail.tpl');
+    break;
   case 'report-statistic':
     require('view/template/exam/report-statistic.tpl');
     break;
