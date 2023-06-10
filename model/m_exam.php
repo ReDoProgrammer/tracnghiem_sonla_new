@@ -13,6 +13,42 @@ include_once('m_exam_result.php');
 include_once('m_exam_result_detail.php');
 include_once('classes/m_message.php');
 
+
+function Top10Candidates(){
+    $sql = "SELECT m.fullname,
+                DATE_FORMAT(er.started_at,'%d/%m/%Y %T') AS exam_date,
+                er.spent_duration,
+                (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question) AS mark ,
+                COUNT(erd.question_id)*e.mark_per_question AS total_marks,
+                (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question)/(COUNT(erd.question_id)*e.mark_per_question) AS mark_ratio
+            FROM members m
+            JOIN exam_results er ON er.member_id = m.id
+            JOIN exam_result_details erd ON erd.exam_result_id = er.id
+            JOIN exams e ON er.exam_id = e.id
+            GROUP BY m.id,e.id,er.id
+            ORDER BY mark_ratio DESC,spent_duration 
+            LIMIT 10
+            ";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Lấy top 10 điểm cao nhất thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $arr;
+    }else{
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->title = "Lấy top 10 điểm cao nhất thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 function Top10Units(){
     $sql = "SELECT wp.name AS workplace,
                 COUNT(m.id) AS candidates,

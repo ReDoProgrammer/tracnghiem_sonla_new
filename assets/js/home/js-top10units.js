@@ -1,7 +1,4 @@
 $(function () {
-    var number = 123456;
-      var formattedNumber = number.toLocaleString();
-      console.log(formattedNumber)
     $.ajax({
         url: 'controller/exam/top10units.php',
         type: 'get',
