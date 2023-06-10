@@ -10,13 +10,13 @@ $(function () {
                                 <td class="text-center" >
                                     ${index++}
                                 </td>
-                                <td class="text-center" >
+                                <td>
                                     ${u.workplace}
                                 </td>
-                                <td class="text-center" >
+                                <td class="text-right" >
                                     ${u.candidates.toLocaleString()}
                                 </td>
-                                <td class="text-center" >
+                                <td class="text-right" >
                                 ${u.exam_times.toLocaleString()}
                                 </td>
                             </tr>`;
