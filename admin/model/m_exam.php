@@ -15,8 +15,12 @@ function delete_result($result_id)
     //B1: kiểm tra tồn tại của kết quả bài thi
     $sql = "SELECT * FROM exam_results WHERE id = '" . $result_id . "'";
     $result = mysql_query($sql, dbconnect());
+
+    
+
     if ($result && mysql_num_rows($result) > 0) {
         $fr = mysql_fetch_array($result); //focus row: dòng được chọn
+
 
         //B2: Xóa kết quả bài thi được chọn trong 2 bảng: exam_results và exam_result_details
         $sql = "DELETE exam_results, exam_result_details
@@ -30,10 +34,10 @@ function delete_result($result_id)
             //B3: Cập nhật lại chỉ số lần thi cho các kết quả khác của bài thi tương ứng
             $sql = "UPDATE exam_results 
                     SET times = times -1    
-                    WHERE exam_id = '" . $result . "'
-                    AND times > '" . $fr['times'] . "'
-                    ";
+                    WHERE exam_id = " . $fr['exam_id'] . "
+                    AND times > " . $fr['times'];
             $result = mysql_query($sql, dbconnect());
+
             if ($result) {
                 $msg->icon = "success";
                 $msg->statusCode = 200;

@@ -18,6 +18,7 @@ $(function () {
                     type: 'post',
                     data: { result_id },
                     success: function (data) {
+                        console.log(data);
                         if (data.statusCode == 200) {
                             Swal.fire({
                                 position: 'top-end',
