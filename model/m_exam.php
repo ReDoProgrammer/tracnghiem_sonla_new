@@ -13,6 +13,36 @@ include_once('m_exam_result.php');
 include_once('m_exam_result_detail.php');
 include_once('classes/m_message.php');
 
+function Top10Units(){
+    $sql = "SELECT wp.name AS workplace,
+                COUNT(m.id) AS candidates,
+                COUNT(er.id) AS exam_times
+            FROM workplaces wp
+            JOIN members m ON m.workplace_id = wp.id
+            JOIN exam_results er ON er.member_id = m.id
+            GROUP BY wp.id
+            ORDER BY candidates,exam_times DESC
+            LIMIT 10
+    ";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Lấy top 10 đơn vị tham gia thi nhiều nhất thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $arr;
+    }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Lấy top 10 đơn vị tham gia nhiều nhất thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 function exResultPagination($id)
 {
     $sql = "SELECT q.id,q.title,erd.question_answer,erd.option_id
