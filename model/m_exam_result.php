@@ -33,10 +33,10 @@ function erGetTimes($exam_id){
     return $msg;
 }
 
-function erSave($exam_id, $member_id,$times,$spent_duration)
+function erSave($exam_id, $member_id,$times,$spent_duration,$exam_date)
 {
-    $sql = "INSERT INTO exam_results(member_id,exam_id,times,spent_duration,created_by)
-            VALUES('".$member_id."','".$exam_id."','".$times."','".$spent_duration."','".$member_id."')";
+    $sql = "INSERT INTO exam_results(member_id,exam_id,times,spent_duration,started_at,created_by)
+            VALUES('".$member_id."','".$exam_id."','".$times."','".$spent_duration."','".$exam_date."','".$member_id."')";
     $result = mysql_query($sql,dbconnect());
     $msg = new Message();
     if($result && mysql_affected_rows()>0){

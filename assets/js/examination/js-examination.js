@@ -1,5 +1,6 @@
 var exam_id = '';
 var user_id = '';
+var exam_date;
 
 
 
@@ -39,6 +40,8 @@ $(document).ready(function () {
 
 $('#btnOpenExam').click(function () {
     let times = $(`span.exam_times`).text();
+    exam_date = ExamDate();
+
     if (times > parseInt($('.ex_times').text())) {
         Swal.fire(
             'Số lần làm bài của bạn đã đạt mức tối đa',
@@ -111,7 +114,8 @@ $('#btnSaveExamResult').click(async function (e) {
                 exam_id,
                 result: questions,
                 spent_duration,
-                times: $('#btnOpenExam span.exam_times').text()
+                times: $('#btnOpenExam span.exam_times').text(),
+                exam_date
             },
             success: function (data) {
                 if (data.statusCode == 201) {
@@ -428,4 +432,17 @@ var getUrlParameter = function getUrlParameter(sParam) {
     return false;
 };
 
+function ExamDate(){
+    let d = new Date();
+    let date = d.getDate();
+    let month = d.getMonth()+1;
+    let year = d.getFullYear();
+    let hours = d.getHours();
+    let minutes = d.getMinutes();
+    let seconds = d.getSeconds();
+
+    return `${year}-${month<10?'0'+month:month}-${date<10?'0'+date:date} ${hours<10?'0'+hours:hours}:${minutes<10?'0'+minutes:minutes}:${seconds<10?'0'+seconds:seconds}`;
+
+
+}
 

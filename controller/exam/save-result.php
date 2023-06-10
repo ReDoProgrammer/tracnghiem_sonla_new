@@ -12,6 +12,7 @@ $exam_id = $_POST['exam_id'];
 $result = $_POST['result'];
 $spent_duration = $_POST['spent_duration'];
 $times = $_POST['times'];
-$saved = save($exam_id,$result,$times,$spent_duration);
+$exam_date = $_POST['exam_date'];
+$saved = save($exam_id,$result,$times,$spent_duration,$exam_date);
 header("Content-Type: application/json");
 echo json_encode($saved);

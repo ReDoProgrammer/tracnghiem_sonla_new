@@ -120,12 +120,12 @@ function exHistory($page, $pageSize, $search)
 }
 
 
-function save($exam_id,$result,$times,$spent_duration)
+function save($exam_id,$result,$times,$spent_duration,$exam_date)
 {
     $msg = new Message();
     session_start();
     $p = $_SESSION['profile'];
-    $er = erSave($exam_id, $p['id'],$times,$spent_duration);
+    $er = erSave($exam_id, $p['id'],$times,$spent_duration,$exam_date);
     if ($er->statusCode != 201) {
         return $er;
     }
