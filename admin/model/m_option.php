@@ -5,13 +5,10 @@
  * @copyright 2023
  */
 
-class Option
+include_once('m_db.php');
+include_once('classes/m_message.php');
+function oGet($question_id, $random_options)
 {
-
-    function get($question_id, $random_options)
-{
-
-
     $sql = "SELECT id,content,correct FROM options WHERE question_id = '" . $question_id . "'";
     if ($random_options == 1) {
         $sql .= "  ORDER BY RAND()";
@@ -39,33 +36,33 @@ class Option
     return $msg;
 }
 
-    function get_options_by_question($question_id)
-    {
-        $sql = "SELECT id,content,correct FROM options WHERE question_id = " . $question_id;
-        $local_list = mysql_query($sql, dbconnect());
+function get_options_by_question($question_id)
+{
+    $sql = "SELECT id,content,correct FROM options WHERE question_id = " . $question_id;
+    $local_list = mysql_query($sql, dbconnect());
 
-        $result = array();
-        while ($local = mysql_fetch_array($local_list)) {
-            $result[] = $local;
-        }
-        return $result;
+    $result = array();
+    while ($local = mysql_fetch_array($local_list)) {
+        $result[] = $local;
     }
-    function create($question_id, $content, $correct, $created_by)
-    {
-        $result = mysql_query("INSERT INTO options(question_id,content,correct,created_by) 
+    return $result;
+}
+function create($question_id, $content, $correct, $created_by)
+{
+    $result = mysql_query("INSERT INTO options(question_id,content,correct,created_by) 
                     VALUES('" . $question_id . "','" . $content . "'," . $correct . ",'" . $created_by . "')", dbconnect());
 
 
-        if ($result && mysql_affected_rows() > 0) {
-            return true;
-        } else {
-            return mysql_error();
-        }
+    if ($result && mysql_affected_rows() > 0) {
+        return true;
+    } else {
+        return mysql_error();
     }
+}
 
-    function update($id, $content, $correct, $updated_by)
-    {
-        $result = mysql_query("UPDATE options 
+function update($id, $content, $correct, $updated_by)
+{
+    $result = mysql_query("UPDATE options 
         SET content='" . $content . "',
             correct='" . $correct . "',
             updated_by=" . $updated_by . ",
@@ -73,31 +70,30 @@ class Option
             WHERE id =" . $id, dbconnect());
 
 
-        if ($result &&  mysql_affected_rows() > 0) {
-            return true;
-        } else {
-            return mysql_error();
-        }
+    if ($result &&  mysql_affected_rows() > 0) {
+        return true;
+    } else {
+        return mysql_error();
     }
-    function delete($id)
-    {
-        $result = mysql_query("delete from options where id= " . $id, dbconnect());
+}
+function delete($id)
+{
+    $result = mysql_query("delete from options where id= " . $id, dbconnect());
 
-        if ($result &&  mysql_affected_rows() > 0) {
-            return true;
-        } else {
-            return mysql_error();
-        }
+    if ($result &&  mysql_affected_rows() > 0) {
+        return true;
+    } else {
+        return mysql_error();
     }
+}
 
-    function deletebyQuestion($question_id)
-    {
-        $result = mysql_query("delete from options where question_id= " . $question_id, dbconnect());
+function deletebyQuestion($question_id)
+{
+    $result = mysql_query("delete from options where question_id= " . $question_id, dbconnect());
 
-        if ($result &&  mysql_affected_rows() > 0) {
-            return true;
-        } else {
-            return mysql_error();
-        }
+    if ($result &&  mysql_affected_rows() > 0) {
+        return true;
+    } else {
+        return mysql_error();
     }
 }

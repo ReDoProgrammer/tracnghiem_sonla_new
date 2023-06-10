@@ -16,10 +16,9 @@ function Summary(id,candidate) {
         type: 'get',
         data: { id,candidate },
         success: function (data) {
-            console.log(data);
             if (data.statusCode == 200) {
                 let exam = data.content;
-                $('.exTitle').text(exam.title);
+                $('.exTitle').html(`[<span class="text-danger">${exam.exam_code}</span>] - <span class="text-info">${exam.title}</span>`);
                 $('#exChoosed').text(exam.choosed);
                 $('#exTotalQuestions').text(exam.total_questions);
                 $('#exSpentDuration').text(formatDuration(exam.spent_duration));
@@ -51,13 +50,7 @@ function Pagination(id) {
 
                     let question = `<div class="test" id="${q.id}">
                     <p class="question-info">
-                        <b>Câu hỏi số ${idx < 10 ? '0' + idx : idx}</b>
-                        <span class="level-question level-7">Trắc Nghiệm</span>
-                        <a class="fr btn-feedback btn-onclick report" data-question_id="${q.id}">
-                            <img class="not-hover" src="assets/images/icons/icon-feedback.png">
-                            <img class="hover" src="assets/images/icons/icon-feedback_hover.png">
-                            <span>Báo lỗi</span>
-                        </a>
+                        <b>Câu hỏi số ${idx < 10 ? '0' + idx : idx}</b>                        
                     </p>
                     <div class="question fw-bold text-info" id="${q.id}">${q.title}</div>`
                     $('#showQuestions').append(question);
@@ -98,7 +91,7 @@ function getOptions(inputs) {
                     if (q.option_id == 0) {
                         option += `<p>
                                         <i class="fa fa-times color-red" style="margin-right: 10px;margin-left: 5px;"></i> 
-                                        <b class="color-red">Bạn chưa chọn đáp án</b> 
+                                        <b class="color-red">Thí sinh không chọn đáp án</b> 
                                     </p>`
                     } else
                         if (q.option_id != q.question_answer) {
@@ -107,18 +100,7 @@ function getOptions(inputs) {
                                         <b class="color-red">Sai</b> 
                                     </p>`;
                         }
-                    option += `<div class="reporth">
-                                    <a class="analyzes" href="javascript:void(0);" data-question_id="2352"
-                                        data-token="13bdccb3991a756cf88d9a5ea72b56ea" data-login=""> Xem lời
-                                        giải</a> -
-                                    <a class="comment" href="javascript:void(0);" data-question_id="2352"
-                                        data-token="13bdccb3991a756cf88d9a5ea72b56ea"><i
-                                            class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> Bình luận (<span
-                                            id="getcomment-2352">0</span>)</a>
-                                </div>
-                                <div id="analyzesList-2352" class="commentbox hide"></div>
-                                <div id="commentList-2352" class="commentbox hide"> </div>
-                                </div>`;
+                   
                     $(`.test#${q.id}`).append(option);
                 }
             }
