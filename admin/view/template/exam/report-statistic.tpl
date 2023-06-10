@@ -46,7 +46,7 @@
                                 <div id="result" class="table-responsive"
                                     style="display:block; height:370px; overflow-y:scroll;">
                                     <table class="table table-bordered table-striped table-hover"
-                                        style="margin-bottom: 0;">
+                                        style="margin-bottom: 0;" id="tableData">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">
@@ -128,9 +128,22 @@
     </section>
 </div>
 <?php include('view/template/common/footer.tpl'); ?>
+<script src="assets/dist/js/xlsx.full.min.js"></script>
+<script src="assets/dist/js/jquery.table2excel.min.js"></script>
 <script src="assets/js/customize/exam/js-list.js"></script>
 <script src="assets/js/customize/workplace/js-provinces-workplaces.js"></script>
 <script src="assets/js/customize/exam/js-report.js"></script>
+
+<style>
+  table {
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+</style>
 
 
 

@@ -9,7 +9,7 @@ $(function () {
         LoadData();
     });
 
-    $("#ckbMax").change(function() {
+    $("#ckbMax").change(function () {
         $('#btnSearch').click();
     });
 })
@@ -17,6 +17,17 @@ $(function () {
 $('#btnSearch').click(function () {
     page = 1;
     LoadData();
+})
+
+$('#btnExportExcel').click(function () {
+    $("#tableData").table2excel({
+        name: "Sheet1",
+        filename: "data",
+        fileext: ".xlsx",
+        exclude_rows: false,
+        exclude_cols: false,
+        preserveColors: false
+      });
 })
 
 function LoadData() {
