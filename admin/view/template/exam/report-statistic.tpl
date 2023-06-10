@@ -16,18 +16,26 @@
             <div class="col-sm-12">
                 <div class="box box-warning">
                     <div class="box-body">
-                        <div class="row">                            
+                        <div class="row">   
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-right" style="margin-top:5px">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="ckbMax" name="ckbMax" checked>
+                                <label class="form-check-label">Chỉ lấy bài thi điểm cao nhất</label>
+                            </div>
+                        </div>                         
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:5px">
                                 <div class="input-group input-group-sm">                                    
                                     <select class="selectpicker" id="slExams" data-live-search="true" multiple></select>
                                     <select class="selectpicker" id="slUnits" data-live-search="true" multiple></select>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info btn-flat" id="btnSearch">
+                                    <span class="input-group-btn">   
+                                        <button class="btn btn-warning btn-flat" id="btnSearch">
                                             <i class="fa fa-search" aria-hidden="true"></i>
-                                            Tìm Kiếm!
+                                            Load
                                         </button>
-                                        <button class="btn btn-primary bg-primary btn-flat btn-margin ml-2" id="btnAddNew"><i
-                                                class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Thêm mới</button>
+                                        <button class="btn btn-info bg-info btn-flat btn-margin ml-2" id="btnExportExcel">
+                                            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                            Xuất Excel
+                                        </button>
                                     </span>
                                 </div>
                             </div>                           

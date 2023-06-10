@@ -16,7 +16,7 @@ function delete_result($result_id)
     $sql = "SELECT * FROM exam_results WHERE id = '" . $result_id . "'";
     $result = mysql_query($sql, dbconnect());
 
-    
+
 
     if ($result && mysql_num_rows($result) > 0) {
         $fr = mysql_fetch_array($result); //focus row: dòng được chọn
@@ -26,7 +26,7 @@ function delete_result($result_id)
         $sql = "DELETE exam_results, exam_result_details
                 FROM exam_results
                 LEFT JOIN exam_result_details ON exam_results.id = exam_result_details.exam_result_id
-                WHERE exam_results.id = '".$result_id."'";
+                WHERE exam_results.id = '" . $result_id . "'";
 
         $result = mysql_query($sql, dbconnect());
 
@@ -158,8 +158,8 @@ function History($page, $search, $pageSize, $workplaces, $exams)
                     OR m.email LIKE '%" . $search . "%'
                     OR wp.name LIKE '%" . $search . "%'
                     OR j.name LIKE '%" . $search . "%') ";
-          
-                    
+
+
     if ($workplaces) {
         $sql .= " AND wp.id IN (";
         for ($i = 0; $i < count($workplaces); $i++) {
@@ -177,13 +177,12 @@ function History($page, $search, $pageSize, $workplaces, $exams)
     $sql .= " GROUP BY m.id,er.id";
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
-    $result = mysql_query($sql, dbconnect());
- 
-    $totalRows = mysql_num_rows($result);
-    $pages = $totalRows%$pageSize == 0? $totalRows/$pageSize:floor($totalRows / $pageSize) + 1;
+    $pages = 1;
+    if (strcmp($pageSize, "All")!=0) {
+        $result = mysql_query($sql, dbconnect());
 
-   
-    if ($pageSize != "All") {
+        $totalRows = mysql_num_rows($result);
+        $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
         $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
     }
 
@@ -211,16 +210,85 @@ function History($page, $search, $pageSize, $workplaces, $exams)
 
     return $msg;
 }
-function LoadResultByExamsAndWorkplaces($exam, $workplaces)
+function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $max)
 {
-    $sql = "
-        SELECT m.id,m.fullname,
-        HAVING COUNT(CASE WHEN ed.question_answer = ed.option_id THEN 1 END)
-        FROM members m
-        INNER JOIN exam_results er ON er.member_id = m.id
-        INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id 
-        INNER JOIN exams e ON er.exam_id = e.id
-    ";
+
+    $sql = "SELECT m.id AS candidate,er.id AS result_id,m.username,m.fullname,
+                CASE 
+                    WHEN m.gender = 1 THEN 'Nam'
+                    WHEN m.gender = 0 THEN 'Nữ'
+                    ELSE 'Khác'
+                END AS gender,
+                m.get_birthdate,DATE_FORMAT( m.get_birthdate,'%d/%m/%Y') AS birthdate,
+                m.phone,m.email,
+                m.get_job,j.name AS job,
+                m.get_workplace,wp.name AS workplace,
+                m.get_position,p.name AS position,
+                e.title AS exam,
+                er.times,
+                (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question) AS mark ,
+                COUNT(erd.question_id)*e.mark_per_question AS total_marks,
+                DATE_FORMAT(er.started_at,'%d/%m/%Y %T') AS exam_date,
+                er.spent_duration 
+            FROM members m
+            LEFT JOIN jobs j ON m.job_id = j.id
+            LEFT JOIN workplaces wp ON m.workplace_id = wp.id
+            LEFT JOIN positions p ON m.position_id = p.id
+            JOIN exam_results er ON er.member_id = m.id
+            JOIN exam_result_details erd ON erd.exam_result_id = er.id 
+            JOIN exams e ON er.exam_id = e.id 
+            WHERE 1 = 1";
+    if ($workplaces) {
+        $sql .= " AND wp.id IN (";
+        for ($i = 0; $i < count($workplaces); $i++) {
+            $sql .= $i < count($workplaces) - 1 ? $workplaces[$i] . "," : $workplaces[$i];
+        }
+        $sql .= ")";
+    }
+    if ($exams) {
+        $sql .= " AND e.id IN (";
+        for ($i = 0; $i < count($exams); $i++) {
+            $sql .= $i < count($exams) - 1 ? $exams[$i] . "," : $exams[$i];
+        }
+        $sql .= ")";
+    }
+    $sql .= " GROUP BY m.id,er.id";
+
+    //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+    $pages = 1;
+    if (strcmp($pageSize, "All")!=0) {
+        $result = mysql_query($sql, dbconnect());
+
+        $totalRows = mysql_num_rows($result);
+        $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+        $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
+    }
+
+
+
+    $result = mysql_query($sql, dbconnect());
+
+    $msg = new Message();
+    if ($result) {
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+
+
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->title = "Lấy danh sách lịch sử thi thành công!";
+        $msg->content = $arr;
+        $msg->pages = $pages;
+    } else {
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Load lịch sử thi thất bại!";
+        $msg->content = mysql_error();
+    }
+
+    return $msg;
 }
 function all()
 {
