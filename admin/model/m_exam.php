@@ -42,6 +42,7 @@ function exResultSummary($result_id,$candidate)
 {
     $sql = "SELECT 
             er.id, e.exam_code, e.title, e.duration,e.mark_per_question,
+            m.username,m.fullname,m.phone,m.email,m.avatar,er.times,
             COUNT(CASE WHEN erd.question_answer = erd.option_id THEN 1 END) AS correct,
             COUNT(CASE WHEN erd.question_answer != erd.option_id AND erd.option_id !=0 THEN 1 END) AS wrong,
             COUNT(CASE WHEN erd.option_id = 0 THEN 1 END) AS unchoosed,
@@ -51,6 +52,7 @@ function exResultSummary($result_id,$candidate)
             DATE_FORMAT(er.created_at, '%d/%m/%Y %H:%i') AS exam_date
             FROM exams e
             INNER JOIN exam_results er ON er.exam_id = e.id
+            INNER JOIN members m ON er.member_id = m.id
             INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id
             WHERE er.member_id = '" . $candidate . "'
             AND er.id = '" . $result_id . "'

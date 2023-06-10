@@ -3,41 +3,46 @@
     font-weight: 300;
     font-size: 14px !important;
 }
-table.table th, table.table td
-{
+
+table.table th,
+table.table td {
     vertical-align: middle !important;
 }
-.field-validation-error
-{
+
+.field-validation-error {
     color: #ff0000;
 }
-.field-validation-valid
-{
+
+.field-validation-valid {
     display: none;
 }
-.input-validation-error
-{
+
+.input-validation-error {
     border: 1px solid #ff0000 !important;
     background-color: #ffeeee !important;
 }
 
-.validation-summary-errors
-{
+.validation-summary-errors {
     font-weight: bold;
     color: #ff0000;
 }
-.validation-summary-valid
-{
+
+.validation-summary-valid {
     display: none;
 }
-.alert-link
-{
+
+.alert-link {
     color: #843534 !important;
 }
 
-.mt-5{
-    margin-top:5px !important;
- }
- .ml-2{
-    margin-left:2px !important;
- }
+.mt-5 {
+    margin-top: 5px !important;
+}
+
+.mt-3 {
+    margin-top: 3px !important;
+}
+
+.ml-2 {
+    margin-left: 2px !important;
+}

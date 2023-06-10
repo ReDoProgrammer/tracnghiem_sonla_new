@@ -27,6 +27,17 @@ function Summary(id,candidate) {
                 $('#exWrong').text(exam.wrong);
                 $('#exUnchoosed').text(exam.unchoosed);
                 $('#exMarks').text(`${exam.correct * exam.mark_per_question}/${exam.mark_per_question * exam.total_questions}`);
+
+                
+                $('.member_username').text(exam.username);
+                $('.member_fullname').text(exam.fullname);
+                $('.member_phone').text(exam.phone);
+                $('.member_email').text(exam.email);
+                $('.exam_times').text(exam.times);
+                if(exam.avatar.trim().length>0){
+                    $('.member_avatar').attr('src',exam.avatar);
+                    $('.member_avatar').attr('alt',exam.fullname);
+                }
             }
 
         }
