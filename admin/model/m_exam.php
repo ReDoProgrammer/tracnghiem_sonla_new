@@ -8,6 +8,56 @@
 
 include_once('m_db.php');
 include('classes/m_message.php');
+
+function delete_result($result_id)
+{
+    $msg = new Message();
+    //B1: kiểm tra tồn tại của kết quả bài thi
+    $sql = "SELECT * FROM exam_results WHERE id = '" . $result_id . "'";
+    $result = mysql_query($sql, dbconnect());
+    if ($result && mysql_num_rows($result) > 0) {
+        $fr = mysql_fetch_array($result); //focus row: dòng được chọn
+
+        //B2: Xóa kết quả bài thi được chọn trong 2 bảng: exam_results và exam_result_details
+        $sql = "DELETE exam_results, exam_result_details
+                FROM exam_results
+                LEFT JOIN exam_result_details ON exam_results.id = exam_result_details.exam_result_id
+                WHERE exam_results.id = '".$result_id."'";
+
+        $result = mysql_query($sql, dbconnect());
+
+        if ($result && mysql_affected_rows() > 0) {
+            //B3: Cập nhật lại chỉ số lần thi cho các kết quả khác của bài thi tương ứng
+            $sql = "UPDATE exam_results 
+                    SET times = times -1    
+                    WHERE exam_id = '" . $result . "'
+                    AND times > '" . $fr['times'] . "'
+                    ";
+            $result = mysql_query($sql, dbconnect());
+            if ($result) {
+                $msg->icon = "success";
+                $msg->statusCode = 200;
+                $msg->title = "Xóa kết quả bài thi thành công!";
+            } else {
+                $msg->icon = "error";
+                $msg->statusCode = 500;
+                $msg->title = "Cập nhật lần thi thất bại";
+                $msg->content = mysql_error();
+            }
+        } else {
+            $msg->icon = "error";
+            $msg->statusCode = 500;
+            $msg->title = "Xóa kết quả bài thi thất bại";
+            $msg->content = mysql_error();
+        }
+    } else {
+        $msg->icon = "error";
+        $msg->title = "Không tìm thấy kết quả bài thi phù hợp";
+        $msg->statusCode = 404;
+    }
+
+    return $msg;
+}
 function exResultPagination($id)
 {
     $sql = "SELECT q.id,q.title,erd.question_answer,erd.option_id
@@ -31,14 +81,14 @@ function exResultPagination($id)
         $msg->icon = "error";
         $msg->statusCode = 500;
         $msg->title = "Lấy thông tin phân trang thất bại!";
-        $msg->content = "Lỗi: ".mysql_error();
+        $msg->content = "Lỗi: " . mysql_error();
     }
     return $msg;
 }
 
 
 //hàm lấy thông tin tổng quan của 1 bài thi cụ thể
-function exResultSummary($result_id,$candidate)
+function exResultSummary($result_id, $candidate)
 {
     $sql = "SELECT 
             er.id, e.exam_code, e.title, e.duration,e.mark_per_question,
@@ -118,8 +168,11 @@ function History($page, $search, $pageSize, $workplaces, $exams)
         }
         $sql .= ")";
     }
-    $sql .= " GROUP BY m.id,er.id
-    LIMIT " . ($page - 1) * $page . "," . $pageSize . "";
+    $sql .= " GROUP BY m.id,er.id";
+    if ($pageSize != "All") {
+        $sql .= " LIMIT " . ($page - 1) * $page . "," . $pageSize . "";
+    }
+
 
     $result = mysql_query($sql, dbconnect());
     $msg = new Message();
