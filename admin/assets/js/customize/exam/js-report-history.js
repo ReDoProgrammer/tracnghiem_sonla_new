@@ -36,6 +36,11 @@ $(function () {
             }
         })
     })
+    $("#pagination").on("click", "li a", function (event) {
+        event.preventDefault();
+        page = $(this).text();
+        LoadHistory();
+    });
 })
 
 $('#btnSearch').click(function () {
@@ -49,13 +54,14 @@ function LoadHistory() {
         type: 'get',
         data: {
             page,
-            pageSize: $('#slPageSize option:selected').text(),
+            pageSize,
             search: $('#txtSearch').val(),
             exams: $('#slExams').selectpicker('val'),
             workplaces: $('#slUnits').selectpicker('val')
         },
         success: function (data) {
             $('#tblData').empty();
+            console.log(data);
             if (data.statusCode == 200) {
                 let idx = pageSize != 'All' ? (page - 1) * pageSize : 0;
                 data.content.forEach(t => {
@@ -82,6 +88,14 @@ function LoadHistory() {
                     </tr>`;
                     $('#tblData').append(tr);
                 })
+
+                $('#pagination').empty();
+                if (data.pages > 1) {
+                    for (i = 1; i <= data.pages; i++) {
+                        $('#pagination').append(`<li class="${page == i ? 'active' : ''}"><a href="#">${i}</a></li>`);
+                    }
+                }
+
             }
         }
     })
@@ -90,7 +104,7 @@ function LoadHistory() {
 function formatDuration(duration) {
     let minutes = Math.floor(duration / 60);
     let seconds = duration % 60;
-    return `${minutes<10?'0'+minutes:minutes}:${seconds<10?'0'+seconds:seconds}`;
+    return `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }
 
 $('#slPageSize').on('change', function () {

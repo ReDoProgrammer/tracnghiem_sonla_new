@@ -158,6 +158,8 @@ function History($page, $search, $pageSize, $workplaces, $exams)
                     OR m.email LIKE '%" . $search . "%'
                     OR wp.name LIKE '%" . $search . "%'
                     OR j.name LIKE '%" . $search . "%') ";
+          
+                    
     if ($workplaces) {
         $sql .= " AND wp.id IN (";
         for ($i = 0; $i < count($workplaces); $i++) {
@@ -173,8 +175,16 @@ function History($page, $search, $pageSize, $workplaces, $exams)
         $sql .= ")";
     }
     $sql .= " GROUP BY m.id,er.id";
+
+    //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+    $result = mysql_query($sql, dbconnect());
+ 
+    $totalRows = mysql_num_rows($result);
+    $pages = $totalRows%$pageSize == 0? $totalRows/$pageSize:floor($totalRows / $pageSize) + 1;
+
+   
     if ($pageSize != "All") {
-        $sql .= " LIMIT " . ($page - 1) * $page . "," . $pageSize . "";
+        $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
     }
 
 
@@ -185,10 +195,13 @@ function History($page, $search, $pageSize, $workplaces, $exams)
         while ($local = mysql_fetch_array($result)) {
             $arr[] = $local;
         }
+
+
         $msg->icon = "success";
         $msg->statusCode = 200;
         $msg->title = "Lấy danh sách lịch sử thi thành công!";
         $msg->content = $arr;
+        $msg->pages = $pages;
     } else {
         $msg->statusCode = 500;
         $msg->icon = "error";
