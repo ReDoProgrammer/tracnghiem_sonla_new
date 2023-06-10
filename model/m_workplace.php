@@ -9,13 +9,12 @@ include('m_db.php');
 include('classes/m_message.php');
 
 
-function retrieve($province_code)
+function retrieve()
 {
 
     $sql = "SELECT 
         w.id,w.name
-    FROM workplaces w
-    WHERE w.province_code = '".$province_code."'  
+    FROM workplaces w   
     ORDER BY w.name ";
 
   

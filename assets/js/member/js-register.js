@@ -6,18 +6,7 @@ var BIRTHDATE = true,
     WORKPLACE = true;
 
 $(function () {
-    ConfigInputs();
-    LoadProvinces();
-    if (ADDRESS) {
-        $('.slProvinces').on('change', function () {
-            LoadDistrictsByPro($(this).val());
-            LoadWorkPlaces($(this).val());
-        })
-
-        $('.slDistricts').on('change', function () {
-            LoadWardsByDist($(this).val())
-        })
-    }
+      
     if (JOB) {
         LoadJobs();
     }
@@ -25,7 +14,7 @@ $(function () {
         LoadPositions();
     }
     if (WORKPLACE) {
-        LoadWorkPlaces($('.slProvinces option:selected').val());
+        LoadWorkPlaces();
     }
 
 
@@ -106,20 +95,20 @@ $(function () {
             }
 
         }
-    })
+    })  
 
 })
 
 
 $('.btnSubmitRegister').click(function () {
-    let fullname = $('input[name=txtFullname1]').val().trim();   
+    let fullname = $('input[name=txtFullname1]').val().trim();
     let username = $('input[name=txtUsername]').val().trim();
     let password = $('.txtPassword').val().trim();
     let confirm_password = $('.txtConfirmPassword').val().trim();
     let email = $('.txtEmail').val().trim();
     let phone = $('.txtPhone').val().trim();
-    console.log({fullname,username,password,confirm_password,email,phone});
-    return;
+    console.log({ fullname, username, password, confirm_password, email, phone });
+
 
     let gender = GENDER ? $('.rbtN').is(':checked') ? -1 : $('.rbtM').is(':checked') ? 1 : 0 : -1;
     let birthdate = BIRTHDATE ? $('.txtBirthdate').val() : '';
@@ -222,14 +211,14 @@ $('.btnSubmitRegister').click(function () {
         processData: false,
         contentType: false,
         success: function (msg) {
-        
+
             Swal.fire({
-                icon:msg.icon,
+                icon: msg.icon,
                 title: msg.title,
                 showDenyButton: false,
                 showCancelButton: false,
                 confirmButtonText: 'OK!'
-                
+
             }).then(async (result) => {
                 let ip_address = '';
                 await $.getJSON('https://api.ipify.org?format=json', function (data) {
@@ -239,15 +228,16 @@ $('.btnSubmitRegister').click(function () {
                 $.ajax({
                     url: 'controller/member/login.php',
                     type: 'post',
-                    data: { 
-                        username_or_email:username, 
-                        login_password:password,
-                        ip_address },
+                    data: {
+                        username_or_email: username,
+                        login_password: password,
+                        ip_address
+                    },
                     success: function (data) {
                         console.log(data)
-                        if (data.statusCode == 200) {                           
+                        if (data.statusCode == 200) {
                             window.location.href = "index.php?module=home&act=index";
-                        } 
+                        }
                     },
                     error: function (jqXHR, exception) {
                         console.log(jqXHR)
@@ -297,14 +287,7 @@ function ConfigInputs() {
         data: { mod: 'MEMBER', fnc: 'REGISTER' },
         success: function (data) {
             if (data.statusCode == 200) {
-                let cfigs = data.content;
-                BIRTHDATE = cfigs.filter(x => x.cf_key == 'GET_BIRTHDATE')[0].cf_value == 1;
-                GENDER = cfigs.filter(x => x.cf_key == 'GET_GENDER')[0].cf_value == 1;
-                ADDRESS = cfigs.filter(x => x.cf_key == 'GET_ADDRESS')[0].cf_value == 1;
-                JOB = cfigs.filter(x => x.cf_key == 'GET_JOB')[0].cf_value == 1;
-                POSITION = cfigs.filter(x => x.cf_key == 'GET_POSITION')[0].cf_value == 1;
-                WORKPLACE = cfigs.filter(x => x.cf_key == 'GET_WORKPLACE')[0].cf_value == 1;
-                let arr = ['BIRTHDATE', 'GENDER', 'ADDRESS', 'JOB', 'POSITION', 'WORKPLACE'];
+                
                 SetVisible(cfigs, arr);
             }
         }
@@ -370,66 +353,14 @@ function LoadJobs() {
     })
 }
 
-function LoadProvinces() {
-    $.ajax({
-        url: 'controller/location/provinces.php',
-        type: 'get',
-        success: function (provinces) {
-            let default_pro = -1;
-            provinces.forEach(p => {
-                if (p.default_pro == 1) {
-                    default_pro = p.code;
-                }
-                $('.slProvinces').append(`<option value="${p.code}">${p.full_name}</option>`);
-            })
-            $(`.slProvinces option[value=${default_pro}]`).attr('selected', 'selected');
-            if (ADDRESS) {
-                $(`.slProvinces`).trigger('change');
-            }
 
-        }
-    })
-}
-
-function LoadDistrictsByPro(province_code) {
-    $.ajax({
-        url: 'controller/location/districts.php',
-        type: 'get',
-        data: { province_code },
-        success: function (districts) {
-            $('.slDistricts').empty();
-            districts.forEach(d => {
-                $('.slDistricts').append(`<option value="${d.code}">${d.full_name}</option>`);
-            })
-            $(`.slDistricts`).selectpicker('refresh');
-            $(`.slDistricts`).trigger('change');
-        }
-    })
-}
-
-function LoadWardsByDist(district_code) {
-    $.ajax({
-        url: 'controller/location/wards.php',
-        type: 'get',
-        data: { district_code },
-        success: function (wards) {
-            $('.slWards').empty();
-            wards.forEach(w => {
-                $('.slWards').append(`<option value="${w.code}">${w.full_name}</option>`);
-            })
-            $(`.slWards`).selectpicker('refresh');
-            $(`.slWards`).trigger('change');
-        }
-    })
-}
-
-function LoadWorkPlaces(province_code) {
+function LoadWorkPlaces() {
     $.ajax({
         url: 'controller/workplace/list.php',
         type: 'get',
-        data: { province_code },
         success: function (data) {
             $('.slWorkPlaces').empty();
+            console.log(data)
             if (data.statusCode == 200) {
                 let wps = data.content;
                 wps.forEach(w => {
@@ -457,13 +388,3 @@ function formatDate(date) {
     return `${d[2]}-${d[1]}-${d[0]}`;
 }
 
-function SetVisible(cfs, arr) {
-    arr.forEach(el => {
-        let cf = cfs.filter(x => x.cf_key == `GET_${el.toUpperCase()}`);
-        if (cf.length > 0) {
-            if (cf[0].cf_value == 0) {
-                $(`div.${el}`).hide();
-            }
-        }
-    })
-}
