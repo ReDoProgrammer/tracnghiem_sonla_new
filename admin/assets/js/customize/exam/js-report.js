@@ -8,6 +8,10 @@ $(function () {
         page = $(this).text();
         LoadData();
     });
+
+    $("#ckbMax").change(function() {
+        $('#btnSearch').click();
+    });
 })
 
 $('#btnSearch').click(function () {
@@ -28,7 +32,6 @@ function LoadData() {
             max: $('#ckbMax').is(':checked') ? 1 : 0
         },
         success: function (data) {
-            console.log(data);
             if (data.statusCode == 200) {
                 let idx = pageSize != 'All' ? (page - 1) * pageSize : 0;
                 $('#tblData').empty();

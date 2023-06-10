@@ -252,7 +252,12 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
         }
         $sql .= ")";
     }
-    $sql .= " GROUP BY m.id,er.id";
+    if($max == 1){
+        $sql.= " GROUP BY m.id,e.id ORDER BY total_marks DESC";
+    }else{        
+        $sql .= " GROUP BY m.id,er.id";
+    }
+    
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
