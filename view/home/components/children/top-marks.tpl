@@ -4,7 +4,7 @@
             <div class="headline">
                 <div class="panel-title">
                     <span class="text-uppercase">
-                        Top điểm cao nhất
+                        Top 10 điểm cao nhất
                     </span>
                 </div>
             </div>
