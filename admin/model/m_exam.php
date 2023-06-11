@@ -393,22 +393,53 @@ function retrieve($page, $search, $pageSize)
         e.random_questions,
         e.is_hot,
         e.regulation,
-        e.random_options
+        e.random_options,
+        CASE
+            WHEN `begin` < CURRENT_TIMESTAMP( )
+            AND `end` < CURRENT_TIMESTAMP( )
+            THEN 1
+            WHEN `begin` < CURRENT_TIMESTAMP( )
+            AND `end` > CURRENT_TIMESTAMP( )
+            THEN 0
+            ELSE -1
+        END AS exam_status
     FROM exams e
     WHERE e.title like '%" . $search . "%'
     OR e.description like '%" . $search . "%'       
-    ORDER BY e.is_hot DESC, e.begin DESC";
+    ORDER BY e.is_hot DESC, exam_status ";
 
-    // nếu kích thước trang truyền vào không phải là all (tất cả)
-    if ($pageSize != "All") {
-        $sql .= " LIMIT " . $pageSize . " OFFSET " . ($page - 1) * $pageSize;
-    }
+     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+     $pages = 1;
+     if (strcmp($pageSize, "All")!=0) {
+         $result = mysql_query($sql, dbconnect());
+ 
+         $totalRows = mysql_num_rows($result);
+         $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+         $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
+     }
+
+
     $local_list = mysql_query($sql, dbconnect());
-    $result = array();
-    while ($local = mysql_fetch_array($local_list)) {
-        $result[] = $local;
+
+    $msg = new Message();
+    if($local_list){
+        $arr = array();
+        while ($local = mysql_fetch_array($local_list)) {
+            $arr[] = $local;
+        }
+        $msg->title = "Load danh sách bài thi thành công!";
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->content = $arr;
+        $msg->pages =$pages;
+    }else{
+        $msg->title = "Load danh sách bài thi thất bại!";
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
     }
-    return $result;
+    return $msg;
+    
 }
 
 

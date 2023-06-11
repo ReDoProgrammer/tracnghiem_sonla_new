@@ -5,8 +5,7 @@ var examId = 0;
 var number_of_questions = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
 $(document).ready(function () {
-    LoadData();
-    pageSize = $('#slPageSize option:selected').text();
+    LoadData();    
 })
 
 function ConfigExam(id) {
@@ -73,9 +72,11 @@ function LoadData() {
         url: 'controller/exam/list.php',
         type: 'get',
         data: { page, search, pageSize },
-        success: function (exams) {
+        success: function (data) {
+            console.log(data);
             $('#tblData').empty();
-            index = pageSize == 'All' ? 1 : (page - 1) * pageSize;
+            index = pageSize == 'All' ? 0 : (page - 1) * pageSize;
+            exams = data.content;
             exams.forEach(e => {
                 let tr = `<tr id = "${e.id}" style="${e.is_hot == 1 ? 'background:#E8560D; color:white; font-weight:bold;' : ''}">`;
                 tr += `<td class="text-center" style="width: 2%;"> ${++index} </td>`;
@@ -90,13 +91,13 @@ function LoadData() {
                 tr += `<td class="text-right">${e.end}</td>`;
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" onClick="ChangeHotExam(${e.id},${e.is_hot})" ${e.is_hot == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.exam_status == 1?'disabled':''} onClick="ChangeHotExam(${e.id},${e.is_hot})" ${e.is_hot == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == 1?'disabled':''} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
@@ -109,34 +110,17 @@ function LoadData() {
                 tr += `</tr>`;
                 $('#tblData').append(tr);
             })
-            Pagination();
-        }
-    })
-}
 
-function Pagination() {
-    $.ajax({
-        url: 'controller/exam/pagination.php',
-        type: 'get',
-        data: { search, pageSize },
-        success: function (pages) {
             $('#pagination').empty();
-            if (pages <= 1) {
-                $('#pagination').hide();
-            } else {
-                $('#pagination').show();
-                for (i = 1; i <= pages; i++) {
-                    if (page == i) {
-                        $('#pagination').append(`<li class="active"><a href="#">${i}</a></li>`);
-                    } else {
-                        $('#pagination').append(`<li><a href="#">${i}</a></li>`);
-                    }
+            if(data.pages>1){
+                for (i = 1; i <= data.pages; i++) {                  
+                    $('#pagination').append(`<li class="${i==page?'active':''}"><a href="#">${i}</a></li>`);
                 }
-
             }
         }
     })
 }
+
 
 
 function SetComponents(isReadOnly) {

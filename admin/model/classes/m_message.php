@@ -5,5 +5,5 @@ class Message
     public $title;
     public $icon;
     public $content;
-    public $pages;
+    public $pages = 1;
 }
