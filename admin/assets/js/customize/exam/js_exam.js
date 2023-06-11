@@ -87,6 +87,10 @@ function LoadData() {
 
                 tr += `<td class="text-right">${e.begin}</td>`;
                 tr += `<td class="text-right">${e.end}</td>`;
+                tr+= `<td class="text-center fw-bold">`;
+                tr+= `${e.exam_status ==-1?'<span class="text-warning">Chưa diễn ra</span>':
+                        e.exam_status == 0?'<span class="text-info">Đang diễn ra</span>':'<span class="text-danger">Đã kết thúc</span>'}`;
+                tr+= `</td>`;
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
                             <input type="checkbox" ${e.exam_status == 1?'disabled':''} onClick="ChangeHotExam(${e.id},${e.is_hot})" ${e.is_hot == 1 ? 'checked' : ''}></label>
@@ -95,15 +99,15 @@ function LoadData() {
 
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == 1?'disabled':''} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == -1?'':'disabled'} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center" style="white-space:nowrap; width: 10%;">`;
                 tr += `<button onClick = "ConfigExam(${e.id})" ><i class="fa fa-cog text-warning" aria-hidden="true"></i></button>`;
                 tr += ` <button name="btnDetail"><i class="fa fa-info-circle" aria-hidden="true" style="color: green;"></i></button> `;
-                tr += ` <button name="btnEdit"><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
-                tr += ` <button name = "btnDelete"><i class="fa fa-trash-o" style="color: red;"></i></button> `;
+                tr += ` <button name="btnEdit" ${e.exam_status == -1?'':'disabled'}><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
+                tr += ` <button name = "btnDelete" ${e.exam_status!=-1?'disabled':''}><i class="fa fa-trash-o" style="color: red;"></i></button> `;
                 tr += `</td>`;
                 tr += `</tr>`;
                 $('#tblData').append(tr);

@@ -72,10 +72,13 @@
                                                 </th>
                                                 <th class="text-center">
                                                     Bắt đầu
-                                                </th>
+                                                </th>                                               
                                                 <th class="text-center">
                                                     Kết thúc
-                                                </th>                                               
+                                                </th> 
+                                                 <th class="text-center">
+                                                    Trạng thái
+                                                </th>                                              
                                                 <th class="text-center">
                                                    Tiêu điểm
                                                 </th>
