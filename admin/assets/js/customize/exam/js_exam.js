@@ -5,22 +5,60 @@ var examId = 0;
 var number_of_questions = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
 $(document).ready(function () {
-    LoadData();    
+    LoadData();
 })
 
-function ConfigExam(id) {
-    examId = id;
+function DeleteExam(id) {
+    Swal.fire({
+        title: 'Bạn có chắc muốn xóa bài thi này?',
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: 'Xác nhận xóa',
+        cancelButtonText: `Để tôi suy nghĩ lại`,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'controller/exam/delete.php',
+                type: 'post',
+                data: { id },
+                success: function (data) {
+                    if (data.statusCode == 200) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: data.icon,
+                            title: data.title,
+                            showConfirmButton: false,
+                            timer: 200
+                        })
+                        LoadData();
+                    }
+                }
+            })
+        }
+    })
+}
+
+function ConfigExam(id,exam_status) {
+    if(exam_status==-1){
+        $('#btnSaveConfigs').show();
+    }else{
+        $('#btnSaveConfigs').hide();
+    }
     $.ajax({
         url: 'controller/exam/detail.php',
         type: 'get',
         data: { id },
-        success: function (exam) {
-            number_of_questions = exam.number_of_questions;
-            $('#totalQuestions').text(number_of_questions);
-            $('#txtNumberBasedTotal').val(number_of_questions);
-            $('#modalConfigExam').modal();
-            LoadTopics()
-            // LoadConfigs(id);
+        success: function (data) {
+            if(data.statusCode == 200){
+                let exam = data.content;
+                let configs = JSON.parse(exam.exam_configs)
+                $('#totalQuestions').text(exam.number_of_questions);
+                $('#txtNumberBasedTotal').val(exam.number_of_questions);
+                $('#modalConfigExam').modal();
+                LoadTopics(configs);
+            }
+           
         }
     })
 }
@@ -87,36 +125,36 @@ function LoadData() {
 
                 tr += `<td class="text-right">${e.begin}</td>`;
                 tr += `<td class="text-right">${e.end}</td>`;
-                tr+= `<td class="text-center fw-bold">`;
-                tr+= `${e.exam_status ==-1?'<span class="text-warning">Chưa diễn ra</span>':
-                        e.exam_status == 0?'<span class="text-info">Đang diễn ra</span>':'<span class="text-danger">Đã kết thúc</span>'}`;
-                tr+= `</td>`;
+                tr += `<td class="text-center fw-bold">`;
+                tr += `${e.exam_status == -1 ? '<span class="text-warning">Chưa diễn ra</span>' :
+                    e.exam_status == 0 ? '<span class="text-info">Đang diễn ra</span>' : '<span class="text-danger">Đã kết thúc</span>'}`;
+                tr += `</td>`;
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.exam_status == 1?'disabled':''} onClick="ChangeHotExam(${e.id},${e.is_hot})" ${e.is_hot == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.exam_status == 1 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id},${e.is_hot})" ${e.is_hot == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == -1?'':'disabled'} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == -1 ? '' : 'disabled'} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center" style="white-space:nowrap; width: 10%;">`;
-                tr += `<button onClick = "ConfigExam(${e.id})" ><i class="fa fa-cog text-warning" aria-hidden="true"></i></button>`;
+                tr += `<button onClick = "ConfigExam(${e.id},${e.exam_status})" ><i class="fa fa-cog text-warning" aria-hidden="true"></i></button>`;
                 tr += ` <button name="btnDetail"><i class="fa fa-info-circle" aria-hidden="true" style="color: green;"></i></button> `;
-                tr += ` <button name="btnEdit" ${e.exam_status == -1?'':'disabled'}><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
-                tr += ` <button name = "btnDelete" ${e.exam_status!=-1?'disabled':''}><i class="fa fa-trash-o" style="color: red;"></i></button> `;
+                tr += ` <button name="btnEdit" ${e.exam_status == -1 ? '' : 'disabled'}><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
+                tr += ` <button name = "btnDelete" ${e.exam_status != -1 ? 'disabled' : ''} onClick="DeleteExam(${e.id})"><i class="fa fa-trash-o" style="color: red;"></i></button> `;
                 tr += `</td>`;
                 tr += `</tr>`;
                 $('#tblData').append(tr);
             })
 
             $('#pagination').empty();
-            if(data.pages>1){
-                for (i = 1; i <= data.pages; i++) {                  
-                    $('#pagination').append(`<li class="${i==page?'active':''}"><a href="#">${i}</a></li>`);
+            if (data.pages > 1) {
+                for (i = 1; i <= data.pages; i++) {
+                    $('#pagination').append(`<li class="${i == page ? 'active' : ''}"><a href="#">${i}</a></li>`);
                 }
             }
         }
@@ -396,7 +434,7 @@ $('#btnSaveConfigs').click(function () {
             let percent = parseFloat($(tr).find("input[name='txtPercent']").val());
             let topic_id = $(this).closest('tr').attr('id');
             totalPercent += percent;
-            configs.push({topic_id,percent});
+            configs.push({ topic_id, percent });
         } catch (err) {
             console.log(err);
             $('#msgErrorConfig').text('Tỉ lệ % không hợp lệ!');
@@ -414,40 +452,37 @@ $('#btnSaveConfigs').click(function () {
 
     //duyệt mảng configs để tiến hành insert vào csdl
     configs.forEach(c => {
-        if (isUpdate) {
-            console.log('update')
-        } else {
-            $.ajax({
-                url: 'controller/exam_config/insert.php',
-                type: 'post',
-                data: { 
-                    exam_id: examId, 
-                    topic_id:c.topic_id, 
-                    percent:c.percent, 
-                    created_by: user },
-                success: function (data) {
-                    if(data.statusCode == 201){
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: data.icon,
-                            title: data.title,
-                            showConfirmButton: false,
-                            timer: 1000
-                        })
-                        $('#modalConfigExam').modal('hide');
-                    }else{
-                        Swal.fire(
-                            data.title,
-                            data.content,
-                            data.icon
-                        )
-                    }
-                },
-                error:function (jqXHR, exception) {
-                    console.log(jqXHR)
+        $.ajax({
+            url: 'controller/exam-config/insert.php',
+            type: 'post',
+            data: {
+                exam_id: examId,
+                topic_id: c.topic_id,
+                percent: c.percent,
+                created_by: user
+            },
+            success: function (data) {
+                if (data.statusCode == 201) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: data.icon,
+                        title: data.title,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    $('#modalConfigExam').modal('hide');
+                } else {
+                    Swal.fire(
+                        data.title,
+                        data.content,
+                        data.icon
+                    )
                 }
-            })
-        }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR)
+            }
+        })
     })
 })
 
@@ -509,52 +544,28 @@ $(document).on('show.bs.modal', '#modalConfigExam', function () {
     Nếu đã có config thì cần dò tìm theo id config và set %
     Ngược lại thì để mặc định, k làm gì hết
 */
-function LoadConfigs(exam_id) {
-    $.ajax({
-        url: 'controller/exam_config/list.php',
-        type: 'get',
-        data: { exam_id },
-        success: function (configs) {
-            let percent = 0;
-            $('#tblConfig').empty();
 
-            if (configs.length > 0) {
-                // configs.forEach(c => {
-                //     percent += parseFloat(c.percent);
-                //     let tr = `<tr id="${c.topic_id}">`;
-                //     tr += `<td style="width: 80%;">`;
-                //     tr += `<label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" checked>${c.topic_name} (${c.count_questions})</label>`
-                //     tr += `</td>`;
-                //     tr += `<td style="width: 20%"><input type="text" class="form-control floatOnly" name="txtPercent" value="${c.percent}"/></td>`
-                //     tr += `</tr>`;
-                //     $('#tblConfig').append(tr);
-                // })
-                // $('#spPercent').text(percent);
-            } else {
-                isUpdate = false;
-                LoadTopics();
-            }
-
-        }
-    })
-}
-
-function LoadTopics() {
+function LoadTopics(configs = null) {
     $.ajax({
         url: 'controller/topic/list-all.php',
         type: 'get',
         success: function (topics) {
             $('#tblConfig').empty();
             topics.forEach(t => {
+                let cf = 0;
+                if(configs!=null){
+                    cf = configs.filter(x=>x.topic_id == t.id)[0].percent;
+                }
+               
                 let tr = `<tr id="${t.id}">`;
                 tr += `<td style="width: 80%;">`;
-                tr += `<label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox">${t.name} (${t.questions_count})</label>`
+                tr += `<label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" ${cf>0?'checked':''}>${t.name} (${t.questions_count})</label>`
                 tr += `</td>`;
-                tr += `<td style="width: 20%"><input type="text" class="form-control floatOnly" name="txtPercent" value="0"/></td>`
+                tr += `<td style="width: 20%"><input type="text" class="form-control floatOnly" name="txtPercent" ${cf>0?'':'readonly'} value="${cf}"/></td>`
                 tr += `</tr>`;
                 $('#tblConfig').append(tr);
             })
-            $('input[name="txtPercent"]').prop("readonly", true);
+            
         }
     })
 }

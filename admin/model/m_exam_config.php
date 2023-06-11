@@ -10,19 +10,30 @@ include_once('classes/m_message.php');
 
 function create($exam_id, $topic_id, $percent, $created_by)
 {
-    $result = mysql_query("INSERT INTO exam_configs(exam_id,topic_id,percent,created_by) 
-    VALUES(" . $exam_id . "," . $topic_id . "," . $percent . "," . $created_by . ")", dbconnect());
+    $sql = "DELETE FROM exam_configs WHERE exam_id = '".$exam_id."' AND topic_id = '".$topic_id."'";
     $msg = new Message();
-    if ($result && mysql_affected_rows()>0) {
-        $msg->statusCode = 201;
-        $msg->title = "Cấu hình đề thi thành công!";
-        $msg->icon = "success";
-    } else {
+    $result = mysql_query($sql,dbconnect());
+    if($result){
+        $result = mysql_query("INSERT INTO exam_configs(exam_id,topic_id,percent,created_by) 
+        VALUES(" . $exam_id . "," . $topic_id . "," . $percent . "," . $created_by . ")", dbconnect());
+       
+        if ($result && mysql_affected_rows()>0) {
+            $msg->statusCode = 201;
+            $msg->title = "Cấu hình đề thi thành công!";
+            $msg->icon = "success";
+        } else {
+            $msg->statusCode = 500;
+            $msg->title = "Cấu hình đề thi thất bại!";
+            $msg->icon = "error";
+            $msg->content = "Lỗi: ".mysql_error();
+        }
+    }else{
         $msg->statusCode = 500;
         $msg->title = "Cấu hình đề thi thất bại!";
         $msg->icon = "error";
         $msg->content = "Lỗi: ".mysql_error();
     }
+   
     return $msg;
 }
 

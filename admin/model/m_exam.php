@@ -448,8 +448,44 @@ function retrieve($page, $search, $pageSize)
 
 function detail($id)
 {
-    $topic = mysql_query("select * FROM exams WHERE id = " . $id, dbconnect());
-    return mysql_fetch_array($topic);
+    $sql ="SELECT 
+                e.id,e.title,e.thumbnail,e.duration,
+                e.number_of_questions,
+                e.mark_per_question,
+                e.times,
+                description,
+                DATE_FORMAT(e.begin, '%d/%m/%Y %H:%i') AS begin,
+                DATE_FORMAT(e.end, '%d/%m/%Y %H:%i') AS end,       
+                e.random_questions,
+                e.random_options,
+                CASE
+                    WHEN `begin` < CURRENT_TIMESTAMP( )
+                    AND `end` < CURRENT_TIMESTAMP( )
+                    THEN 1
+                    WHEN `begin` < CURRENT_TIMESTAMP( )
+                    AND `end` > CURRENT_TIMESTAMP( )
+                    THEN 0
+                    ELSE -1
+                END AS exam_status,
+                CONCAT('[', GROUP_CONCAT(CONCAT('{\"topic_id\":', ef.topic_id, ', \"percent\":', ef.percent, '}')), ']') AS exam_configs
+            FROM exams e
+            LEFT JOIN exam_configs ef ON ef.exam_id = e.id
+            WHERE e.id = '" . $id . "' 
+            GROUP BY e.id ";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+        $msg->title = "Lấy thông tin chi tiết bài thi thành công!";
+        $msg->content =mysql_fetch_array($result);
+    }else{
+        $msg->title = "Lấy thông tin bài thi thất bại!";
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->content = mysql_error();
+    }
+    return $msg;
 }
 
 function create($title, $thumbnail, $description, $duration, $number_of_questions, $mark_per_question, $times, $begin, $end, $random_options, $is_hot, $regulation, $created_by)
@@ -530,18 +566,29 @@ function update($id, $title, $thumbnail, $description, $duration, $number_of_que
 }
 function delete($id)
 {
-    $result = mysql_query("delete from exams where id= " . $id, dbconnect());
+    $result = mysql_query("DELETE FROM exams 
+                            WHERE id= " . $id, dbconnect());
     $msg = new Message();
-    if ($result && mysql_affected_rows() > 0) {
-        $msg->statusCode = 200;
-        $msg->icon = 'success';
-        $msg->title = "Xóa cuộc thi thành công!";
-    } else {
+    if($result && mysql_affected_rows()>0){
+        $sql = "DELETE FROM exam_configs WHERE exam_id = '".$id."'";
+        $result = mysql_query($sql,dbconnect());
+        if($result){
+            $msg->statusCode = 200;
+            $msg->icon = "success";
+            $msg->title = "Xóa bài thi thành công!";
+        }else{
+            $msg->icon = 'error';
+            $msg->title = 'Xóa cấu hình bài thi thất bại!';
+            $msg->content = "Lỗi: " . mysql_error();
+            $msg->statusCode = 500;
+        }
+
+    }else{
         $msg->icon = 'error';
         $msg->title = 'Xóa cuộc thi thất bại';
         $msg->content = "Lỗi: " . mysql_error();
         $msg->statusCode = 500;
-    }
+    }   
     return $msg;
 }
 
