@@ -343,14 +343,16 @@ function change_random_options($id, $random_options)
 }
 
 //hàm thay đổi thuộc tính cuộc thi tiêu điểm
-function change_hot($id, $is_hot)
+function change_hot($id)
 {
     //Cập nhật tất cả các bài thi khác thành không tiêu điểm
-    $result = mysql_query("UPDATE exams SET is_hot = 0 ", dbconnect());
+    $result = mysql_query("UPDATE exams SET is_hot = 0 WHERE id !='".$id."'", dbconnect());
     $msg = new Message();
     if ($result) {
-        $is_hot = $is_hot == 1 ? 0 : 1;
-        $result = mysql_query("UPDATE exams SET is_hot = '" . $is_hot . "' WHERE id= " . $id, dbconnect());
+       
+        $result = mysql_query("UPDATE exams 
+                                SET is_hot = CASE WHEN is_hot = 1 THEN 0 ELSE 1 END 
+                                WHERE id= " . $id, dbconnect());
 
         if ($result && mysql_affected_rows() > 0) {
             $msg->statusCode = 200;

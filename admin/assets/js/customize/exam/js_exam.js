@@ -56,9 +56,8 @@ function ChangeHotExam(id, is_hot) {
     $.ajax({
         url: 'controller/exam/change-hot.php',
         type: 'post',
-        data: { id, is_hot },
+        data: { id },
         success: function (data) {
-            console.log(data);
             if (data.statusCode == 200) {
                 index = (page - 1) * pageSize;
                 LoadData();
@@ -73,7 +72,6 @@ function LoadData() {
         type: 'get',
         data: { page, search, pageSize },
         success: function (data) {
-            console.log(data);
             $('#tblData').empty();
             index = pageSize == 'All' ? 0 : (page - 1) * pageSize;
             exams = data.content;
