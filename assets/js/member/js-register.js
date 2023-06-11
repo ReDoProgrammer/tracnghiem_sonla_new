@@ -95,7 +95,7 @@ $(function () {
             }
 
         }
-    })  
+    })
 
 })
 
@@ -220,29 +220,32 @@ $('.btnSubmitRegister').click(function () {
                 confirmButtonText: 'OK!'
 
             }).then(async (result) => {
+                console.log(result)
                 let ip_address = '';
                 await $.getJSON('https://api.ipify.org?format=json', function (data) {
                     ip_address = data.ip;
                 });
-
-                $.ajax({
-                    url: 'controller/member/login.php',
-                    type: 'post',
-                    data: {
-                        username_or_email: username,
-                        login_password: password,
-                        ip_address
-                    },
-                    success: function (data) {
-                        console.log(data)
-                        if (data.statusCode == 200) {
-                            window.location.href = "index.php?module=home&act=index";
+                if (result.statusCode == 201) {
+                    $.ajax({
+                        url: 'controller/member/login.php',
+                        type: 'post',
+                        data: {
+                            username_or_email: username,
+                            login_password: password,
+                            ip_address
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            if (data.statusCode == 200) {
+                                window.location.href = "index.php?module=home&act=index";
+                            }
+                        },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR)
                         }
-                    },
-                    error: function (jqXHR, exception) {
-                        console.log(jqXHR)
-                    }
-                })
+                    })
+                }
+
             })
         }
     })
@@ -287,16 +290,16 @@ function ConfigInputs() {
         data: { mod: 'MEMBER', fnc: 'REGISTER' },
         success: function (data) {
             if (data.statusCode == 200) {
-                data.content.forEach(el=>{                    
-                    el.cf_value==1?$(`.${el.cf_key.toLowerCase()}`).show():$(`.${el.cf_key.toLowerCase()}`).hide();
-                    
+                data.content.forEach(el => {
+                    el.cf_value == 1 ? $(`.${el.cf_key.toLowerCase()}`).show() : $(`.${el.cf_key.toLowerCase()}`).hide();
+
                 })
-                BIRTHDATE = data.content.filter(x=>x.cf_key =='GET_BIRTHDATE')[0].cf_value==1;
-                GENDER = data.content.filter(x=>x.cf_key =='GET_GENDER')[0].cf_value==1;
-                ADDRESS = data.content.filter(x=>x.cf_key =='GET_ADDRESS')[0].cf_value==1;
-                WORKPLACE = data.content.filter(x=>x.cf_key =='GET_WORKPLACE')[0].cf_value==1;
-                JOB = data.content.filter(x=>x.cf_key =='GET_JOB')[0].cf_value==1;
-                POSITION = data.content.filter(x=>x.cf_key =='GET_POSITION')[0].cf_value==1;
+                BIRTHDATE = data.content.filter(x => x.cf_key == 'GET_BIRTHDATE')[0].cf_value == 1;
+                GENDER = data.content.filter(x => x.cf_key == 'GET_GENDER')[0].cf_value == 1;
+                ADDRESS = data.content.filter(x => x.cf_key == 'GET_ADDRESS')[0].cf_value == 1;
+                WORKPLACE = data.content.filter(x => x.cf_key == 'GET_WORKPLACE')[0].cf_value == 1;
+                JOB = data.content.filter(x => x.cf_key == 'GET_JOB')[0].cf_value == 1;
+                POSITION = data.content.filter(x => x.cf_key == 'GET_POSITION')[0].cf_value == 1;
             }
         }
     })
