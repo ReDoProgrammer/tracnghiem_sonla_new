@@ -5,45 +5,11 @@
  * @copyright 2023
  */
 
-include('m_option.php');
-include('classes/m_message.php');
+include_once('m_option.php');
+include_once('classes/m_message.php');
 
-function countPages($search, $pageSize)
-{
-    $result = mysql_query("SELECT 
-        t.name AS topic,
-        m.fullname AS created_by,
-        q.created_at,
-        q.id,
-        q.title,
-        q.applied, 
-        CONCAT('[', GROUP_CONCAT(CONCAT('{\"id\":', o.id, ',\"content\":\"', o.content, '\",\"correct\":', o.correct, '}')) ,']') AS corrects
-    FROM questions q
-    JOIN options o ON q.id = o.question_id   
-    JOIN topics  t ON q.topic_id = t.id  
-    JOIN members m ON q.created_by = m.id 
-    WHERE q.title like '%" . $search . "%'
-    OR o.content like '" . $search . "'   
-    GROUP BY t.name,q.id, q.title,created_by, q.applied", dbconnect());
 
-    $msg = new Message();
-    if ($result) {
-        $count = mysql_num_rows($result);
-        $pages = $count % $pageSize == 0 ? $count / $pageSize : floor($count / $pageSize) + 1;
-
-        $msg->icon = "success";
-        $msg->statusCode = 200;
-        $msg->content = $pages;
-        $msg->title = "Lấy số trang thành công!";
-    } else {
-        $msg->icon = "success";
-        $msg->statusCode = 500;
-        $msg->content = "Lỗi: " . mysql_error();
-        $msg->title = "Lấy số trang thất bại!";
-    }
-    return $msg;
-}
-function getQuestions($page, $search, $pageSize)
+function qGet($page, $search, $pageSize)
 {
     $sql = "SELECT 
         t.name AS topic,
@@ -51,26 +17,28 @@ function getQuestions($page, $search, $pageSize)
         q.created_at,
         q.id,
         q.title,
-        q.applied, 
-        CONCAT('[', GROUP_CONCAT(CONCAT('{\"id\":', o.id, ',\"content\":\"', o.content, '\",\"correct\":', o.correct, '}')) ,']') AS options
+        q.applied
+       
     FROM questions q
-    JOIN options o ON q.id = o.question_id   
     JOIN topics  t ON q.topic_id = t.id  
     JOIN members m ON q.created_by = m.id 
     WHERE q.title like '%" . $search . "%'
-    OR o.content like '" . $search . "'   
     GROUP BY t.name,q.id, q.title,created_by, applied
   ";
 
 
+   //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+   $pages = 1;
+   if (strcmp($pageSize, "All")!=0) {
+       $result = mysql_query($sql, dbconnect());
 
-    $msg = new Message();
+       $totalRows = mysql_num_rows($result);
+       $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+       $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
+   }
 
-    // nếu kích thước trang truyền vào không phải là all (tất cả)
-    if ($pageSize != "All") {
-        $sql .= " LIMIT " . $pageSize . " OFFSET " . ($page - 1) * $pageSize;
-    }
     $local_list = mysql_query($sql, dbconnect());
+    $msg = new Message();
     if ($local_list) {
         $result = array();
         while ($local = mysql_fetch_array($local_list)) {
@@ -79,6 +47,7 @@ function getQuestions($page, $search, $pageSize)
         $msg->icon = "success";
         $msg->title = "Load danh sách câu hỏi thành công!";
         $msg->content = $result;
+        $msg->pages = $pages;
         $msg->statusCode = 200;
     } else {
         $msg->icon = "error";
@@ -204,11 +173,11 @@ function create($title, $options, $topic_id, $created_by)
             $question_id = mysql_insert_id();
 
             $array = json_decode(stripslashes($options), true);
-            $obj = new Option();
+        
             foreach ($array as $opt) {
                 $option = $opt['option'];
                 $check = $opt['check'];
-                $result = $obj->create($question_id, $option, $check, $created_by);
+                $result = oCreate($question_id, $option, $check, $created_by);
                 
                 if($result!=true){
                     $msg->icon = 'error';

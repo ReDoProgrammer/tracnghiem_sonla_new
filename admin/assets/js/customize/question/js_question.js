@@ -78,45 +78,13 @@ $('#btnAddNew').click(function () {
     SetComponents(false);
 })
 
-function Pagination() {
-    $.ajax({
-        url: 'controller/question/pagination.php',
-        type: 'get',
-        data: { search, pageSize },
-        success: function (data) {
-            $('#pagination').empty();
-            if (data.statusCode == 200) {
-                pages = data.content;
-                if (pages <= 1) {
-                    $('#pagination').hide();
-                } else {
-                    $('#pagination').show();
-                    for (i = 1; i <= pages; i++) {
-                        if (page == i) {
-                            $('#pagination').append(`<li class="active"><a href="#">${i}</a></li>`);
-                        } else {
-                            $('#pagination').append(`<li><a href="#">${i}</a></li>`);
-                        }
-                    }
-
-                }
-            } else {
-                Swal.fire(
-                    msg.title,
-                    msg.content,
-                    msg.icon
-                )
-            }
-        }
-    })
-}
 
 function LoadQuestions() {
     $.ajax({
         url: 'controller/question/list.php',
         type: 'get',
         data: { page, search, pageSize },
-        success: function (data) {
+        success: function (data) {            
             $('#tblQuestions').empty();
             if (data.statusCode == 200) {
                 questions = data.content;
@@ -144,12 +112,19 @@ function LoadQuestions() {
                     tr += `</tr>`;
                     $('#tblQuestions').append(tr);
                 })
-                Pagination();
+
+                $('#pagination').empty();
+                if(data.pages > 1){
+                    for(i=1; i<=data.pages;i++){
+                        $('#pagination').append(`<li class="${page==i?'active':''}"><a href="#">${i}</a></li>`);
+                    }                    
+                }
             } else {
+                console.log(data)
                 Swal.fire(
-                    msg.title,
-                    msg.content,
-                    msg.icon
+                    data.title,
+                    data.content,
+                    data.icon
                 )
             }
         }

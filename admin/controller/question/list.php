@@ -4,7 +4,7 @@
     $page = $_GET['page'];
     $search = $_GET['search'];
     $pageSize = $_GET['pageSize'];
-    $questions = getQuestions($page,$search,$pageSize);
+    $questions = qGet($page,$search,$pageSize);
     header("Content-Type: application/json");
     echo json_encode($questions);
 ?>

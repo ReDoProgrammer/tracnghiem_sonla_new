@@ -36,7 +36,7 @@ function oGet($question_id, $random_options)
     return $msg;
 }
 
-function get_options_by_question($question_id)
+function oGetOptionsByQuestion($question_id)
 {
     $sql = "SELECT id,content,correct FROM options WHERE question_id = " . $question_id;
     $local_list = mysql_query($sql, dbconnect());
@@ -47,7 +47,7 @@ function get_options_by_question($question_id)
     }
     return $result;
 }
-function create($question_id, $content, $correct, $created_by)
+function oCreate($question_id, $content, $correct, $created_by)
 {
     $result = mysql_query("INSERT INTO options(question_id,content,correct,created_by) 
                     VALUES('" . $question_id . "','" . $content . "'," . $correct . ",'" . $created_by . "')", dbconnect());
@@ -60,7 +60,7 @@ function create($question_id, $content, $correct, $created_by)
     }
 }
 
-function update($id, $content, $correct, $updated_by)
+function oUpdate($id, $content, $correct, $updated_by)
 {
     $result = mysql_query("UPDATE options 
         SET content='" . $content . "',
@@ -76,7 +76,7 @@ function update($id, $content, $correct, $updated_by)
         return mysql_error();
     }
 }
-function delete($id)
+function oDelete($id)
 {
     $result = mysql_query("delete from options where id= " . $id, dbconnect());
 
@@ -87,7 +87,7 @@ function delete($id)
     }
 }
 
-function deletebyQuestion($question_id)
+function oDeletebyQuestion($question_id)
 {
     $result = mysql_query("delete from options where question_id= " . $question_id, dbconnect());
 
