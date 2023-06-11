@@ -2,6 +2,11 @@ var page = 1,
     pageSize = 10;
 $(function () {   
     LoadExams();
+    $("#pagination").on("click", "li a", function (event) {
+        event.preventDefault();
+        page = $(this).text();
+        LoadExams();
+    });
 })
 
 function LoadExams() {
@@ -12,7 +17,15 @@ function LoadExams() {
         success: function (data) {
             $('#exams_list').empty();
             if (data.statusCode == 200) {
+                console.log(data.pages)
                 let exams = data.content;
+
+                $('#pagination').empty();
+                if (data.pages > 1) {
+                    for (i = 1; i <= data.pages; i++) {
+                        $('#pagination').append(`<li class="${page == i ? 'active' : ''}"><a href="#">${i}</a></li>`);
+                    }
+                }
 
                 for (i = 0; i < exams.length; i += 4) {
 
@@ -130,5 +143,10 @@ function LoadExams() {
         }
     })
 }
+
+$('#slPageSize').on('change', function () {
+    pageSize = $('#slPageSize option:selected').text();
+    LoadExams();
+})
 
 
