@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col-sm-24 col-lg-4 col-md-4">
                             <div class="logo">
-                                <a class="logo-wrapper" title="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" href="/vi/">
+                                <a class="logo-wrapper" title="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" href="index.php?module=home&act=index">
                                     <img src="assets/images/logo-tinhdoan.png" alt="TỈNH ĐOÀN SƠN LA - THI TRỰC TUYẾN" class="site_logo">
                                 </a>
                             </div>
