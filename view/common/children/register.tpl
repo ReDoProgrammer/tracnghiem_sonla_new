@@ -61,7 +61,7 @@
 
 
             <div class="row">
-                <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 gender">
+                <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 get_gender">
                     <div class="form-group radio-box required input btn-group col-sm-24 gender">
                         <label class="radio-box" style="margin-right: 5px;"> <input type="radio" name="gender" value="N"
                                 class="input rbtN" onclick="validErrorHidden(this,5);">
@@ -74,7 +74,7 @@
                             Nữ </label>
                     </div>
                 </div>
-                <div class="form-group  col-xs-24 col-sm-12 col-md-12 col-lg-12 birthdate">
+                <div class="form-group  col-xs-24 col-sm-12 col-md-12 col-lg-12 get_birthdate">
                     <div class="input-group">
                         <input type="text" class="form-control datepicker required txtBirthdate"
                             data-provide="datepicker" style="z-index: 1 !important;" placeholder="Ngày tháng năm sinh"

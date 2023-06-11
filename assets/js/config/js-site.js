@@ -7,7 +7,6 @@ $(function () {
             fnc: 'BASIC'
         },
         success: function (data) {
-            console.log(data);
             if (data.statusCode == 200) {
 
                 data.content.forEach(c => {

@@ -6,7 +6,7 @@ var BIRTHDATE = true,
     WORKPLACE = true;
 
 $(function () {
-      
+    ConfigInputs();
     if (JOB) {
         LoadJobs();
     }
@@ -287,8 +287,16 @@ function ConfigInputs() {
         data: { mod: 'MEMBER', fnc: 'REGISTER' },
         success: function (data) {
             if (data.statusCode == 200) {
-                
-                SetVisible(cfigs, arr);
+                data.content.forEach(el=>{                    
+                    el.cf_value==1?$(`.${el.cf_key.toLowerCase()}`).show():$(`.${el.cf_key.toLowerCase()}`).hide();
+                    
+                })
+                BIRTHDATE = data.content.filter(x=>x.cf_key =='GET_BIRTHDATE')[0].cf_value==1;
+                GENDER = data.content.filter(x=>x.cf_key =='GET_GENDER')[0].cf_value==1;
+                ADDRESS = data.content.filter(x=>x.cf_key =='GET_ADDRESS')[0].cf_value==1;
+                WORKPLACE = data.content.filter(x=>x.cf_key =='GET_WORKPLACE')[0].cf_value==1;
+                JOB = data.content.filter(x=>x.cf_key =='GET_JOB')[0].cf_value==1;
+                POSITION = data.content.filter(x=>x.cf_key =='GET_POSITION')[0].cf_value==1;
             }
         }
     })
@@ -360,7 +368,6 @@ function LoadWorkPlaces() {
         type: 'get',
         success: function (data) {
             $('.slWorkPlaces').empty();
-            console.log(data)
             if (data.statusCode == 200) {
                 let wps = data.content;
                 wps.forEach(w => {

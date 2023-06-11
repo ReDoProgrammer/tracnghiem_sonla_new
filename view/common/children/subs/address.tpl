@@ -1,4 +1,4 @@
-<div class="panel panel-info">
+<div class="panel panel-info get_address">
     <div class="panel-heading">Địa chỉ</div>
     <div class="panel-body">
         <div class="row">

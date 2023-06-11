@@ -4,7 +4,6 @@ $(document).ready(function(){
         type:'get',
         success:function(data){
             if(data.statusCode == 200){
-                console.log(data.content)
                 let p = data.content;
                 if(p.avatar && p.avatar.trim().length > 0){
                    $('.pf_avatar').attr('src',p.avatar);
