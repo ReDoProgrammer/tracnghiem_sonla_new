@@ -13,6 +13,46 @@ include_once('m_exam_result.php');
 include_once('m_exam_result_detail.php');
 include_once('classes/m_message.php');
 
+function Top10Exams()
+{
+    $sql = "SELECT e.id, title, thumbnail, 
+                DATE_FORMAT(begin , '%d/%m/%Y' ) AS begin , 
+                DATE_FORMAT(end , '%d/%m/%Y' ) AS end , 
+                description,
+                CASE
+                    WHEN `begin` < CURRENT_TIMESTAMP( )
+                    AND `end` < CURRENT_TIMESTAMP( )
+                    THEN 1
+                    WHEN `begin` < CURRENT_TIMESTAMP( )
+                    AND `end` > CURRENT_TIMESTAMP( )
+                    THEN 0
+                    ELSE -1
+                END AS exam_status
+                FROM exams e
+                INNER JOIN exam_configs c ON c.exam_id = e.id
+                GROUP BY e.id,title, thumbnail
+                ORDER BY exam_status
+                LIMIT 10
+            ";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Lấy top 10 cuộc thi thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $arr;
+    } else {
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Lấy top 10 cuộc thi thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 
 function LoadExams($page, $pageSize)
 {
@@ -417,42 +457,3 @@ function EarliestExam()
     return mysql_fetch_array($exam);
 }
 
-function Top10Exams()
-{
-    $sql = "SELECT e.id, title, thumbnail, 
-        DATE_FORMAT(begin , '%d/%m/%Y' ) AS begin , 
-        DATE_FORMAT(end , '%d/%m/%Y' ) AS end , 
-        description,
-        CASE
-            WHEN BEGIN < CURRENT_TIMESTAMP( )
-            AND END < CURRENT_TIMESTAMP( )
-            THEN 1
-            WHEN BEGIN < CURRENT_TIMESTAMP( )
-            AND END > CURRENT_TIMESTAMP( )
-            THEN 0
-            ELSE -1
-        END AS exam_status
-        FROM exams e
-        INNER JOIN exam_configs c ON c.exam_id = e.id
-        GROUP BY e.id,title, thumbnail
-        ORDER BY exam_status
-        LIMIT 10";
-    $result = mysql_query($sql, dbconnect());
-    $msg = new Message();
-    if ($result) {
-        $arr = array();
-        while ($local = mysql_fetch_array($result)) {
-            $arr[] = $local;
-        }
-        $msg->icon = "success";
-        $msg->title = "Lấy top 10 cuộc thi thành công!";
-        $msg->statusCode = 200;
-        $msg->content = $arr;
-    } else {
-        $msg->statusCode = 500;
-        $msg->icon = "error";
-        $msg->title = "Lấy top 10 cuộc thi thất bại!";
-        $msg->content = mysql_error();
-    }
-    return $msg;
-}
