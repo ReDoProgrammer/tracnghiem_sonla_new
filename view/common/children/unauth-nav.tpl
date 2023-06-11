@@ -17,7 +17,7 @@
                         <div class="col-sm-24 col-lg-20 col-md-20">
                             <nav class="hidden-sm hidden-xs">
                                 <ul id="nav" class="nav">
-                                    <li class="nav-item nav-items  class=" active""="">
+                                    <li class="nav-item nav-items  class=" active>
                                         <a href="index.php?module=home&act=index" class="nav-link">Trang chủ</a>
                                     </li>
 
@@ -66,25 +66,20 @@
         <div class="link_list_mobile">
             <ul class="ct-mobile">
                 <li class="level0 level-top parent">
-                    <a title="Trang chủ" href="/index.php">Trang chủ</a>
+                    <a title="Trang chủ" href="index.php?module=home&act=index">Trang chủ</a>
+                </li>               
+               
+                <li class="level0 level-top parent">
+                    <a title="Vào thi" href="index.php?module=exam&act=index">Vào thi</a>
                 </li>
                 <li class="level0 level-top parent">
-                    <a title="Thể Lệ" href="/vi/page/">Thể Lệ</a>
+                    <a title="Lịch sử thi" href="index.php?module=exam&act=history">Lịch sử thi</a>
                 </li>
                 <li class="level0 level-top parent">
-                    <a title="Thư viện tài nguyên" href="/vi/download/">Thư viện tài nguyên</a>
+                    <a title="Đăng ký" href="index.php?module=member&act=register">Đăng ký</a>
                 </li>
                 <li class="level0 level-top parent">
-                    <a title="Vào thi" href="/vi/onlinetest/">Vào thi</a>
-                </li>
-                <li class="level0 level-top parent">
-                    <a title="Lịch sử thi" href="/vi/onlinetest/history/">Lịch sử thi</a>
-                </li>
-                <li class="level0 level-top parent">
-                    <a title="Đăng ký" href="/vi/users/register/">Đăng ký</a>
-                </li>
-                <li class="level0 level-top parent">
-                    <a title="Đăng nhập" href="/vi/users/login/">Đăng nhập</a>
+                    <a title="Đăng nhập" href="index.php?module=member&act=login">Đăng nhập</a>
                 </li>
             </ul>
         </div>

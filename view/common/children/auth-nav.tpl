@@ -18,20 +18,14 @@
                         <div class="col-sm-24 col-lg-20 col-md-20">
                             <nav class="hidden-sm hidden-xs">
                                 <ul id="nav" class="nav">
-                                    <li class="nav-item nav-items  class=" active""="">
-                                        <a href="/index.php" class="nav-link">Trang chủ</a>
+                                    <li class="nav-item nav-items  class=" active>
+                                        <a href="index.php?module=home&act=index" class="nav-link">Trang chủ</a>
                                     </li>
                                     <li class="nav-item nav-items ">
-                                        <a href="/vi/page/" class="nav-link">Thể Lệ</a>
+                                        <a href="index.php?module=exam&act=index" class="nav-link">Vào thi</a>
                                     </li>
                                     <li class="nav-item nav-items ">
-                                        <a href="/vi/download/" class="nav-link">Thư viện tài nguyên</a>
-                                    </li>
-                                    <li class="nav-item nav-items ">
-                                        <a href="/vi/onlinetest/" class="nav-link">Vào thi</a>
-                                    </li>
-                                    <li class="nav-item nav-items ">
-                                        <a href="index.php?module=examination&act=history" class="nav-link">Lịch sử thi</a>
+                                        <a href="index.php?module=exam&act=history" class="nav-link">Lịch sử thi</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -115,19 +109,13 @@
         <div class="link_list_mobile">
             <ul class="ct-mobile">
                 <li class="level0 level-top parent">
-                    <a title="Trang chủ" href="/index.php">Trang chủ</a>
+                    <a title="Trang chủ" href="index.php?module=home&act=index">Trang chủ</a>
                 </li>
-                <li class="level0 level-top parent">
-                    <a title="Thể Lệ" href="/vi/page/">Thể Lệ</a>
+                <li class="nav-item nav-items ">
+                    <a href="index.php?module=exam&act=index" class="nav-link">Vào thi</a>
                 </li>
-                <li class="level0 level-top parent">
-                    <a title="Thư viện tài nguyên" href="/vi/download/">Thư viện tài nguyên</a>
-                </li>
-                <li class="level0 level-top parent">
-                    <a title="Vào thi" href="/vi/onlinetest/">Vào thi</a>
-                </li>
-                <li class="level0 level-top parent">
-                    <a title="Lịch sử thi" href="/vi/onlinetest/history/">Lịch sử thi</a>
+                <li class="nav-item nav-items ">
+                    <a href="index.php?module=exam&act=history" class="nav-link">Lịch sử thi</a>
                 </li>
             </ul>
         </div>

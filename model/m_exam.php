@@ -14,7 +14,8 @@ include_once('m_exam_result_detail.php');
 include_once('classes/m_message.php');
 
 
-function Top10Candidates(){
+function Top10Candidates()
+{
     $sql = "SELECT m.fullname,
                 DATE_FORMAT(er.started_at,'%d/%m/%Y %T') AS exam_date,
                 er.spent_duration,
@@ -29,9 +30,9 @@ function Top10Candidates(){
             ORDER BY mark_ratio DESC,spent_duration 
             LIMIT 10
             ";
-    $result = mysql_query($sql,dbconnect());
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result){
+    if ($result) {
         $arr = array();
         while ($local = mysql_fetch_array($result)) {
             $arr[] = $local;
@@ -40,7 +41,7 @@ function Top10Candidates(){
         $msg->title = "Lấy top 10 điểm cao nhất thành công!";
         $msg->statusCode = 200;
         $msg->content = $arr;
-    }else{
+    } else {
         $msg->icon = "error";
         $msg->statusCode = 500;
         $msg->title = "Lấy top 10 điểm cao nhất thất bại!";
@@ -49,7 +50,8 @@ function Top10Candidates(){
     return $msg;
 }
 
-function Top10Units(){
+function Top10Units()
+{
     $sql = "SELECT wp.name AS workplace,
                 COUNT(m.id) AS candidates,
                 COUNT(er.id) AS exam_times
@@ -61,9 +63,9 @@ function Top10Units(){
             exam_times DESC
             LIMIT 10
     ";
-    $result = mysql_query($sql,dbconnect());
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result){
+    if ($result) {
         $arr = array();
         while ($local = mysql_fetch_array($result)) {
             $arr[] = $local;
@@ -72,7 +74,7 @@ function Top10Units(){
         $msg->title = "Lấy top 10 đơn vị tham gia thi nhiều nhất thành công!";
         $msg->statusCode = 200;
         $msg->content = $arr;
-    }else{
+    } else {
         $msg->statusCode = 500;
         $msg->icon = "error";
         $msg->title = "Lấy top 10 đơn vị tham gia nhiều nhất thất bại!";
@@ -103,7 +105,7 @@ function exResultPagination($id)
         $msg->icon = "error";
         $msg->statusCode = 500;
         $msg->title = "Lấy thông tin phân trang thất bại!";
-        $msg->content = "Lỗi: ".mysql_error();
+        $msg->content = "Lỗi: " . mysql_error();
     }
     return $msg;
 }
@@ -187,12 +189,12 @@ function exHistory($page, $pageSize, $search)
 }
 
 
-function save($exam_id,$result,$times,$spent_duration,$exam_date)
+function save($exam_id, $result, $times, $spent_duration, $exam_date)
 {
     $msg = new Message();
     session_start();
     $p = $_SESSION['profile'];
-    $er = erSave($exam_id, $p['id'],$times,$spent_duration,$exam_date);
+    $er = erSave($exam_id, $p['id'], $times, $spent_duration, $exam_date);
     if ($er->statusCode != 201) {
         return $er;
     }
@@ -383,10 +385,22 @@ function Top10Exams()
         GROUP BY e.id,title, thumbnail
         ORDER BY id DESC
         LIMIT 10";
-    $local_list = mysql_query($sql, dbconnect());
-    $result = array();
-    while ($local = mysql_fetch_array($local_list)) {
-        $result[] = $local;
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Lấy top 10 cuộc thi thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $arr;
+    } else {
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Lấy top 10 cuộc thi thất bại!";
+        $msg->content = mysql_error();
     }
-    return $result;
+    return $msg;
 }
