@@ -84,7 +84,7 @@ function LoadQuestions() {
         url: 'controller/question/list.php',
         type: 'get',
         data: { page, search, pageSize },
-        success: function (data) {            
+        success: function (data) {
             $('#tblQuestions').empty();
             if (data.statusCode == 200) {
                 questions = data.content;
@@ -114,10 +114,10 @@ function LoadQuestions() {
                 })
 
                 $('#pagination').empty();
-                if(data.pages > 1){
-                    for(i=1; i<=data.pages;i++){
-                        $('#pagination').append(`<li class="${page==i?'active':''}"><a href="#">${i}</a></li>`);
-                    }                    
+                if (data.pages > 1) {
+                    for (i = 1; i <= data.pages; i++) {
+                        $('#pagination').append(`<li class="${page == i ? 'active' : ''}"><a href="#">${i}</a></li>`);
+                    }
                 }
             } else {
                 console.log(data)
@@ -144,7 +144,7 @@ function GetQuestion(id, readonly = false) {
                 $('#slTopics').val(question.topic_id);
                 $('.selectpicker').selectpicker('refresh');
 
-                
+
                 $.ajax({
                     url: 'controller/option/list-by-question.php',
                     type: 'get',
@@ -300,35 +300,69 @@ function AddOption(id = '', content = '', checked = false, readonly = false) {
 
     let option = `<section class="form-group" id="${id}">`;
     option += `<div class="row">`;
-    option += `<div class="col-xs-7 col-md-7 col-sm-7 col-lg-7">`;
-    option += `<label>Câu trả lời <span class="style2">(*)</span></label>`;
+    option += `<div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">`;
+    option += `<label>
+                Câu trả lời <span class="style2">(*)</span>                
+              </label>`;
     option += `</div>`;
-    option += `<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-right">`;
+    option += `<div class="col-xs-5 col-md-5 col-sm-5 col-lg-5 text-right">`;
+    option += `<div class="form-check">
+                <input class="form-check-input ckbUseCKEditor" type="checkbox" name="${optName}" value="">
+                <label class="form-check-label">Sử dụng trình soạn thảo</label>
+            </div>`
+    option += `</div>`;
+    option += `<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">`;
     option += `<label><input type="radio" name="rbtOption" style="accent-color: #0E92B9;margin-right:5px;"`;
     option += checked ? `checked` : ``;
     option += readonly ? ` disabled>` : `>`;
     option += `Là đáp án đúng</label>`;
     option += `</div>`;
     option += `</div>`;
+
     option += `<div class="input-group">`;
-    option += `<textarea data-option="${id}" name="${optName}" class="form-control custom-control" rows="2" style="resize: vertical;"`;
-    option += readonly ? `readonly>` : `>`;
-    option += `</textarea>`
-    option += `<span type="submit" class="input-group-addon btn btn-secondary btnRemoveOption" name="btnRemoveOption"`;
-    option += readonly ? `disabled>` : `>`;
-    option += `<i class="fa fa-times" aria-hidden="true"></i></span>`
+
+    option += `<textarea data-option="${id}" name="${optName}" 
+        class="form-control custom-control" 
+        rows="2" style="resize: vertical;" ${readonly ? 'readonly' : ''}></textarea>
+        <span type="submit" class="input-group-addon btn btn-secondary btnRemoveOption" 
+        name="btnRemoveOption" ${readonly ? 'disabled' : ''}>
+        <i class="fa fa-times" aria-hidden="true"></i></span>`;
+
     option += `</div>`;
+
     option += `<span class="error"></span>`;
     option += `</section>`;
 
 
-
     $('#options').append(option);
     CKEDITOR.replace(optName);
-    CKEDITOR.instances[optName].setData(content);
+
+
 
 
 }
+
+
+$(document).on('change', '.ckbUseCKEditor', function () {
+    // let ta = $(this).closest('section').find('textarea')
+    // let taName = $(ta).attr('name');
+
+
+    // let taContent = `<textarea name="${taName}"
+    //             class="form-control custom-control" 
+    //             rows="2" style="resize: vertical;"></textarea>`;
+    //             // <span type="submit" class="input-group-addon btn btn-secondary btnRemoveOption" 
+    //             // name="btnRemoveOption">
+    //             // <i class="fa fa-times" aria-hidden="true"></i></span>`
+    // if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances.taName) {
+    //     CKEDITOR.instances.taName.destroy();
+    // }
+    // $(ta).replaceWith(taContent)
+    // if (this.checked) {
+    //     CKEDITOR.replace(taName);
+    // }
+})
+
 
 
 //phần xử lý trên modal
