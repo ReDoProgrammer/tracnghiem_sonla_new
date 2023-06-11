@@ -7,17 +7,23 @@ var pageSize = 10;// giá trị mặc định của kích thước trang
 $(document).ready(function () {
     LoadData();
 })
+function ExamDetail(id) {
+    examId = 0;
+    detail(id);
+}
+function EditExam(id) {
+    examId = id;
+    detail(id);
+}
 
-function EditExam(id){
+function detail(id) {
     $.ajax({
         url: 'controller/exam/detail.php',
         type: 'get',
         data: { id },
         success: function (data) {
-            if(data.statusCode == 200){
-                examId = id;
+            if (data.statusCode == 200) {
                 let exam = data.content;
-                console.log(exam);
                 $('#txtTitle').val(exam.title);
                 CKEDITOR.instances['txaDescription'].setData(exam.description);
                 CKEDITOR.instances['txaRegulation'].setData(exam.regulation);
@@ -34,10 +40,15 @@ function EditExam(id){
                 $('#ckbHotExam').prop('checked', exam.is_hot == 1);
                 $('#ckbRandomOptions').prop('checked', exam.random_options == 1);
                 $('#ckbRandomQuestions').prop('checked', exam.random_questions == 1);
-               
-                $('#modalTitle').text('Cập nhật cuộc thi');
+                if (examId > 0) {
+                    $('#modalTitle').text('Cập nhật cuộc thi');
+                    $('#btnSaveChanges').show();
+                } else {
+                    $('#modalTitle').text('Thông tin cuộc thi');
+                    $('#btnSaveChanges').hide();
+                }
+
                 $('#modalExam').modal();
-                SetComponents(false);
             }
         }
     })
@@ -74,10 +85,10 @@ function DeleteExam(id) {
     })
 }
 
-function ConfigExam(id,exam_status) {
-    if(exam_status==-1){
+function ConfigExam(id, exam_status) {
+    if (exam_status == -1) {
         $('#btnSaveConfigs').show();
-    }else{
+    } else {
         $('#btnSaveConfigs').hide();
     }
     $.ajax({
@@ -85,7 +96,7 @@ function ConfigExam(id,exam_status) {
         type: 'get',
         data: { id },
         success: function (data) {
-            if(data.statusCode == 200){
+            if (data.statusCode == 200) {
                 let exam = data.content;
                 let configs = JSON.parse(exam.exam_configs)
                 $('#totalQuestions').text(exam.number_of_questions);
@@ -93,7 +104,7 @@ function ConfigExam(id,exam_status) {
                 $('#modalConfigExam').modal();
                 LoadTopics(configs);
             }
-           
+
         }
     })
 }
@@ -145,13 +156,13 @@ function ChangeHotExam(id) {
     })
 }
 
-function ChangeRandomQuestions(id){
+function ChangeRandomQuestions(id) {
     $.ajax({
         url: 'controller/exam/change-random-questions.php',
         type: 'post',
         data: { id },
         success: function (data) {
-            if (data.statusCode == 200) {                
+            if (data.statusCode == 200) {
                 LoadData();
             }
         }
@@ -204,7 +215,7 @@ function LoadData() {
 
                 tr += `<td class="text-center" style="white-space:nowrap; width: 10%;">`;
                 tr += `<button onClick = "ConfigExam(${e.id},${e.exam_status})" ><i class="fa fa-cog text-warning" aria-hidden="true"></i></button>`;
-                tr += ` <button name="btnDetail"><i class="fa fa-info-circle" aria-hidden="true" style="color: green;"></i></button> `;
+                tr += ` <button name="btnDetail" onClick="ExamDetail(${e.id})"><i class="fa fa-info-circle" aria-hidden="true" style="color: green;"></i></button> `;
                 tr += ` <button name="btnEdit" ${e.exam_status == -1 ? '' : 'disabled'} onClick="EditExam(${e.id})"><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
                 tr += ` <button name = "btnDelete" ${e.exam_status != -1 ? 'disabled' : ''} onClick="DeleteExam(${e.id})"><i class="fa fa-trash-o" style="color: red;"></i></button> `;
                 tr += `</td>`;
@@ -273,9 +284,22 @@ $('.intOnly').keyup(function (e) {
 });
 
 $('#modalExam').on('hidden.bs.modal', function () {
-    $('#title').val('');
-    $('#options').empty();
     examId = 0;
+
+    $('#txtTitle').val('');
+    CKEDITOR.instances['txaDescription'].setData('');
+    CKEDITOR.instances['txaRegulation'].setData('');
+    $('#xFilePath').val('');
+    $('#txtDuration').val(0);
+    $('#txtNumberOfQuestions').val(0);
+    $('#txtMarkPerQuestion').val(0);
+    $('#txtTimes').val(1);
+
+    $('#ckbHotExam').prop('checked', false);
+    $('#ckbRandomOptions').prop('checked', false);
+    $('#ckbRandomQuestions').prop('checked', false);
+    $('#dtpEnd').val('');
+    $('#btnSaveChanges').show();
 })
 
 $(function () {
@@ -303,8 +327,8 @@ $('#btnSaveChanges').click(function () {
     let begin = $('#dtpBegin').val();
     let end = $('#dtpEnd').val();
     let is_hot = $('#ckbHotExam').is(':checked') ? 1 : 0;
-    let random_questions = $('#ckbRandomQuestions').is(':checked')?1:0;
-    let random_options = $('#ckbRandomOptions').is(':checked')?1:0;
+    let random_questions = $('#ckbRandomQuestions').is(':checked') ? 1 : 0;
+    let random_options = $('#ckbRandomOptions').is(':checked') ? 1 : 0;
     let regulation = CKEDITOR.instances['txaRegulation'].getData();
 
 
@@ -590,9 +614,7 @@ $(document).on('keyup', "input[name='txtPercent']", function () {
 
 });
 
-$(document).on('show.bs.modal', '#modalConfigExam', function () {
-    idx = 0;
-});
+
 
 
 
@@ -604,19 +626,19 @@ function LoadTopics(configs = null) {
             $('#tblConfig').empty();
             topics.forEach(t => {
                 let cf = 0;
-                if(configs!=null){
-                    cf = configs.filter(x=>x.topic_id == t.id)[0].percent;
+                if (configs != null) {
+                    cf = configs.filter(x => x.topic_id == t.id)[0].percent;
                 }
-               
+
                 let tr = `<tr id="${t.id}">`;
                 tr += `<td style="width: 80%;">`;
-                tr += `<label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" ${cf>0?'checked':''}>${t.name} (${t.questions_count})</label>`
+                tr += `<label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" ${cf > 0 ? 'checked' : ''}>${t.name} (${t.questions_count})</label>`
                 tr += `</td>`;
-                tr += `<td style="width: 20%"><input type="text" class="form-control floatOnly" name="txtPercent" ${cf>0?'':'readonly'} value="${cf}"/></td>`
+                tr += `<td style="width: 20%"><input type="text" class="form-control floatOnly" name="txtPercent" ${cf > 0 ? '' : 'readonly'} value="${cf}"/></td>`
                 tr += `</tr>`;
                 $('#tblConfig').append(tr);
             })
-            
+
         }
     })
 }
