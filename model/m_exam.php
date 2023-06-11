@@ -26,13 +26,13 @@ function LoadExams($page, $pageSize)
             THEN 1
             WHEN BEGIN < CURRENT_TIMESTAMP( )
             AND END > CURRENT_TIMESTAMP( )
-            THEN 0
+            THEN 0 
             ELSE -1
-        END AS status
+        END AS exam_status
         FROM exams e
         INNER JOIN exam_configs c ON c.exam_id = e.id
         GROUP BY e.id,title, thumbnail
-        ORDER BY id DESC ";
+        ORDER BY exam_status ";
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
@@ -431,11 +431,11 @@ function Top10Exams()
             AND END > CURRENT_TIMESTAMP( )
             THEN 0
             ELSE -1
-        END AS status
+        END AS exam_status
         FROM exams e
         INNER JOIN exam_configs c ON c.exam_id = e.id
         GROUP BY e.id,title, thumbnail
-        ORDER BY id DESC
+        ORDER BY exam_status
         LIMIT 10";
     $result = mysql_query($sql, dbconnect());
     $msg = new Message();

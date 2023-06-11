@@ -3,6 +3,7 @@ $(function () {
         url: 'controller/exam/top10exams.php',
         type: 'get',
         success: function (data) {
+
             if (data.statusCode == 200) {
                 data.content.forEach(e => {
                     let exam = ` <div class="slide">
@@ -21,8 +22,10 @@ $(function () {
                                             </div>
                                         </div>
                                         <div class="panel-footer text-center">
-                                            <a href="index.php?module=examination&act=do-exam&id=${e.id}" class="btn btn-sm btn-info">Tham gia
-                                                thi</a>
+                                            <a href="index.php?module=examination&act=do-exam&id=${e.id}" 
+                                                class="btn btn-sm ${e.exam_status == 0 ? 'btn-info' : 'btn-danger disabled'}">
+                                                ${e.exam_status == 1 ? 'Đã kết thúc' : e.exam_status == 0 ? 'Đang diễn ra' : 'Chưa diễn ra'}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>`;
