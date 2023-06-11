@@ -14,6 +14,58 @@ include_once('m_exam_result_detail.php');
 include_once('classes/m_message.php');
 
 
+function LoadExams($page, $pageSize)
+{
+    $sql = "SELECT e.id, title, thumbnail, 
+        DATE_FORMAT(begin , '%d/%m/%Y %H:%i' ) AS begin , 
+        DATE_FORMAT(end , '%d/%m/%Y %H:%i' ) AS end , 
+        description,
+        CASE
+            WHEN BEGIN < CURRENT_TIMESTAMP( )
+            AND END < CURRENT_TIMESTAMP( )
+            THEN 1
+            WHEN BEGIN < CURRENT_TIMESTAMP( )
+            AND END > CURRENT_TIMESTAMP( )
+            THEN 0
+            ELSE -1
+        END AS status
+        FROM exams e
+        INNER JOIN exam_configs c ON c.exam_id = e.id
+        GROUP BY e.id,title, thumbnail
+        ORDER BY id DESC ";
+
+    //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+    $pages = 1;
+    $result = mysql_query($sql, dbconnect());
+    $totalRows = mysql_num_rows($result);
+    $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+   //-- kết thúc tính số trang
+
+
+    $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize;
+
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Lấy danh sách cuộc thi thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $arr;
+        $msg->pages = $pages;
+    } else {
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Lấy danh sách cuộc thi thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
+
 function Top10Candidates()
 {
     $sql = "SELECT m.fullname,

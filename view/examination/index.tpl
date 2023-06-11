@@ -1,3 +1,4 @@
 <?php include('view/common/header.tpl');?>
-    <h1>Examination home index</h1>
+    <div id="exams_list"></div>
 <?php include('view/common/footer.tpl');?>
+<script src="assets/js/examination/js-index.js"></script>
