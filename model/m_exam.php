@@ -16,24 +16,24 @@ include_once('classes/m_message.php');
 function Top10Exams()
 {
     $sql = "SELECT e.id, title, thumbnail, 
-                DATE_FORMAT(begin , '%d/%m/%Y' ) AS begin , 
-                DATE_FORMAT(end , '%d/%m/%Y' ) AS end , 
-                description,
-                CASE
-                    WHEN `begin` < CURRENT_TIMESTAMP( )
-                    AND `end` < CURRENT_TIMESTAMP( )
-                    THEN 1
-                    WHEN `begin` < CURRENT_TIMESTAMP( )
-                    AND `end` > CURRENT_TIMESTAMP( )
-                    THEN 0
-                    ELSE -1
-                END AS exam_status
-                FROM exams e
-                INNER JOIN exam_configs c ON c.exam_id = e.id
-                GROUP BY e.id,title, thumbnail
-                ORDER BY exam_status
-                LIMIT 10
-            ";
+            DATE_FORMAT(begin , '%d/%m/%Y' ) AS begin , 
+            DATE_FORMAT(end , '%d/%m/%Y' ) AS end , 
+            description,
+            CASE
+                WHEN `begin` < CURRENT_TIMESTAMP( )
+                AND `end` < CURRENT_TIMESTAMP( )
+                THEN 1
+                WHEN `begin` < CURRENT_TIMESTAMP( )
+                AND `end` > CURRENT_TIMESTAMP( )
+                THEN 0
+                ELSE -1
+            END AS exam_status
+            FROM exams e
+            INNER JOIN exam_configs c ON c.exam_id = e.id
+            GROUP BY e.id,title, thumbnail
+            ORDER BY exam_status
+            LIMIT 10
+        ";
     $result = mysql_query($sql, dbconnect());
     $msg = new Message();
     if ($result) {
@@ -421,7 +421,16 @@ function ExDetail($id)
                 DATE_FORMAT(e.begin, '%d/%m/%Y %H:%i') AS begin,
                 DATE_FORMAT(e.end, '%d/%m/%Y %H:%i') AS end,       
                 e.random_questions,
-                e.random_options
+                e.random_options,
+                CASE
+                    WHEN `begin` < CURRENT_TIMESTAMP( )
+                    AND `end` < CURRENT_TIMESTAMP( )
+                    THEN 1
+                    WHEN `begin` < CURRENT_TIMESTAMP( )
+                    AND `end` > CURRENT_TIMESTAMP( )
+                    THEN 0
+                    ELSE -1
+                END AS exam_status
             FROM exams e
             JOIN exam_configs ef ON ef.exam_id = e.id
             WHERE e.id = '" . $id . "' 

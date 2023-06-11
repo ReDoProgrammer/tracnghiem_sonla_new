@@ -148,7 +148,11 @@ function LoadExamSummary(id) {
         type: 'get',
         data: { id },
         success: function (data) {
+            console.log(data);
             exam = data.content;
+            if(exam.exam_status!=0){
+                $('#btnOpenExam').addClass('disabled');             
+            }
 
             $('#ex_title').text(exam.title);
             $('#ex_title').attr('data-exam', id);
