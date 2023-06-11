@@ -83,6 +83,9 @@
                                                    Tiêu điểm
                                                 </th>
                                                  <th class="text-center">
+                                                    Đảo C.H
+                                                </th>
+                                                  <th class="text-center">
                                                     Đảo Đ.A
                                                 </th>
                                             </tr>

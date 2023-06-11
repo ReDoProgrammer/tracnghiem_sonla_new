@@ -73,11 +73,15 @@
                 <hr />
 
                 <div class="form-group row">                    
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
                                 id="ckbHotExam">Tiêu điểm</label>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
+                                id="ckbRandomQuestions">Đảo câu hỏi</label>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
                                 id="ckbRandomOptions">Đảo đáp án</label>
                     </div>
@@ -87,7 +91,7 @@
 
                 <div class="form-group">
                     <label>Quy chế cuộc thi <span class="style2">(*)</span></label>
-                    <textarea id="txaRegulation" class="form-control" name="txaDescription" rows="2"
+                    <textarea id="txaRegulation" class="form-control" name="txaRegulation" rows="2"
                         placeholder="Mô tả cuộc thi"></textarea>
                 </div>
 

@@ -8,6 +8,41 @@ $(document).ready(function () {
     LoadData();
 })
 
+function EditExam(id){
+    $.ajax({
+        url: 'controller/exam/detail.php',
+        type: 'get',
+        data: { id },
+        success: function (data) {
+            if(data.statusCode == 200){
+                examId = id;
+                let exam = data.content;
+                console.log(exam);
+                $('#txtTitle').val(exam.title);
+                CKEDITOR.instances['txaDescription'].setData(exam.description);
+                CKEDITOR.instances['txaRegulation'].setData(exam.regulation);
+                $('#xFilePath').val(exam.thumbnail);
+                $('#txtDuration').val(exam.duration);
+                $('#txtNumberOfQuestions').val(exam.number_of_questions);
+                $('#txtMarkPerQuestion').val(exam.mark_per_question);
+                $('#txtTimes').val(exam.times);
+
+                // $('#dtpBegin').datepicker("setDate" , '19/06/2023 21:35')
+                $('#dtpBegin').val(exam.begin);
+                $('#dtpEnd').val(exam.end);
+
+                $('#ckbHotExam').prop('checked', exam.is_hot == 1);
+                $('#ckbRandomOptions').prop('checked', exam.random_options == 1);
+                $('#ckbRandomQuestions').prop('checked', exam.random_questions == 1);
+               
+                $('#modalTitle').text('Cập nhật cuộc thi');
+                $('#modalExam').modal();
+                SetComponents(false);
+            }
+        }
+    })
+}
+
 function DeleteExam(id) {
     Swal.fire({
         title: 'Bạn có chắc muốn xóa bài thi này?',
@@ -71,33 +106,52 @@ $('#btnSearch').click(function () {
 })
 
 $('#btnAddNew').click(function () {
+    $('#dtpBegin').datetimepicker({
+        defaultDate: new Date(),
+        format: 'DD/MM/YYYY HH:mm',
+        minDate: new Date()
+    });
+    $('#dtpEnd').datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+        minDate: new Date()
+    });
     $('#modalTitle').text('Thêm mới cuộc thi');
     $('#modalExam').modal();
+
     SetComponents(false);
 })
-function ChangeRandomOptions(id, random_options) {
-    console.log({ id, random_options })
+function ChangeRandomOptions(id) {
     $.ajax({
         url: 'controller/exam/change-random-options.php',
         type: 'post',
-        data: { id, random_options },
+        data: { id },
         success: function (data) {
-            console.log(data);
             if (data.statusCode == 200) {
-                index = (page - 1) * pageSize;
                 LoadData();
             }
         }
     })
 }
-function ChangeHotExam(id, is_hot) {
+function ChangeHotExam(id) {
     $.ajax({
         url: 'controller/exam/change-hot.php',
         type: 'post',
         data: { id },
         success: function (data) {
             if (data.statusCode == 200) {
-                index = (page - 1) * pageSize;
+                LoadData();
+            }
+        }
+    })
+}
+
+function ChangeRandomQuestions(id){
+    $.ajax({
+        url: 'controller/exam/change-random-questions.php',
+        type: 'post',
+        data: { id },
+        success: function (data) {
+            if (data.statusCode == 200) {                
                 LoadData();
             }
         }
@@ -126,25 +180,32 @@ function LoadData() {
                 tr += `<td class="text-right">${e.begin}</td>`;
                 tr += `<td class="text-right">${e.end}</td>`;
                 tr += `<td class="text-center fw-bold">`;
-                tr += `${e.exam_status == -1 ? '<span class="text-warning">Chưa diễn ra</span>' :
-                    e.exam_status == 0 ? '<span class="text-info">Đang diễn ra</span>' : '<span class="text-danger">Đã kết thúc</span>'}`;
+                tr += `${e.exam_status == -1 ? '<span class="text-warning">Chưa diễn ra</span>' : e.exam_status == 0 ? '<span class="text-info">Đang diễn ra</span>' : '<span class="text-danger">Đã kết thúc</span>'}`;
                 tr += `</td>`;
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.exam_status == 1 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id},${e.is_hot})" ${e.is_hot == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.exam_status == 1 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id})" ${e.is_hot == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == -1 ? '' : 'disabled'} onClick="ChangeRandomOptions(${e.id},${e.random_options})" ${e.random_options == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.random_questions == 1 ? 'checked' : ''} ${e.exam_status == -1 ? '' : 'disabled'} onClick="ChangeRandomQuestions(${e.id})" ${e.random_questions == 1 ? 'checked' : ''}></label>
+                        </div>`;
+                tr += `</td>`;
+
+
+
+                tr += `<td class="text-center">`
+                tr += ` <div class="form-group" >
+                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == -1 ? '' : 'disabled'} onClick="ChangeRandomOptions(${e.id})" ${e.random_options == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center" style="white-space:nowrap; width: 10%;">`;
                 tr += `<button onClick = "ConfigExam(${e.id},${e.exam_status})" ><i class="fa fa-cog text-warning" aria-hidden="true"></i></button>`;
                 tr += ` <button name="btnDetail"><i class="fa fa-info-circle" aria-hidden="true" style="color: green;"></i></button> `;
-                tr += ` <button name="btnEdit" ${e.exam_status == -1 ? '' : 'disabled'}><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
+                tr += ` <button name="btnEdit" ${e.exam_status == -1 ? '' : 'disabled'} onClick="EditExam(${e.id})"><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
                 tr += ` <button name = "btnDelete" ${e.exam_status != -1 ? 'disabled' : ''} onClick="DeleteExam(${e.id})"><i class="fa fa-trash-o" style="color: red;"></i></button> `;
                 tr += `</td>`;
                 tr += `</tr>`;
@@ -189,17 +250,7 @@ $('#slPageSize').on('change', function () {
 
 //phần xử lý trên modal
 // $(".datepicker").datepicker({ minDate: new Date() });
-$(function () {
-    $('#dtpBegin').datetimepicker({
-        defaultDate: new Date(),
-        format: 'DD/MM/YYYY HH:mm',
-        minDate: new Date()
-    });
-    $('#dtpEnd').datetimepicker({
-        format: 'DD/MM/YYYY HH:mm',
-        minDate: new Date()
-    });
-});
+
 CKEDITOR.replace('txaDescription');
 CKEDITOR.replace('txaRegulation');
 function BrowseServer() {
@@ -252,7 +303,8 @@ $('#btnSaveChanges').click(function () {
     let begin = $('#dtpBegin').val();
     let end = $('#dtpEnd').val();
     let is_hot = $('#ckbHotExam').is(':checked') ? 1 : 0;
-    let random_options = $('#ckbRandomOptions').is(':checked');
+    let random_questions = $('#ckbRandomQuestions').is(':checked')?1:0;
+    let random_options = $('#ckbRandomOptions').is(':checked')?1:0;
     let regulation = CKEDITOR.instances['txaRegulation'].getData();
 
 
@@ -343,11 +395,13 @@ $('#btnSaveChanges').click(function () {
                 begin: Date2TimeStamp(begin),
                 end: Date2TimeStamp(end),
                 is_hot,
+                random_questions,
                 random_options,
                 regulation,
                 created_by: user
             },
             success: function (data) {
+                console.log(data);
                 if (data.statusCode == 201) {
                     Swal.fire({
                         title: 'Bạn có muốn tiếp tục thêm cuộc thi khác?',
@@ -381,23 +435,26 @@ $('#btnSaveChanges').click(function () {
                 duration,
                 number_of_questions,
                 mark_per_question,
-                begin,
-                end,
+                times,
+                begin: Date2TimeStamp(begin),
+                end: Date2TimeStamp(end),
+                is_hot,
                 random_questions,
                 random_options,
-                is_hot,
                 regulation,
                 updated_by: user
             },
             success: function (data) {
                 Swal.fire({
                     position: 'top-end',
-                    icon: 'success',
-                    title: data,
+                    icon: data.icon,
+                    title: data.title,
                     showConfirmButton: false,
                     timer: 1000
                 })
                 $('#modalExam').modal('hide');
+                LoadData();
+                console.log(data);
             }
         })
     }
@@ -537,13 +594,7 @@ $(document).on('show.bs.modal', '#modalConfigExam', function () {
     idx = 0;
 });
 
-//hàm load config của bài thi nếu trước đó bài thi đã được config
-/*
-    Cần sửa lại đoạn này
-    Cho hàm chạy config trước
-    Nếu đã có config thì cần dò tìm theo id config và set %
-    Ngược lại thì để mặc định, k làm gì hết
-*/
+
 
 function LoadTopics(configs = null) {
     $.ajax({

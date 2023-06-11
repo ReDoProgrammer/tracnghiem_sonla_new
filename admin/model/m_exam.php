@@ -317,16 +317,32 @@ function all()
     }
     return $msg;
 }
-
-//hàm thay đổi thuộc tính đảo đáp án của cuộc thi
-function change_random_options($id, $random_options)
-{
-    //Cập nhật tất cả các bài thi khác thành không tiêu điểm
+function change_random_questions($id){
+    $sql = "UPDATE exams 
+            SET random_questions = CASE WHEN random_questions = 1 THEN 0 ELSE 1 END
+            WHERE id = '".$id."'
+            ";
+    $result = mysql_query($sql,dbconnect());
     $msg = new Message();
-
-    $checked = $random_options == 1 ? 0 : 1;
-
-    $result = mysql_query("UPDATE exams SET random_options = '" . $checked . "' WHERE id= " . $id, dbconnect());
+    if($result && mysql_affected_rows()>0){
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Đổi trạng thái đảo câu hỏi thành công!";
+    }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Đổi trạng thái đảo câu hỏi thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+//hàm thay đổi thuộc tính đảo đáp án của cuộc thi
+function change_random_options($id)
+{
+    $msg = new Message();
+    $result = mysql_query("UPDATE exams 
+            SET random_options = CASE WHEN random_options = 1 THEN 0 ELSE 1 END
+            WHERE id= " . $id, dbconnect());
 
     if ($result && mysql_affected_rows() > 0) {
         $msg->statusCode = 200;
@@ -394,17 +410,13 @@ function retrieve($page, $search, $pageSize)
         DATE_FORMAT(e.begin, '%d/%m/%Y %T') begin,
         DATE_FORMAT(e.end, '%d/%m/%Y %T') end,
         e.random_questions,
-        e.is_hot,
-        e.regulation,
         e.random_options,
+        e.is_hot,
+        e.regulation,        
         CASE
-            WHEN `begin` < CURRENT_TIMESTAMP( )
-            AND `end` < CURRENT_TIMESTAMP( )
-            THEN 1
-            WHEN `begin` < CURRENT_TIMESTAMP( )
-            AND `end` > CURRENT_TIMESTAMP( )
-            THEN 0
-            ELSE -1
+            WHEN `begin` < CURRENT_TIMESTAMP( ) AND `end` < CURRENT_TIMESTAMP( ) THEN 1
+            WHEN `begin` < CURRENT_TIMESTAMP( ) AND `end` > CURRENT_TIMESTAMP( ) THEN 0
+            WHEN `begin` > CURRENT_TIMESTAMP( ) AND `end` > CURRENT_TIMESTAMP( ) THEN -1
         END AS exam_status
     FROM exams e
     WHERE e.title like '%" . $search . "%'
@@ -449,7 +461,7 @@ function retrieve($page, $search, $pageSize)
 function detail($id)
 {
     $sql ="SELECT 
-                e.id,e.title,e.thumbnail,e.duration,
+                e.id,e.title,e.thumbnail,e.duration,e.is_hot,
                 e.number_of_questions,
                 e.mark_per_question,
                 e.times,
@@ -467,6 +479,7 @@ function detail($id)
                     THEN 0
                     ELSE -1
                 END AS exam_status,
+                e.regulation,
                 CONCAT('[', GROUP_CONCAT(CONCAT('{\"topic_id\":', ef.topic_id, ', \"percent\":', ef.percent, '}')), ']') AS exam_configs
             FROM exams e
             LEFT JOIN exam_configs ef ON ef.exam_id = e.id
@@ -488,33 +501,36 @@ function detail($id)
     return $msg;
 }
 
-function create($title, $thumbnail, $description, $duration, $number_of_questions, $mark_per_question, $times, $begin, $end, $random_options, $is_hot, $regulation, $created_by)
+function create($title,$thumbnail,$description,$duration,$number_of_questions,
+$mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,$regulation,$created_by)
 {
     /*
         Nếu cuộc thi được tick vào là cuộc thi tiêu điểm
         => update các cuộc thi còn lại trở thành không
         => Chỉ có 1 cuộc thi là tiêu điểm
     */
-    if ($is_hot) {
+    if ($is_hot == 1) {
         $result = mysql_query("UPDATE exams SET is_hot = 0 ", dbconnect());
     }
 
-    $result = mysql_query("INSERT INTO exams(
-        title,
-        thumbnail,
-        description,
-        duration,
-        number_of_questions,
-        mark_per_question,
-        times,
-        begin,
-        end,
-        random_options,
-        is_hot,
-        regulation,
-        created_by) 
-    VALUES('" . $title . "','" . $thumbnail . "','" . $description . "'," . $duration . "," . $number_of_questions . ",
-    " . $mark_per_question . "," . $times . ",'" . $begin . "','" . $end . "'," . $random_options . ",'" . $is_hot . "','" . $regulation . "'," . $created_by . ")", dbconnect());
+    
+
+    $result = mysql_query("INSERT INTO exams 
+     SET title='" . $title . "',
+        thumbnail = '" . $thumbnail . "',       
+        description = '" . $description . "',
+        duration = '" . $duration . "',
+        number_of_questions = '" . $number_of_questions . "',
+        mark_per_question = '" . $mark_per_question . "',
+        times = '".$times."',
+        begin = '" . $begin . "',
+        end = '" . $end . "',    
+        is_hot = '".$is_hot."',   
+        random_questions = '".$random_questions."',
+        random_options = '" . $random_options . "',
+        regulation = '" . $regulation . "',
+        created_by='" . $created_by . "'
+   ", dbconnect());
 
     $msg = new Message();
     if ($result && mysql_affected_rows() > 0) {
@@ -534,21 +550,27 @@ function create($title, $thumbnail, $description, $duration, $number_of_question
     return $msg;
 }
 
-function update($id, $title, $thumbnail, $description, $duration, $number_of_questions, $mark_per_question, $begin, $end, $random_options, $is_hot, $regulation, $updated_by)
+function update($id,$title,$thumbnail,$description,$duration,$number_of_questions,
+$mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,$regulation,$updated_by)
 {
+    if($is_hot == 1){
+        mysql_query("UPDATE exams SET is_hot = 0",dbconnect());
+    }
     $result = mysql_query("UPDATE exams 
     SET title='" . $title . "',
         thumbnail = '" . $thumbnail . "',       
         description = '" . $description . "',
-        duration = " . $duration . ",
-        number_of_questions = " . $number_of_questions . ",
-        mark_per_question = " . $mark_per_question . ",
+        duration = '" . $duration . "',
+        number_of_questions = '" . $number_of_questions . "',
+        mark_per_question = '" . $mark_per_question . "',
+        times = '".$times."',
         begin = '" . $begin . "',
-        end = '" . $end . "',       
-        random_options = " . $random_options . ",
-        is_hot = " . $is_hot . ",
-        regulation = " . $regulation . ",
-        updated_by=" . $updated_by . ",
+        end = '" . $end . "',    
+        is_hot = '".$is_hot."',   
+        random_questions = '".$random_questions."',
+        random_options = '" . $random_options . "',
+        regulation = '" . $regulation . "',
+        updated_by='" . $updated_by . "',
         updated_at=CURRENT_TIMESTAMP()
     WHERE id =" . $id, dbconnect());
     $msg = new Message();
