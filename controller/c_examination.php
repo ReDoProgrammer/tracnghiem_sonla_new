@@ -6,7 +6,7 @@ if(!isset($_SESSION['profile'])){
 }
 $action = $_GET['act'];
 switch ($action) {
-    case "list":
+    case "index":
         require('view/examination/index.tpl');
         break;
     case "do-exam":

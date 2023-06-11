@@ -23,10 +23,10 @@
 
                                    
                                     <li class="nav-item nav-items ">
-                                        <a href="index.php?module=exam&act=index" class="nav-link">Vào thi</a>
+                                        <a href="index.php?module=examination&act=index" class="nav-link">Vào thi</a>
                                     </li>
                                     <li class="nav-item nav-items ">
-                                        <a href="index.php?module=exam&act=history" class="nav-link">Lịch sử thi</a>
+                                        <a href="index.php?module=examination&act=history" class="nav-link">Lịch sử thi</a>
                                     </li>
                                     <li class="nav-item nav-items ">
                                         <a href="index.php?module=member&act=register" class="nav-link">Đăng ký</a>
@@ -70,10 +70,10 @@
                 </li>               
                
                 <li class="level0 level-top parent">
-                    <a title="Vào thi" href="index.php?module=exam&act=index">Vào thi</a>
+                    <a title="Vào thi" href="index.php?module=examination&act=index">Vào thi</a>
                 </li>
                 <li class="level0 level-top parent">
-                    <a title="Lịch sử thi" href="index.php?module=exam&act=history">Lịch sử thi</a>
+                    <a title="Lịch sử thi" href="index.php?module=examination&act=history">Lịch sử thi</a>
                 </li>
                 <li class="level0 level-top parent">
                     <a title="Đăng ký" href="index.php?module=member&act=register">Đăng ký</a>

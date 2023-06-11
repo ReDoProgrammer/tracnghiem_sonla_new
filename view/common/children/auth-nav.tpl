@@ -22,10 +22,10 @@
                                         <a href="index.php?module=home&act=index" class="nav-link">Trang chủ</a>
                                     </li>
                                     <li class="nav-item nav-items ">
-                                        <a href="index.php?module=exam&act=index" class="nav-link">Vào thi</a>
+                                        <a href="index.php?module=examination&act=index" class="nav-link">Vào thi</a>
                                     </li>
                                     <li class="nav-item nav-items ">
-                                        <a href="index.php?module=exam&act=history" class="nav-link">Lịch sử thi</a>
+                                        <a href="index.php?module=examination&act=history" class="nav-link">Lịch sử thi</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -112,10 +112,10 @@
                     <a title="Trang chủ" href="index.php?module=home&act=index">Trang chủ</a>
                 </li>
                 <li class="nav-item nav-items ">
-                    <a href="index.php?module=exam&act=index" class="nav-link">Vào thi</a>
+                    <a href="index.php?module=examination&act=index" class="nav-link">Vào thi</a>
                 </li>
                 <li class="nav-item nav-items ">
-                    <a href="index.php?module=exam&act=history" class="nav-link">Lịch sử thi</a>
+                    <a href="index.php?module=examination&act=history" class="nav-link">Lịch sử thi</a>
                 </li>
             </ul>
         </div>
