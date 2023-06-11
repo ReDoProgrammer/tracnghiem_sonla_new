@@ -48,54 +48,20 @@
             </div>
         </div>
         <div class="button-group text-center">
-            <a class="btn btn-lg btn-default" href="/rule" title="Quy chế cuộc thi">
+            <a class="btn btn-lg btn-default" id="ce_regulation" href="#" title="Quy chế cuộc thi">
                 Quy chế
             </a>
-            <a class="btn btn-lg btn-danger" data-type="notStart"
-                href="/vi/onlinetest/dotest/tesst-14.html" title="tesst">
+            <a class="btn btn-lg btn-danger ce_join" data-type="notStart" id="ce_join"
+                href="#" title="tesst">
                 Vào thi
             </a>
         </div>
     </section>
 </div>
 
+<script src="assets/js/examination/js-current.js"></script>
 
-<script type="text/javascript">
-    (function () {
-        const second = 1000,
-            minute = second * 60,
-            hour = minute * 60,
-            day = hour * 24;
-        let birthday = "June 23, 2023 00:00:00",
-            countDown = new Date(birthday).getTime(),
-            x = setInterval(function () {
-                let now = new Date().getTime(),
-                    distance = countDown - now;
-                document.getElementById("days").innerText = (String(Math.floor((distance / (day)))).charAt(1)) ? String(Math.floor((distance / (day)))).charAt(0) : 0,
-                    document.getElementById("days1").innerText = (String(Math.floor((distance / (day)))).charAt(1)) ? String(Math.floor((distance / (day)))).charAt(1) : String(Math.floor((distance / (day)))).charAt(0),
-                    document.getElementById("hours").innerText = (String(Math.floor((distance % (day)) / (hour))).charAt(1)) ? String(Math.floor((distance % (day)) / (hour))).charAt(0) : 0,
-                    document.getElementById("hours1").innerText = (String(Math.floor((distance % (day)) / (hour))).charAt(1)) ? String(Math.floor((distance % (day)) / (hour))).charAt(1) : String(Math.floor((distance % (day)) / (hour))).charAt(0),
-                    document.getElementById("minutes").innerText = (String(Math.floor((distance % (hour)) / (minute))).charAt(1)) ? String(Math.floor((distance % (hour)) / (minute))).charAt(0) : 0,
-                    document.getElementById("minutes1").innerText = (String(Math.floor((distance % (hour)) / (minute))).charAt(1)) ? String(Math.floor((distance % (hour)) / (minute))).charAt(1) : String(Math.floor((distance % (hour)) / (minute))).charAt(0),
-                    document.getElementById("seconds").innerText = (String(Math.floor((distance % (minute)) / second)).charAt(1)) ? String(Math.floor((distance % (minute)) / second)).charAt(0) : 0,
-                    document.getElementById("seconds1").innerText = (String(Math.floor((distance % (minute)) / second)).charAt(1)) ? String(Math.floor((distance % (minute)) / second)).charAt(1) : String(Math.floor((distance % (minute)) / second)).charAt(0);
 
-                //do something later when date is reached
-                if (distance < 0) {
-                    let headline = document.getElementById("headline"),
-                        countdown = document.getElementById("countdown"),
-                        content = document.getElementById("content");
-
-                    headline.innerText = "It's my birthday!";
-                    countdown.style.display = "none";
-                    content.style.display = "block";
-
-                    clearInterval(x);
-                }
-                //seconds
-            }, 0)
-    }());
-</script>
 <script type="text/javascript">
     // $('#cuoc_thi_da_ket_thuc').owlCarousel({
     //     loop: true,

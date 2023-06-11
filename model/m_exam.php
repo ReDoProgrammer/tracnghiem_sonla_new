@@ -13,6 +13,53 @@ include_once('m_exam_result.php');
 include_once('m_exam_result_detail.php');
 include_once('classes/m_message.php');
 
+function CurrentExam(){
+    $sql = "SELECT id, title, thumbnail,`begin`,`end`,regulation
+            FROM exams
+            WHERE `begin` < CURRENT_TIMESTAMP( )
+            AND   `end` > CURRENT_TIMESTAMP( )               
+            ORDER BY `end`
+            LIMIT 1
+            ";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+
+    if($result){
+        if(mysql_num_rows($result)==0){
+            $sql = "SELECT id, title, thumbnail,`begin`,`end`,regulation
+            FROM exams
+            WHERE `begin` < CURRENT_TIMESTAMP( )
+            AND   `end` < CURRENT_TIMESTAMP( )               
+            ORDER BY `end` DESC
+            LIMIT 1
+            ";
+             $result = mysql_query($sql,dbconnect());
+             if($result){
+                $msg->statusCode = 200;
+                $msg->icon = "success";
+                $msg->title = "Lấy cuộc thi gần nhất đã diễn thành công!";
+                $msg->content = mysql_fetch_array($result);
+             }else{
+                $msg->statusCode = 500;
+                $msg->icon = "error";
+                $msg->title = "Lấy cuộc thi gần nhất đã diễn ra thất bại!";
+                $msg->content = mysql_error();
+             }
+        }else{
+            $msg->statusCode = 200;
+            $msg->icon = "success";
+            $msg->title = "Lấy cuộc thi gần nhất đang diễn thành công!";
+            $msg->content = mysql_fetch_array($result);
+        }
+    }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Lấy cuộc thi gần nhất đang diễn ra thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 function Top10Exams()
 {
     $sql = "SELECT e.id, title, thumbnail, 
