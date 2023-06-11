@@ -1,5 +1,5 @@
 <div class="banner slider-wrapper theme-default">
-    <img style="width: 100%; height: auto;" id="he_banner" src="assets/images/banners/sub1.jpg" />
+    <img style="width: 100%; height: auto; max-height:600px !important;" id="he_banner" class="img-responsive" src="assets/images/banners/sub1.jpg" />
 </div>
 <div class="time-countdown">
     <div class="row" style="border: 1px solid #333; margin: 0 1px 10px 1px;">

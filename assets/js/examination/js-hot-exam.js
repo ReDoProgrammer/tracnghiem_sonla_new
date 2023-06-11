@@ -15,7 +15,7 @@
 					$('#he_begin div.time').text(`${checkTime(bg.getHours())}H${checkTime(bg.getMinutes())}`);
 					$('#he_begin div.date').text(`${checkTime(bg.getDate())}/${checkTime(bg.getMonth() + 1)}/${bg.getFullYear()}`);
 
-					let end = new Date(exam.begin);
+					let end = new Date(exam.end);
 					$('#he_end div.time').text(`${checkTime(end.getHours())}H${checkTime(end.getMinutes())}`);
 					$('#he_end div.date').text(`${checkTime(end.getDate())}/${checkTime(end.getMonth() + 1)}/${end.getFullYear()}`);
 
@@ -23,11 +23,12 @@
 
 					$('#btnHEDoExam').attr('href','index.php?module=examination&act=do-exam&id='+exam.id);
 
+
 					$('.lst').each(function () {
 						var $this = $(this),
 							countdown = $this.find('.count'),
 							endDate = countdown.data('time');
-
+							
 						countdown.timeTo({
 							timeTo: new Date(endDate).getTime(),
 							displayDays: 2,
