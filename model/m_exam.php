@@ -57,7 +57,8 @@ function Top10Units(){
             JOIN members m ON m.workplace_id = wp.id
             JOIN exam_results er ON er.member_id = m.id
             GROUP BY wp.id
-            ORDER BY candidates,exam_times DESC
+            ORDER BY candidates DESC,
+            exam_times DESC
             LIMIT 10
     ";
     $result = mysql_query($sql,dbconnect());
