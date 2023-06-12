@@ -195,7 +195,7 @@ function LoadData() {
                 tr += `</td>`;
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.exam_status == 1 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id})" ${e.is_hot == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.exam_status != 0 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id})" ${e.is_hot == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
