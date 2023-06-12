@@ -219,12 +219,12 @@ $('.btnSubmitRegister').click(function () {
                 showCancelButton: false,
                 confirmButtonText: 'OK!'
 
-            }).then(async (result) => {
+            }).then((result) => {
                 console.log(result)
-                let ip_address = '';
-                await $.getJSON('https://api.ipify.org?format=json', function (data) {
-                    ip_address = data.ip;
-                });
+                let ip_address = '127.0.0.1';
+                // await $.getJSON('https://api.ipify.org?format=json', function (data) {
+                //     ip_address = data.ip;
+                // });
                 if (result.statusCode == 201) {
                     $.ajax({
                         url: 'controller/member/login.php',

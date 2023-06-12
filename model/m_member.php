@@ -40,21 +40,38 @@ function login($username_or_email, $login_password, $ip_address)
                 m.username AS username,
                 m.fullname AS fullname,
                 DATE_FORMAT(m.birthdate,'%d/%m/%Y') AS birthdate,
+                m.get_birthdate,
                 CASE
                     WHEN (LENGTH(TRIM(m.address))>0) THEN CONCAT(m.address,', ',w.full_name,', ',d.full_name,', ',p.full_name)
                     ELSE CONCAT(w.full_name,', ',d.full_name,', ',p.full_name)
                 END AS address,
+                m.get_address,
+                m.province_code,m.district_code,m.ward_code,m.address AS detail,
+
                 CASE
                     WHEN m.gender=1 THEN 'Nam'
                     WHEN m.gender=0 THEN 'Nữ'
                     ELSE 'Khác'
                 END AS gender,
+                m.gender AS gender_value,
+                m.get_gender,
                 m.phone AS phone,
                 m.email AS email,
                 m.avatar as avatar,
                 DATE_FORMAT( m.applied_date, '%d/%m/%Y %H:%i') AS applied_date,
+
+                m.job_id,
                 j.name AS job,
-                wp.name AS workplace,                
+                m.get_job,
+
+                m.workplace_id,
+                wp.name AS workplace,     
+                m.get_workplace, 
+
+                m.position_id,
+                ps.name AS postition,
+                m.get_position,
+
                 DATE_FORMAT(m.lasttime_login, '%d/%m/%Y %H:%i') AS lasttime_login,
                 m.role_id 
                 FROM `members` m 
@@ -63,6 +80,7 @@ function login($username_or_email, $login_password, $ip_address)
                 LEFT JOIN wards w ON m.ward_code = w.code
                 LEFT JOIN jobs j ON m.job_id = j.id
                 LEFT JOIN workplaces wp on m.workplace_id = wp.id
+                LEFT JOIN positions ps ON m.position_id = ps.id
                 WHERE m.id = " . $m['id'];
 
                 $account = mysql_fetch_array(mysql_query($sql, dbconnect()));
@@ -72,14 +90,39 @@ function login($username_or_email, $login_password, $ip_address)
                     $profile->username = $account['username'];
                     $profile->avatar = $account['avatar'];
                     $profile->fullname = $account['fullname'];
+
                     $profile->birthdate = $account['birthdate'];
+                    $profile->get_birthdate = $account['get_birthdate'];
+
                     $profile->gender = $account['gender'];
+                    $profile->get_gender = $account['gen_gender'];
+
                     $profile->phone = $account['phone'];
                     $profile->email = $account['email'];
+
                     $profile->applied_date = $account['applied_date'];
+
                     $profile->address = $account['address'];
+                    $profile->get_address = $account['get_address'];
+                    $profile->province_code =$account['province_code'];
+                    $profile->district_code = $account['district_code'];
+                    $profile->ward_code = $account['ward_code'];
+                    $profile->detail = $account['detail'];
+                    $profile->get_address = $account['get_address'];
+
                     $profile->job = $account['job'];
+                    $profile->get_job = $account['get_job'];
+                    $profile->job_id = $account['job_id'];
+
                     $profile->workplace = $account['workplace'];
+                    $profile->workplace_id = $account['workplace_id'];
+                    $profile->get_workplace = $account['get_workplace'];
+
+                    $profile->get_position = $account['get_position'];
+                    $profile->position_id = $account['position_id'];
+                    $profile->position = $account['position'];
+
+
                     $profile->role_id = $account['role_id'];
 
                     $profile->lasttime_login = $account['lasttime_login'];
