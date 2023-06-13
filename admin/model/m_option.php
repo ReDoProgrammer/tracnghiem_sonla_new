@@ -40,12 +40,23 @@ function oGetOptionsByQuestion($question_id)
 {
     $sql = "SELECT id,content,correct FROM options WHERE question_id = " . $question_id;
     $local_list = mysql_query($sql, dbconnect());
-
-    $result = array();
-    while ($local = mysql_fetch_array($local_list)) {
-        $result[] = $local;
+    $msg = new Message();
+    if ($local_list) {
+        $result = array();
+        while ($local = mysql_fetch_array($local_list)) {
+            $result[] = $local;
+        }
+        $msg->icon = "success";
+        $msg->title = "Lấy danh sách đáp án của câu hỏi thành công!";
+        $msg->statusCode = 200;
+        $msg->content = $result;
+    }else{
+        $msg->title = "Load danh sách đáp án của câu hỏi thất bại";
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->content = mysql_error();
     }
-    return $result;
+    return $msg;
 }
 function oCreate($question_id, $content, $correct, $created_by)
 {
@@ -70,7 +81,7 @@ function oUpdate($id, $content, $correct, $updated_by)
             WHERE id =" . $id, dbconnect());
 
 
-    if ($result &&  mysql_affected_rows() > 0) {
+    if ($result && mysql_affected_rows() > 0) {
         return true;
     } else {
         return mysql_error();
@@ -80,7 +91,7 @@ function oDelete($id)
 {
     $result = mysql_query("delete from options where id= " . $id, dbconnect());
 
-    if ($result &&  mysql_affected_rows() > 0) {
+    if ($result && mysql_affected_rows() > 0) {
         return true;
     } else {
         return mysql_error();
@@ -91,7 +102,7 @@ function oDeletebyQuestion($question_id)
 {
     $result = mysql_query("delete from options where question_id= " . $question_id, dbconnect());
 
-    if ($result &&  mysql_affected_rows() > 0) {
+    if ($result && mysql_affected_rows() > 0) {
         return true;
     } else {
         return mysql_error();

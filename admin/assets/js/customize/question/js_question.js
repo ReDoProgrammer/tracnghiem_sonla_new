@@ -149,22 +149,20 @@ function GetQuestion(id, readonly = false) {
                     url: 'controller/option/list-by-question.php',
                     type: 'get',
                     data: { question_id: id },
-                    success: function (options) {
-                        options.forEach(opt => {
-                            AddOption(opt.id, opt.content, opt.correct == 1 ? true : false, readonly);
-                        })
+                    success: function (data) {
+                        if(data.statusCode == 200){
+                            let options = data.content;
+                            options.forEach(opt => {
+                                console.log(opt);
+                                AddOption(opt.id, opt.content, opt.correct == 1, readonly);
+                            })
+                        }
+                       
                     },
                     error: function (jqXHR, exception) {
                         console.log(jqXHR);
                     }
                 })
-
-                // let jsonString = JSON.parse(JSON.stringify(question.options));
-                // let options = JSON.parse( jsonString.replace(/[\r\n\t]/g, ''));              
-
-                // console.log(options);
-
-
             } else {
                 Swal.fire(
                     msg.title,
@@ -336,7 +334,7 @@ function AddOption(id = '', content = '', checked = false, readonly = false) {
 
     $('#options').append(option);
     CKEDITOR.replace(optName);
-
+    CKEDITOR.instances[optName].setData(content);
 
 
 
