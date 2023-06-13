@@ -1,5 +1,4 @@
 <?php
-    include('../../model/m_db.php');
     include('../../model/m_topic.php');
     $page = $_GET['page'];
     $search = $_GET['search'];

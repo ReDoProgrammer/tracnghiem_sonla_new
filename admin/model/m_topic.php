@@ -5,31 +5,10 @@
  * @copyright 2023
  */
 
-include('classes/m_message.php');
+include_once('classes/m_message.php');
+include_once('m_db.php');
 
-function countPages($search, $pageSize)
-{
-    $msg = new Message();
 
-    $result = mysql_query("SELECT id
-    FROM topics t
-    WHERE t.name like '%" . $search . "%' ", dbconnect());
-    if($result){
-        $count = mysql_num_rows($result);
-        $pages = $count % $pageSize == 0 ? $count / $pageSize : floor($count / $pageSize) + 1;
-        
-        $msg->title = 'Load số trang thành công!';
-        $msg->statusCode = 200;
-        $msg->content = $pages;
-
-    }else{
-        $msg->title = 'Load số trang thành công!';
-        $msg->statusCode = 500;
-        $msg->content = "Lỗi: ".mysql_error();
-    }
-    return $msg;
-   
-}
 function retrieve($page, $search, $pageSize)
 {
     $sql = "SELECT t.id,t.name,t.created_at,m.fullname AS created_by
@@ -38,20 +17,36 @@ function retrieve($page, $search, $pageSize)
     WHERE t.name like '%" . $search . "%'       
     ORDER BY t.name";
 
-    // nếu kích thước trang truyền vào không phải là all (tất cả)
-    if ($pageSize != "All") {
-        $sql .= " LIMIT " . $pageSize . " OFFSET " . ($page - 1) * $pageSize;
+    //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+    $pages = 1;
+    if (strcmp($pageSize, "All") != 0) {
+        $result = mysql_query($sql, dbconnect());
+
+        $totalRows = mysql_num_rows($result);
+        $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+        $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
     }
-    $local_list = mysql_query($sql, dbconnect());
-    $result = array();
-    while ($local = mysql_fetch_array($local_list)) {
-        $result[] = $local;
-    }
+
+
     $msg = new Message();
-    $msg->icon = 'success';
-    $msg->title = "Load danh sách chủ đề thành công!";
-    $msg->content = $result;
-    $msg->statusCode = 200;
+    $local_list = mysql_query($sql, dbconnect());
+    if ($local_list) {
+        $result = array();
+        while ($local = mysql_fetch_array($local_list)) {
+            $result[] = $local;
+        }
+        $msg->icon = 'success';
+        $msg->title = "Load danh sách chủ đề thành công!";
+        $msg->content = $result;
+        $msg->statusCode = 200;
+        $msg->pages = $pages;
+    }else{
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->title = "Load danh sách chủ đề thất bại!";
+        $msg->content = "Lỗi: ".mysql_error();
+    }
+
     return $msg;
 }
 
@@ -79,24 +74,24 @@ function detail($id)
 function create($name, $created_by)
 {
     $msg = new Message();
-    $result= mysql_query("INSERT INTO topics(name,created_by) VALUES('" . $name . "','" . $created_by . "')", dbconnect());
+    $result = mysql_query("INSERT INTO topics(name,created_by) VALUES('" . $name . "','" . $created_by . "')", dbconnect());
     if ($result) {
         $affectedRows = mysql_affected_rows();
         if ($affectedRows > 0) {
             $msg->icon = "success";
             $msg->title = "Thêm mới chủ đề thành công!";
             $msg->statusCode = 201;
-            
+
         } else {
             $msg->icon = "error";
             $msg->title = "Thêm mới chủ đề thất bại!";
             $msg->statusCode = 404;
         }
-    } else {      
+    } else {
         $msg->icon = "error";
         $msg->title = "Thêm mới chủ đề thất bại!";
         $msg->statusCode = 404;
-        $msg->content = "Lỗi: ". mysql_error();
+        $msg->content = "Lỗi: " . mysql_error();
     }
     return $msg;
 }
