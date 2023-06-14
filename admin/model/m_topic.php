@@ -9,19 +9,19 @@ include_once('classes/m_message.php');
 include_once('m_db.php');
 
 
-function retrieve($page, $search, $pageSize)
+function tGet($page, $search, $pageSize)
 {
     $sql = "SELECT t.id,t.name,t.created_at,m.fullname AS created_by
     FROM topics t   
     INNER JOIN members m ON t.created_by = m.id
-    WHERE t.name like '%" . $search . "%'       
-    ORDER BY t.name";
+    WHERE t.name LIKE '%" . $search . "%'       
+    ORDER BY t.name ";
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
     if (strcmp($pageSize, "All") != 0) {
         $result = mysql_query($sql, dbconnect());
-
+ 
         $totalRows = mysql_num_rows($result);
         $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
         $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
@@ -46,7 +46,6 @@ function retrieve($page, $search, $pageSize)
         $msg->title = "Load danh sách chủ đề thất bại!";
         $msg->content = "Lỗi: ".mysql_error();
     }
-
     return $msg;
 }
 

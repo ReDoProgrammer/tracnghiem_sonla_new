@@ -3,17 +3,22 @@ var search = "";
 var index = 0;
 var topicId = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
-$(document).ready(function () {
+$(function () {
+    LoadData();   
+})
+$('#slPageSize').change(function(){
+    pageSize = $(this).text();
+})
+$(document).on('click','#pagination li a',function(e){
+    e.preventDefault();
+    page = $(this).text();
     LoadData();
-    pageSize = $('#slPageSize option:selected').text();
 })
 
 
 
 $('#btnSearch').click(function () {
-    search = $('#txtSearch').val();
     page = 1;
-    index = 0;
     LoadData();
 })
 
@@ -24,44 +29,16 @@ $('#btnAddNew').click(function () {
     $('#modalTopic').modal();
 })
 
-function Pagination() {
-    $.ajax({
-        url: 'controller/topic/pagination.php',
-        type: 'get',
-        data: { search, pageSize },
-        success: function (data) {
-            $('#pagination').empty();
-            if (data.statusCode == 200) {
-                pages = data.content;
-                if (pages <= 1) {
-                    $('#pagination').hide();
-                } else {
-                    $('#pagination').show();
-                    for (i = 1; i <= pages; i++) {
-                        if (page == i) {
-                            $('#pagination').append(`<li class="active"><a href="#">${i}</a></li>`);
-                        } else {
-                            $('#pagination').append(`<li><a href="#">${i}</a></li>`);
-                        }
-                    }
 
-                }
-            } else {
-                Swal.fire(
-                    msg.title,
-                    msg.content,
-                    msg.icon
-                )
-            }
-        }
-    })
-}
 
 function LoadData() {
     $.ajax({
         url: 'controller/topic/list.php',
         type: 'get',
-        data: { page, search, pageSize },
+        data: { 
+            page, 
+            search: $('#txtSearch').val(), 
+            pageSize },
         success: function (data) {
             $('#tblData').empty();
             index = pageSize == 'All' ? 1 : (page - 1) * pageSize;
@@ -80,7 +57,12 @@ function LoadData() {
                     tr += `</tr>`;
                     $('#tblData').append(tr);
                 })
-                Pagination();
+                $('#pagination').empty();
+                if(data.pages > 1){
+                    for(i=1; i<=data.pages; i++){
+                        $('#pagination').append(`<li class="${i==page?'active':''}"><a href="#">${i}</a></li>`);
+                    }
+                }
             }
            
         }
@@ -154,17 +136,8 @@ function SetComponents(isReadOnly) {
         $('#btnAddOption').show();
     }
 }
-$("#pagination").on("click", "li a", function (event) {
-    event.preventDefault();
-    page = $(this).text();
-    LoadData();
-});
 
-$('#slPageSize').on('change', function () {
-    pageSize = $('#slPageSize option:selected').text();
-    page = 1;
-    LoadData();
-})
+
 
 $('#modalTopic').on('hidden.bs.modal', function () {
     $('#txtName').val('');

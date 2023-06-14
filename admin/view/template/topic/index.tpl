@@ -104,5 +104,5 @@
  <?php include('view/template/topic/modal.tpl'); ?>
 
 
-<script src = 'assets/js/customize/topic/js_topic.js'></script>
+<script src = 'assets/js/customize/topic/js-topic.js'></script>
 
