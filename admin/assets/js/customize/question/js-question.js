@@ -3,9 +3,28 @@ var search = "";
 var index = 0;
 var questId = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
-$(document).ready(function () {
+$(function () {
     LoadQuestions();
-    pageSize = $('#slPageSize option:selected').text();
+
+    $.ajax({
+        url: 'controller/topic/list.php',
+        type: 'get',
+        data: {
+            page: 1,
+            search: '',
+            pageSize: 'All'
+        },
+        success: function (data) {
+            if (data.statusCode == 200) {
+                let topics = data.content;
+                topics.forEach(t => {
+                    $('#slTopics').append(`<option value="${t.id}">${t.name}</option>`);
+                })
+                $('#slTopics').selectpicker('refresh');
+            }
+
+        }
+    })
 })
 
 $('#btnPrint').click(async function () {
@@ -150,14 +169,14 @@ function GetQuestion(id, readonly = false) {
                     type: 'get',
                     data: { question_id: id },
                     success: function (data) {
-                        if(data.statusCode == 200){
+                        if (data.statusCode == 200) {
                             let options = data.content;
                             options.forEach(opt => {
                                 console.log(opt);
                                 AddOption(opt.id, opt.content, opt.correct == 1, readonly);
                             })
                         }
-                       
+
                     },
                     error: function (jqXHR, exception) {
                         console.log(jqXHR);
@@ -376,17 +395,6 @@ $('#btnAddOption').click(function () {
 
 $(document).on('show.bs.modal', '#modalQuestion', function () {
     $('.error').hide();
-    $.ajax({
-        url: 'controller/topic/list-all.php',
-        type: 'get',
-        success: function (topics) {
-            $('#slTopics').empty();
-            topics.forEach(t => {
-                $('#slTopics').append(`<option value="${t.id}">${t.name}</option>`);
-            })
-            $('#slTopics').selectpicker('refresh');
-        }
-    })
 });
 
 

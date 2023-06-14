@@ -120,5 +120,5 @@
 
 <link href="assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
 <script src="assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-<script src = "assets/js/customize/question/js_question.js"></script>
+<script src = "assets/js/customize/question/js-question.js"></script>
 
