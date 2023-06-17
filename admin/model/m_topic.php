@@ -8,6 +8,33 @@
 include_once('classes/m_message.php');
 include_once('m_db.php');
 
+function ExamConfigs($exam_id = 0)
+{
+    $sql = "SELECT t.id, t.name, 
+    cf.percent
+    FROM topics t
+    LEFT JOIN exam_configs cf ON cf.topic_id = t.id
+    GROUP BY t.id";
+    $result = mysql_query($sql, dbconnect());
+    $msg = new Message();
+    if ($result) {
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Load config của bài thi thành công!";
+        $msg->content = $arr;
+    } else {
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Load configs của đề thi thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 
 function tGet($page, $search, $pageSize)
 {
@@ -21,7 +48,7 @@ function tGet($page, $search, $pageSize)
     $pages = 1;
     if (strcmp($pageSize, "All") != 0) {
         $result = mysql_query($sql, dbconnect());
- 
+
         $totalRows = mysql_num_rows($result);
         $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
         $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
@@ -40,11 +67,11 @@ function tGet($page, $search, $pageSize)
         $msg->content = $result;
         $msg->statusCode = 200;
         $msg->pages = $pages;
-    }else{
+    } else {
         $msg->icon = "error";
         $msg->statusCode = 500;
         $msg->title = "Load danh sách chủ đề thất bại!";
-        $msg->content = "Lỗi: ".mysql_error();
+        $msg->content = "Lỗi: " . mysql_error();
     }
     return $msg;
 }

@@ -370,7 +370,7 @@ $('#ckbUseCKEditor').change(function () {
                 checked:$(chk).is(':checked')
             };
             options.push(opt);
-        }else{
+        }else{ 
             let opt = {
                 content: $(ta).val(),
                 checked: $(chk).is('checked')

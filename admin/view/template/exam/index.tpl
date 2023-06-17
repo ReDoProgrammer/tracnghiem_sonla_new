@@ -126,7 +126,6 @@
 <?php include('view/template/common/footer.tpl'); ?>
 <?php include('view/template/exam/modal.tpl'); ?>
 
-<?php include('view/template/exam/modalConfigExam.tpl'); ?>
-<script src="assets/js/customize/exam/js_exam.js"></script>
+<script src="assets/js/customize/exam/js-exam.js"></script>
 
 

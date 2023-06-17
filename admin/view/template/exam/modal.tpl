@@ -86,6 +86,10 @@
                                 id="ckbRandomOptions">Đảo đáp án</label>
                     </div>
                 </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading fw-bold">Cấu hình cuộc thi - <span id="totalPercent">0</span>%</div>
+                    <div class = "panel-body" id="configs"></div>
+                </div>
 
                 <hr/>
 
@@ -96,7 +100,7 @@
                 </div>
 
                 <div class="form-group">
-                    <span class="error" id="errNoChecked"></span>
+                    <span class="error fw-bold" id="errNoChecked"></span>
                 </div>
             </div>
             <div class="modal-footer">

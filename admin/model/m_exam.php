@@ -178,7 +178,7 @@ function History($page, $search, $pageSize, $workplaces, $exams)
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
-    if (strcmp($pageSize, "All")!=0) {
+    if (strcmp($pageSize, "All") != 0) {
         $result = mysql_query($sql, dbconnect());
 
         $totalRows = mysql_num_rows($result);
@@ -252,16 +252,16 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
         }
         $sql .= ")";
     }
-    if($max == 1){
-        $sql.= " GROUP BY m.id,e.id ORDER BY total_marks DESC";
-    }else{        
+    if ($max == 1) {
+        $sql .= " GROUP BY m.id,e.id ORDER BY total_marks DESC";
+    } else {
         $sql .= " GROUP BY m.id,er.id";
     }
-    
+
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
-    if (strcmp($pageSize, "All")!=0) {
+    if (strcmp($pageSize, "All") != 0) {
         $result = mysql_query($sql, dbconnect());
 
         $totalRows = mysql_num_rows($result);
@@ -317,18 +317,19 @@ function all()
     }
     return $msg;
 }
-function change_random_questions($id){
+function change_random_questions($id)
+{
     $sql = "UPDATE exams 
             SET random_questions = CASE WHEN random_questions = 1 THEN 0 ELSE 1 END
-            WHERE id = '".$id."'
+            WHERE id = '" . $id . "'
             ";
-    $result = mysql_query($sql,dbconnect());
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result && mysql_affected_rows()>0){
+    if ($result && mysql_affected_rows() > 0) {
         $msg->statusCode = 200;
         $msg->icon = "success";
         $msg->title = "Đổi trạng thái đảo câu hỏi thành công!";
-    }else{
+    } else {
         $msg->statusCode = 500;
         $msg->icon = "error";
         $msg->title = "Đổi trạng thái đảo câu hỏi thất bại!";
@@ -362,10 +363,10 @@ function change_random_options($id)
 function change_hot($id)
 {
     //Cập nhật tất cả các bài thi khác thành không tiêu điểm
-    $result = mysql_query("UPDATE exams SET is_hot = 0 WHERE id !='".$id."'", dbconnect());
+    $result = mysql_query("UPDATE exams SET is_hot = 0 WHERE id !='" . $id . "'", dbconnect());
     $msg = new Message();
     if ($result) {
-       
+
         $result = mysql_query("UPDATE exams 
                                 SET is_hot = CASE WHEN is_hot = 1 THEN 0 ELSE 1 END 
                                 WHERE id= " . $id, dbconnect());
@@ -423,21 +424,21 @@ function retrieve($page, $search, $pageSize)
     OR e.description like '%" . $search . "%'       
     ORDER BY e.is_hot DESC, exam_status ";
 
-     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
-     $pages = 1;
-     if (strcmp($pageSize, "All")!=0) {
-         $result = mysql_query($sql, dbconnect());
- 
-         $totalRows = mysql_num_rows($result);
-         $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
-         $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
-     }
+    //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+    $pages = 1;
+    if (strcmp($pageSize, "All") != 0) {
+        $result = mysql_query($sql, dbconnect());
+
+        $totalRows = mysql_num_rows($result);
+        $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+        $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
+    }
 
 
     $local_list = mysql_query($sql, dbconnect());
 
     $msg = new Message();
-    if($local_list){
+    if ($local_list) {
         $arr = array();
         while ($local = mysql_fetch_array($local_list)) {
             $arr[] = $local;
@@ -446,21 +447,21 @@ function retrieve($page, $search, $pageSize)
         $msg->icon = "success";
         $msg->statusCode = 200;
         $msg->content = $arr;
-        $msg->pages =$pages;
-    }else{
+        $msg->pages = $pages;
+    } else {
         $msg->title = "Load danh sách bài thi thất bại!";
         $msg->icon = "error";
         $msg->statusCode = 500;
         $msg->content = mysql_error();
     }
     return $msg;
-    
+
 }
 
 
 function detail($id)
 {
-    $sql ="SELECT 
+    $sql = "SELECT 
                 e.id,e.title,e.thumbnail,e.duration,e.is_hot,
                 e.number_of_questions,
                 e.mark_per_question,
@@ -485,14 +486,14 @@ function detail($id)
             LEFT JOIN exam_configs ef ON ef.exam_id = e.id
             WHERE e.id = '" . $id . "' 
             GROUP BY e.id ";
-    $result = mysql_query($sql,dbconnect());
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result){
+    if ($result) {
         $msg->icon = "success";
         $msg->statusCode = 200;
         $msg->title = "Lấy thông tin chi tiết bài thi thành công!";
-        $msg->content =mysql_fetch_array($result);
-    }else{
+        $msg->content = mysql_fetch_array($result);
+    } else {
         $msg->title = "Lấy thông tin bài thi thất bại!";
         $msg->statusCode = 500;
         $msg->icon = "error";
@@ -501,9 +502,23 @@ function detail($id)
     return $msg;
 }
 
-function create($title,$thumbnail,$description,$duration,$number_of_questions,
-$mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,$regulation,$created_by)
-{
+function create(
+    $title,
+    $thumbnail,
+    $description,
+    $duration,
+    $number_of_questions,
+    $mark_per_question,
+    $times,
+    $begin,
+    $end,
+    $is_hot,
+    $random_questions,
+    $random_options,
+    $configs,
+    $regulation,
+    $created_by
+) {
     /*
         Nếu cuộc thi được tick vào là cuộc thi tiêu điểm
         => update các cuộc thi còn lại trở thành không
@@ -513,7 +528,7 @@ $mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,
         $result = mysql_query("UPDATE exams SET is_hot = 0 ", dbconnect());
     }
 
-    
+
 
     $result = mysql_query("INSERT INTO exams 
      SET title='" . $title . "',
@@ -522,11 +537,11 @@ $mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,
         duration = '" . $duration . "',
         number_of_questions = '" . $number_of_questions . "',
         mark_per_question = '" . $mark_per_question . "',
-        times = '".$times."',
+        times = '" . $times . "',
         begin = '" . $begin . "',
         end = '" . $end . "',    
-        is_hot = '".$is_hot."',   
-        random_questions = '".$random_questions."',
+        is_hot = '" . $is_hot . "',   
+        random_questions = '" . $random_questions . "',
         random_options = '" . $random_options . "',
         regulation = '" . $regulation . "',
         created_by='" . $created_by . "'
@@ -534,13 +549,29 @@ $mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,
 
     $msg = new Message();
     if ($result && mysql_affected_rows() > 0) {
-        $chk = setCode(mysql_insert_id());
+        $latestId = mysql_insert_id();
+        $chk = setCode($latestId);
         if ($chk->statusCode != 200) {
             return $chk;
         }
-        $msg->statusCode = 201;
-        $msg->icon = 'success';
-        $msg->title = "Tạo mới cuộc thi thành công!";
+
+        $sql = "INSERT INTO exam_configs(exam_id,topic_id,percent,created_by) VALUES";
+        foreach ($configs as $cf) {
+            $sql .= "('" . $latestId . "','" . $cf['id'] . "', '" . $cf['percent'] . "','".$created_by."')";
+            $sql .= $cf == end($configs) ? "" : ","; // kiểm tra xem có phải phần tử cuối của mảng hay không
+        }
+        $result = mysql_query($sql, dbconnect());
+        if ($result) {
+            $msg->statusCode = 201;
+            $msg->icon = 'success';
+            $msg->title = "Tạo mới cuộc thi thành công!";
+        } else {
+            $msg->icon = 'error';
+            $msg->title = 'Lỗi cấu hinh bài thi';
+            $msg->content = "Lỗi: " . mysql_error();
+            $msg->statusCode = 500;
+        }
+
     } else {
         $msg->icon = 'error';
         $msg->title = 'Tạo cuộc thi thất bại';
@@ -550,11 +581,25 @@ $mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,
     return $msg;
 }
 
-function update($id,$title,$thumbnail,$description,$duration,$number_of_questions,
-$mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,$regulation,$updated_by)
-{
-    if($is_hot == 1){
-        mysql_query("UPDATE exams SET is_hot = 0",dbconnect());
+function update(
+    $id,
+    $title,
+    $thumbnail,
+    $description,
+    $duration,
+    $number_of_questions,
+    $mark_per_question,
+    $times,
+    $begin,
+    $end,
+    $is_hot,
+    $random_questions,
+    $random_options,
+    $regulation,
+    $updated_by
+) {
+    if ($is_hot == 1) {
+        mysql_query("UPDATE exams SET is_hot = 0", dbconnect());
     }
     $result = mysql_query("UPDATE exams 
     SET title='" . $title . "',
@@ -563,11 +608,11 @@ $mark_per_question,$times,$begin,$end,$is_hot,$random_questions,$random_options,
         duration = '" . $duration . "',
         number_of_questions = '" . $number_of_questions . "',
         mark_per_question = '" . $mark_per_question . "',
-        times = '".$times."',
+        times = '" . $times . "',
         begin = '" . $begin . "',
         end = '" . $end . "',    
-        is_hot = '".$is_hot."',   
-        random_questions = '".$random_questions."',
+        is_hot = '" . $is_hot . "',   
+        random_questions = '" . $random_questions . "',
         random_options = '" . $random_options . "',
         regulation = '" . $regulation . "',
         updated_by='" . $updated_by . "',
@@ -591,37 +636,37 @@ function delete($id)
     $result = mysql_query("DELETE FROM exams 
                             WHERE id= " . $id, dbconnect());
     $msg = new Message();
-    if($result && mysql_affected_rows()>0){
-        $sql = "DELETE FROM exam_configs WHERE exam_id = '".$id."'";
-        $result = mysql_query($sql,dbconnect());
-        if($result){
+    if ($result && mysql_affected_rows() > 0) {
+        $sql = "DELETE FROM exam_configs WHERE exam_id = '" . $id . "'";
+        $result = mysql_query($sql, dbconnect());
+        if ($result) {
             $msg->statusCode = 200;
             $msg->icon = "success";
             $msg->title = "Xóa bài thi thành công!";
-        }else{
+        } else {
             $msg->icon = 'error';
             $msg->title = 'Xóa cấu hình bài thi thất bại!';
             $msg->content = "Lỗi: " . mysql_error();
             $msg->statusCode = 500;
         }
 
-    }else{
+    } else {
         $msg->icon = 'error';
         $msg->title = 'Xóa cuộc thi thất bại';
         $msg->content = "Lỗi: " . mysql_error();
         $msg->statusCode = 500;
-    }   
+    }
     return $msg;
 }
 
 function setCode($id)
 {
-    $idx =  $id < 1000000 ? "0" . (string)$id :
-        $id < 100000 ? "00" . (string)$id :
-        $id < 10000 ? "000" . (string)$id :
-        $id < 1000 ? "0000" . (string)$id :
-        $id < 100 ? "00000" . (string)$id :
-        $id < 10 ? "000000" . (string)$id : $id;
+    $idx = $id < 1000000 ? "0" . (string) $id :
+        $id < 100000 ? "00" . (string) $id :
+        $id < 10000 ? "000" . (string) $id :
+        $id < 1000 ? "0000" . (string) $id :
+        $id < 100 ? "00000" . (string) $id :
+        $id < 10 ? "000000" . (string) $id : $id;
 
     $exam_code = "EX" . date("Y") . $idx;
 

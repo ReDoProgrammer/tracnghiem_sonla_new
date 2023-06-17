@@ -4,7 +4,7 @@ var index = 0;
 var examId = 0;
 var number_of_questions = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
-$(document).ready(function () {
+$(function () {
     LoadData();
 })
 function ExamDetail(id) {
@@ -309,7 +309,7 @@ $(function () {
 
 $(document).on('show.bs.modal', '#modalExam', function () {
     $('.error').hide();
-
+    LoadTopics();
 });
 
 
@@ -392,6 +392,13 @@ $('#btnSaveChanges').click(function () {
         return;
     }
 
+    let totalPercent = parseInt($('#totalPercent').text());
+    if(totalPercent !=100){
+        $('#errNoChecked').text('Cấu hình tỉ lệ theo chủ đề không phù hợp!');
+        $('#errNoChecked').show().fadeOut(5000);
+        return;
+    }
+
     let dB = new Date(begin);
     let dE = new Date(end);
     if (dE < dB) {
@@ -416,6 +423,7 @@ $('#btnSaveChanges').click(function () {
                 number_of_questions,
                 mark_per_question,
                 times,
+                configs,
                 begin: Date2TimeStamp(begin),
                 end: Date2TimeStamp(end),
                 is_hot,
@@ -502,142 +510,67 @@ function Date2TimeStamp(datetime) {
 //phần config exam
 let idx = 0;
 let isUpdate = false;
-
-$('#btnSaveConfigs').click(function () {
-
-    let user = $('#userId').data('user');
-
-    //Lấy các giá trị đã config
-    let configs = [];
-    let totalPercent = 0;
-    $('#tblConfig  > tr').each(function (index, tr) {
-        try {
-            let percent = parseFloat($(tr).find("input[name='txtPercent']").val());
-            let topic_id = $(this).closest('tr').attr('id');
-            totalPercent += percent;
-            configs.push({ topic_id, percent });
-        } catch (err) {
-            console.log(err);
-            $('#msgErrorConfig').text('Tỉ lệ % không hợp lệ!');
-            $('#msgErrorConfig').show().fadeOut(5000);
-            return;
-        }
-    })
-
-    if (totalPercent != 100) {
-        $('#msgErrorConfig').text('Tỉ lệ % không hợp lệ!');
-        $('#msgErrorConfig').show().fadeOut(5000);
-        return;
-    }
+let configs = [];
 
 
-    //duyệt mảng configs để tiến hành insert vào csdl
-    configs.forEach(c => {
-        $.ajax({
-            url: 'controller/exam-config/insert.php',
-            type: 'post',
-            data: {
-                exam_id: examId,
-                topic_id: c.topic_id,
-                percent: c.percent,
-                created_by: user
-            },
-            success: function (data) {
-                if (data.statusCode == 201) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: data.icon,
-                        title: data.title,
-                        showConfirmButton: false,
-                        timer: 1000
-                    })
-                    $('#modalConfigExam').modal('hide');
-                } else {
-                    Swal.fire(
-                        data.title,
-                        data.content,
-                        data.icon
-                    )
-                }
-            },
-            error: function (jqXHR, exception) {
-                console.log(jqXHR)
-            }
-        })
-    })
-})
 
 
-$(document).on('change', "input[type='checkbox']", function () {
+$(document).on('change', "input.ckbConfig", function () {
     let checked = $(this).is(':checked');
-    var txtPercent = $(this).closest('tr').find("input[name='txtPercent']");
-    if (!checked) {
-        $(txtPercent).val('0');
-    }
-    $(txtPercent).prop('readonly', !checked);
+    let cf_id = $(this).closest('div.config').attr('id');
+    let currentVal = $(`#cf_${cf_id}`).data('value');
+    $(`#cf_${cf_id}`).val(`${checked?0:currentVal}`);
+    $(`#cf_${cf_id}`).prop('readonly', !checked);
 })
 
 $(document).on('keyup', "input[name='txtPercent']", function () {
-    var flag = true;
-
-    if (event.shiftKey == true) {
-        event.preventDefault();
-        flag = false;
-    }
-
-    if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190) {
-
-    } else {
-        event.preventDefault();
-        flag = false;
-    }
-    if (flag) {
-        let percent = 0;
-        $('#tblConfig  > tr').each(function (index, tr) {
-            let val = $(tr).find("input[name='txtPercent']").val();
-            if (val.trim().length > 0) {
-                try {
-                    percent += parseFloat(val);
-                } catch {
-
-                }
-            }
-        })
-        if (percent > 100) {
-            $('.error').text('Tỉ lệ % không thể lớn hơn 100%').fadeOut(5000);
-            return;
-        } else {
-            $('#spPercent').text(percent);
+    let totalPercent = 0;
+    configs = [];
+    $('#configs div input[name="txtPercent"]').each(function(){
+        let percent = parseInt($(this).val());  
+        let id = $(this).closest('div.config').attr('id');     
+        if(percent>0){
+            totalPercent +=percent;
+            configs.push({id,percent});
         }
-
-    }
-
+    })
+    $('#totalPercent').text(totalPercent);
 });
 
 
 
 
 
-function LoadTopics(configs = null) {
+function LoadTopics() {
     $.ajax({
-        url: 'controller/topic/list-all.php',
+        url: 'controller/topic/exam-configs.php',
         type: 'get',
-        success: function (topics) {
-            $('#tblConfig').empty();
-            topics.forEach(t => {
-                let cf = 0;
-                if (configs != null) {
-                    cf = configs.filter(x => x.topic_id == t.id)[0].percent;
-                }
-
-                let tr = `<tr id="${t.id}">`;
-                tr += `<td style="width: 80%;">`;
-                tr += `<label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" ${cf > 0 ? 'checked' : ''}>${t.name} (${t.questions_count})</label>`
-                tr += `</td>`;
-                tr += `<td style="width: 20%"><input type="text" class="form-control floatOnly" name="txtPercent" ${cf > 0 ? '' : 'readonly'} value="${cf}"/></td>`
-                tr += `</tr>`;
-                $('#tblConfig').append(tr);
-            })
+        data:{examId},
+        success: function (data) {
+            $('#configs').empty();
+            if(data.statusCode == 200){
+                let totalPercent = 0;
+                data.content.forEach(cf=>{
+                    totalPercent += examId == 0?0:cf.percent;
+                  
+                    let el = `<div class="row config" id="${cf.id}">
+                                <div class="col-sm-10 col-xs-10 col-md-10 col-lg-10">
+                                    <label class="checkbox-inline fw-bold">
+                                        <input type="checkbox" value="" class="ckbConfig">
+                                            ${cf.name}
+                                    </label>
+                                </div>
+                                <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 text-right">
+                                    <input type:text class="form-control 
+                                    text-right txtPercent" data-value="${examId==0?0:cf.percent}" name="txtPercent" id="cf_${cf.id}"
+                                    readonly value = "${examId==0?0:cf.percent}" />
+                                </div>
+                            </div> <hr/>`;
+                    $('#configs').append(el);
+                })
+                $('#totalPercent').text(totalPercent);
+            }
+           
 
         }
     })
