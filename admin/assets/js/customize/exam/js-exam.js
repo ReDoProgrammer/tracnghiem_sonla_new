@@ -452,6 +452,7 @@ $('#btnSaveChanges').click(function () {
                 updated_by: user
             },
             success: function (data) {
+                console.log(data);
                 Swal.fire({
                     position: 'top-end',
                     icon: data.icon,
