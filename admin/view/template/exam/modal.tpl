@@ -88,7 +88,7 @@
                 </div>
                 <div class="panel panel-info">
                     <div class="panel-heading fw-bold">Cấu hình cuộc thi - <span id="totalPercent">0</span>%</div>
-                    <div class = "panel-body" id="configs"></div>
+                    <div class = "panel-body" id="configs" style="height:200; overflow-y: scroll;"></div>
                 </div>
 
                 <hr/>

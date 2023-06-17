@@ -10,11 +10,12 @@ include_once('m_db.php');
 
 function ExamConfigs($exam_id = 0)
 {
-    $sql = "SELECT t.id, t.name, 
-    cf.percent
-    FROM topics t
-    LEFT JOIN exam_configs cf ON cf.topic_id = t.id
-    GROUP BY t.id";
+    $sql = "SELECT topics.id, topics.name, 
+            COALESCE(exam_configs.percent, 0) AS percent
+            FROM topics
+            LEFT JOIN exam_configs ON topics.id = exam_configs.topic_id 
+            AND exam_configs.exam_id = '".$exam_id."'
+            ";
     $result = mysql_query($sql, dbconnect());
     $msg = new Message();
     if ($result) {

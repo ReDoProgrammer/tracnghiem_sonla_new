@@ -8,12 +8,15 @@ $(function () {
     LoadData();
 })
 function ExamDetail(id) {
-    examId = 0;
+    examId = id;
     detail(id);
+    $('#btnSaveChanges').hide();  
+    $('#modalTitle').text('Thông tin cuộc thi');  
 }
 function EditExam(id) {
     examId = id;
-    detail(id);
+    detail(id);   
+    $('#modalTitle').text('Cập nhật cuộc thi');
 }
 
 function detail(id) {
@@ -40,14 +43,7 @@ function detail(id) {
                 $('#ckbHotExam').prop('checked', exam.is_hot == 1);
                 $('#ckbRandomOptions').prop('checked', exam.random_options == 1);
                 $('#ckbRandomQuestions').prop('checked', exam.random_questions == 1);
-                if (examId > 0) {
-                    $('#modalTitle').text('Cập nhật cuộc thi');
-                    $('#btnSaveChanges').show();
-                } else {
-                    $('#modalTitle').text('Thông tin cuộc thi');
-                    $('#btnSaveChanges').hide();
-                }
-
+                
                 $('#modalExam').modal();
             }
         }
@@ -159,7 +155,7 @@ function LoadData() {
             exams.forEach(e => {
                 let tr = `<tr id = "${e.id}" style="${e.is_hot == 1 ? 'background:#E8560D; color:white; font-weight:bold;' : ''}">`;
                 tr += `<td class="text-center" style="width: 2%;"> ${++index} </td>`;
-                tr += `<td ><img src="${e.thumbnail}" class="img-thumbnail" alt="${e.title}" style="width:100px; height:70px !important;"></td>`
+                tr += `<td ><img src="${e.thumbnail.length>0?e.thumbnail:'/assets/imagesimages/no-thumbnail.jpg'}" class="img-thumbnail" alt="${e.title}" style="width:100px; height:70px !important;"></td>`
                 tr += `<td style="font-weight:bold; color: #3393FF"> ${e.title} </td>`;
                 tr += `<td class="text-center">${e.duration}</td>`;
                 tr += `<td class="text-center">${e.number_of_questions}</td>`;
@@ -277,6 +273,7 @@ $('#modalExam').on('hidden.bs.modal', function () {
     $('#ckbRandomQuestions').prop('checked', false);
     $('#dtpEnd').val('');
     $('#btnSaveChanges').show();
+    examId = 0;
 })
 
 $(function () {
@@ -496,8 +493,6 @@ let configs = [];
 $(document).on('change', "input.ckbConfig", function () {
     let checked = $(this).is(':checked');
     let cf_id = $(this).closest('div.config').attr('id');
-    // let currentVal = $(`#cf_${cf_id}`).data('value');
-    // $(`#cf_${cf_id}`).val(`${checked?0:currentVal}`);
     $(`#cf_${cf_id}`).prop('readonly', !checked);
 })
 
@@ -537,15 +532,17 @@ function LoadTopics() {
                                 <div class="col-sm-10 col-xs-10 col-md-10 col-lg-10">
                                     <label class="checkbox-inline fw-bold">
                                         <input type="checkbox" value="" 
-                                        ${(examId > 0 && cf.percent!=null )?'checked':''}
+                                        ${(cf.percent!=null && cf.percent > 0 && examId > 0)?'checked':''}
                                         class="ckbConfig">
                                             ${cf.name}
                                     </label>
                                 </div>
                                 <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 text-right">
                                     <input type:text class="form-control 
-                                    text-right txtPercent" data-value="${examId==0?0:cf.percent==null?0:cf.percent}" name="txtPercent" id="cf_${cf.id}"
-                                    ${(examId > 0 && cf.percent!=null )?'':'readonly' }
+                                    text-right txtPercent" 
+                                    data-value="${examId==0?0:cf.percent==null?0:cf.percent}" 
+                                    name="txtPercent" id="cf_${cf.id}"
+                                    ${(examId > 0 && cf.percent!=null && cf.percent > 0 )?'':'readonly' }
                                     value = "${examId==0?0:cf.percent==null?0:cf.percent}" />
                                 </div>
                             </div> <hr/>`;
