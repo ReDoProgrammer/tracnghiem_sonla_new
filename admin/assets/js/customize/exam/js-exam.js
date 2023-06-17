@@ -256,6 +256,12 @@ $('.intOnly').keyup(function (e) {
     }
 });
 
+$("#txtSearch").on('keyup', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        $('#btnSearch').click();
+    }
+});
+
 $('#modalExam').on('hidden.bs.modal', function () {
     examId = 0;
 
