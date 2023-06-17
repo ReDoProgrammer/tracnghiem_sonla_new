@@ -19,6 +19,11 @@
                         style="height:50px; max-height:100px; max-width:100%"></textarea>
                     <span class="error" id="errTitle"></span>
                 </div>
+                <hr/>
+                <div class="form-check">
+                    <input class="form-check-input" id="ckbUseCKEditor" type="checkbox" name="${optName}" value="">
+                    <label class="form-check-label">Sử dụng trình soạn thảo</label>
+                </div>
                 <div id='options'>
                 </div>
                 <button class="btn bg-aqua" id="btnAddOption"><i class="fa fa-plus" aria-hidden="true"></i> Thêm đáp

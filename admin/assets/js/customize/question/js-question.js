@@ -3,6 +3,8 @@ var search = "";
 var index = 0;
 var questId = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
+var options = [];
+
 $(function () {
     LoadQuestions();
 
@@ -304,9 +306,11 @@ $(document).on('click', 'span[name="btnRemoveOption"]', function () {
     }
 
 });
-function AddOption(id = '', content = '', checked = false, readonly = false) {
-    let now = new Date();
-    let optName = `${now.getDay()}_${now.getHours()}_${now.getMinutes()}_${now.getSeconds()}_${now.getMilliseconds()}`;
+function AddOption(id = '',exist = false,basic = true,optName='', content = '', checked = false, readonly = false) {
+    if(!exist){
+        let now = new Date();
+        optName = `${now.getDay()}_${now.getHours()}_${now.getMinutes()}_${now.getSeconds()}_${now.getMilliseconds()}`;
+    }
     let count = $("#options section").length;//count exist options      
 
     if (count >= 6) {
@@ -315,20 +319,15 @@ function AddOption(id = '', content = '', checked = false, readonly = false) {
         return;
     }
 
-    let option = `<section class="form-group" id="${id}">`;
+    let option = `<section class="form-group option" id="${id}" style="margin-top:5px;">`;
     option += `<div class="row">`;
-    option += `<div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">`;
+    option += `<div class="col-xs-8 col-md-8 col-sm-8 col-lg-8">`;
     option += `<label>
                 Câu trả lời <span class="style2">(*)</span>                
               </label>`;
     option += `</div>`;
-    option += `<div class="col-xs-5 col-md-5 col-sm-5 col-lg-5 text-right">`;
-    option += `<div class="form-check">
-                <input class="form-check-input ckbUseCKEditor" type="checkbox" name="${optName}" value="">
-                <label class="form-check-label">Sử dụng trình soạn thảo</label>
-            </div>`
-    option += `</div>`;
-    option += `<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">`;
+
+    option += `<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">`;
     option += `<label><input type="radio" name="rbtOption" style="accent-color: #0E92B9;margin-right:5px;"`;
     option += checked ? `checked` : ``;
     option += readonly ? ` disabled>` : `>`;
@@ -352,32 +351,35 @@ function AddOption(id = '', content = '', checked = false, readonly = false) {
 
 
     $('#options').append(option);
-    CKEDITOR.replace(optName);
-    CKEDITOR.instances[optName].setData(content);
-
-
+    if(!basic){
+        CKEDITOR.replace(optName);
+        CKEDITOR.instances[optName].setData(content);
+    }
 
 }
 
 
-$(document).on('change', '.ckbUseCKEditor', function () {
-    // let ta = $(this).closest('section').find('textarea')
-    // let taName = $(ta).attr('name');
-
-
-    // let taContent = `<textarea name="${taName}"
-    //             class="form-control custom-control" 
-    //             rows="2" style="resize: vertical;"></textarea>`;
-    //             // <span type="submit" class="input-group-addon btn btn-secondary btnRemoveOption" 
-    //             // name="btnRemoveOption">
-    //             // <i class="fa fa-times" aria-hidden="true"></i></span>`
-    // if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances.taName) {
-    //     CKEDITOR.instances.taName.destroy();
-    // }
-    // $(ta).replaceWith(taContent)
-    // if (this.checked) {
-    //     CKEDITOR.replace(taName);
-    // }
+$('#ckbUseCKEditor').change(function () {
+    options = [];
+    $('#options section.option').each(function(){
+        let ta = $(this).find('textarea');
+        let chk = $(this).find('input[type="checkbox"]');
+        if($(this).is(':checked')){
+            let opt = {
+                content:CKEDITOR.instances[option_name].getData().trim(),
+                checked:$(chk).is(':checked')
+            };
+            options.push(opt);
+        }else{
+            let opt = {
+                content: $(ta).val(),
+                checked: $(chk).is('checked')
+            }
+            options.push(opt);
+        }
+        console.log(options)
+    })
+   
 })
 
 
