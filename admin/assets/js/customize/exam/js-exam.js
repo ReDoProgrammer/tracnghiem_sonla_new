@@ -156,7 +156,7 @@ function LoadData() {
                 let tr = `<tr id = "${e.id}" style="${e.is_hot == 1 ? 'background:#E8560D; color:white; font-weight:bold;' : ''}">`;
                 tr += `<td class="text-center" style="width: 2%;"> ${++index} </td>`;
                 tr += `<td ><img src="${e.thumbnail.length>0?e.thumbnail:'/assets/imagesimages/no-thumbnail.jpg'}" class="img-thumbnail" alt="${e.title}" style="width:100px; height:70px !important;"></td>`
-                tr += `<td style="font-weight:bold; color: #3393FF"> ${e.title} </td>`;
+                tr += `<td style="font-weight:bold; color: #3393FF" class="text-nowrap"> ${e.title} </td>`;
                 tr += `<td class="text-center">${e.duration}</td>`;
                 tr += `<td class="text-center">${e.number_of_questions}</td>`;
                 tr += `<td class="text-center">${e.mark_per_question}</td>`;
@@ -164,7 +164,7 @@ function LoadData() {
 
                 tr += `<td class="text-right">${e.begin}</td>`;
                 tr += `<td class="text-right">${e.end}</td>`;
-                tr += `<td class="text-center fw-bold">`;
+                tr += `<td class="text-center text-nowrap">`;
                 tr += `${e.exam_status == -1 ? '<span class="text-warning">Chưa diễn ra</span>' : e.exam_status == 0 ? '<span class="text-info">Đang diễn ra</span>' : '<span class="text-danger">Đã kết thúc</span>'}`;
                 tr += `</td>`;
                 tr += `<td class="text-center">`
@@ -452,7 +452,6 @@ $('#btnSaveChanges').click(function () {
                 updated_by: user
             },
             success: function (data) {
-                console.log(data);
                 Swal.fire({
                     position: 'top-end',
                     icon: data.icon,
