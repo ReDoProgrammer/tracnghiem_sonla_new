@@ -155,7 +155,7 @@ function LoadData() {
             exams.forEach(e => {
                 let tr = `<tr id = "${e.id}" style="${e.is_hot == 1 ? 'background:#E8560D; color:white; font-weight:bold;' : ''}">`;
                 tr += `<td class="text-center" style="width: 2%;"> ${++index} </td>`;
-                tr += `<td ><img src="${e.thumbnail.length>0?e.thumbnail:'/assets/imagesimages/no-thumbnail.jpg'}" class="img-thumbnail" alt="${e.title}" style="width:100px; height:70px !important;"></td>`
+                tr += `<td ><img src="${e.thumbnail.length>0?e.thumbnail:'/assets/imagesimages/no-thumbnail.jpg'}" alt="${e.title}" style="width:100px; height:60px !important;"></td>`
                 tr += `<td style="font-weight:bold; color: #3393FF" class="text-nowrap"> ${e.title} </td>`;
                 tr += `<td class="text-center">${e.duration}</td>`;
                 tr += `<td class="text-center">${e.number_of_questions}</td>`;
