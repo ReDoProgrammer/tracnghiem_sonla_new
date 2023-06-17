@@ -145,7 +145,7 @@
         </div>
     </div>
 </div>
-<link rel="StyleSheet" href="assets/plugins/bootstrap-select/bootstrap-select.min.css">
-<script type="text/javascript" src="assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<link rel="StyleSheet" href="assets/dist/bootstrap-select/bootstrap-select.min.css">
+<script type="text/javascript" src="assets/dist/bootstrap-select/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="assets/js/member/js-register.js"></script>
 <link rel="StyleSheet" href="assets/css/member/register.css">

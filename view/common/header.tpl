@@ -41,7 +41,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.min.css?t=1683896486">
 
 
-    <script src="assets/js/jquery.min.js?t=1683896486"></script>
+    <script src="assets/js/jquery-3.7.0.js"></script>
 
     <!-- plugins sweetalert2 -->
     <link type="text/css" href="assets/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
