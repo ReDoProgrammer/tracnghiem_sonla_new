@@ -450,6 +450,7 @@ $('#btnSaveChanges').click(function () {
                 is_hot,
                 random_questions,
                 random_options,
+                configs,
                 regulation,
                 updated_by: user
             },
@@ -495,12 +496,12 @@ let configs = [];
 $(document).on('change', "input.ckbConfig", function () {
     let checked = $(this).is(':checked');
     let cf_id = $(this).closest('div.config').attr('id');
-    let currentVal = $(`#cf_${cf_id}`).data('value');
-    $(`#cf_${cf_id}`).val(`${checked?0:currentVal}`);
+    // let currentVal = $(`#cf_${cf_id}`).data('value');
+    // $(`#cf_${cf_id}`).val(`${checked?0:currentVal}`);
     $(`#cf_${cf_id}`).prop('readonly', !checked);
 })
 
-$(document).on('keyup', "input[name='txtPercent']", function () {
+$(document).on('keyup', "input[name='txtPercent']", function () {   
     let totalPercent = 0;
     configs = [];
     $('#configs div input[name="txtPercent"]').each(function(){
@@ -514,10 +515,6 @@ $(document).on('keyup', "input[name='txtPercent']", function () {
     $('#totalPercent').text(totalPercent);
 });
 
-
-
-
-
 function LoadTopics() {
     $.ajax({
         url: 'controller/topic/exam-configs.php',
@@ -529,24 +526,27 @@ function LoadTopics() {
                 let totalPercent = 0;
                 configs = [];
                 data.content.forEach(cf=>{
-                    totalPercent += examId == 0?0:cf.percent;
+                    totalPercent += parseInt(examId == 0?0:cf.percent==null?0:cf.percent);
                     if(examId !=0){
                         configs.push({
                             id: cf.id,
-                            percent:cf.percent
+                            percent:cf.percent==null?0:cf.percent
                         });
                     }
                     let el = `<div class="row config" id="${cf.id}">
                                 <div class="col-sm-10 col-xs-10 col-md-10 col-lg-10">
                                     <label class="checkbox-inline fw-bold">
-                                        <input type="checkbox" value="" class="ckbConfig">
+                                        <input type="checkbox" value="" 
+                                        ${(examId > 0 && cf.percent!=null )?'checked':''}
+                                        class="ckbConfig">
                                             ${cf.name}
                                     </label>
                                 </div>
                                 <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 text-right">
                                     <input type:text class="form-control 
-                                    text-right txtPercent" data-value="${examId==0?0:cf.percent}" name="txtPercent" id="cf_${cf.id}"
-                                    readonly value = "${examId==0?0:cf.percent}" />
+                                    text-right txtPercent" data-value="${examId==0?0:cf.percent==null?0:cf.percent}" name="txtPercent" id="cf_${cf.id}"
+                                    ${(examId > 0 && cf.percent!=null )?'':'readonly' }
+                                    value = "${examId==0?0:cf.percent==null?0:cf.percent}" />
                                 </div>
                             </div> <hr/>`;
                     $('#configs').append(el);

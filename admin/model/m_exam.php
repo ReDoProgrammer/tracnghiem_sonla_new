@@ -557,7 +557,7 @@ function create(
 
         $sql = "INSERT INTO exam_configs(exam_id,topic_id,percent,created_by) VALUES";
         foreach ($configs as $cf) {
-            $sql .= "('" . $latestId . "','" . $cf['id'] . "', '" . $cf['percent'] . "','".$created_by."')";
+            $sql .= "('" . $latestId . "','" . $cf['id'] . "', '" . $cf['percent'] . "','" . $created_by . "')";
             $sql .= $cf == end($configs) ? "" : ","; // kiểm tra xem có phải phần tử cuối của mảng hay không
         }
         $result = mysql_query($sql, dbconnect());
@@ -595,6 +595,7 @@ function update(
     $is_hot,
     $random_questions,
     $random_options,
+    $configs,
     $regulation,
     $updated_by
 ) {
@@ -620,9 +621,34 @@ function update(
     WHERE id =" . $id, dbconnect());
     $msg = new Message();
     if ($result && mysql_affected_rows() > 0) {
-        $msg->statusCode = 200;
-        $msg->icon = 'success';
-        $msg->title = "Cập nhật cuộc thi thành công!";
+        //xóa các configs cũ cho chắc ăn
+        $sql = "DELETE FROM exam_configs WHERE exam_id = '" . $id . "'";
+        $result = mysql_query($sql, dbconnect());
+
+        if ($result) {
+            //thêm lại từ đầu các config
+            $sql = "INSERT INTO exam_configs(exam_id,topic_id,percent,created_by) VALUES";
+            foreach ($configs as $cf) {
+                $sql .= "('" . $id . "','" . $cf['id'] . "', '" . $cf['percent'] . "','" . $updated_by . "')";
+                $sql .= $cf == end($configs) ? "" : ","; // kiểm tra xem có phải phần tử cuối của mảng hay không
+            }
+            $result = mysql_query($sql, dbconnect());
+            if ($result) {
+                $msg->statusCode = 200;
+                $msg->icon = 'success';
+                $msg->title = "Cập nhật cuộc thi thành công!";
+            } else {
+                $msg->icon = 'error';
+                $msg->title = 'Lỗi cập nhật cấu hình đề thi';
+                $msg->content = "Lỗi: " . mysql_error();
+                $msg->statusCode = 500;
+            }
+        } else {
+            $msg->icon = 'error';
+            $msg->title = 'Lỗi xóa các cấu hình cũ của đề thi';
+            $msg->content = "Lỗi: " . mysql_error();
+            $msg->statusCode = 500;
+        }
     } else {
         $msg->icon = 'error';
         $msg->title = 'Cập nhật cuộc thi thất bại';
