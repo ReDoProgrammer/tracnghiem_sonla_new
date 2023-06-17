@@ -659,23 +659,17 @@ function update(
 }
 function delete($id)
 {
-    $result = mysql_query("DELETE FROM exams 
-                            WHERE id= " . $id, dbconnect());
+    $sql = "DELETE exams, exam_configs
+    FROM exam_configs 
+    INNER JOIN exams ON exams.id = exam_configs.exam_id
+    WHERE exams.id = '".$id."'";
+
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
     if ($result && mysql_affected_rows() > 0) {
-        $sql = "DELETE FROM exam_configs WHERE exam_id = '" . $id . "'";
-        $result = mysql_query($sql, dbconnect());
-        if ($result) {
-            $msg->statusCode = 200;
-            $msg->icon = "success";
-            $msg->title = "Xóa bài thi thành công!";
-        } else {
-            $msg->icon = 'error';
-            $msg->title = 'Xóa cấu hình bài thi thất bại!';
-            $msg->content = "Lỗi: " . mysql_error();
-            $msg->statusCode = 500;
-        }
-
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Xóa bài thi thành công!";
     } else {
         $msg->icon = 'error';
         $msg->title = 'Xóa cuộc thi thất bại';
