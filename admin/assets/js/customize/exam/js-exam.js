@@ -85,29 +85,7 @@ function DeleteExam(id) {
     })
 }
 
-function ConfigExam(id, exam_status) {
-    if (exam_status == -1) {
-        $('#btnSaveConfigs').show();
-    } else {
-        $('#btnSaveConfigs').hide();
-    }
-    $.ajax({
-        url: 'controller/exam/detail.php',
-        type: 'get',
-        data: { id },
-        success: function (data) {
-            if (data.statusCode == 200) {
-                let exam = data.content;
-                let configs = JSON.parse(exam.exam_configs)
-                $('#totalQuestions').text(exam.number_of_questions);
-                $('#txtNumberBasedTotal').val(exam.number_of_questions);
-                $('#modalConfigExam').modal();
-                LoadTopics(configs);
-            }
 
-        }
-    })
-}
 
 $('#btnSearch').click(function () {
     search = $('#txtSearch').val();
@@ -201,7 +179,7 @@ function LoadData() {
 
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.random_questions == 1 ? 'checked' : ''} ${e.exam_status == -1 ? '' : 'disabled'} onClick="ChangeRandomQuestions(${e.id})" ${e.random_questions == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.random_questions == 1 ? 'checked' : ''}  onClick="ChangeRandomQuestions(${e.id})" ${e.random_questions == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
@@ -209,15 +187,14 @@ function LoadData() {
 
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
-                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''} ${e.exam_status == -1 ? '' : 'disabled'} onClick="ChangeRandomOptions(${e.id})" ${e.random_options == 1 ? 'checked' : ''}></label>
+                            <input type="checkbox" ${e.random_options == 1 ? 'checked' : ''}  onClick="ChangeRandomOptions(${e.id})" ${e.random_options == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 
                 tr += `<td class="text-center" style="white-space:nowrap; width: 10%;">`;
-                tr += `<button onClick = "ConfigExam(${e.id},${e.exam_status})" ><i class="fa fa-cog text-warning" aria-hidden="true"></i></button>`;
                 tr += ` <button name="btnDetail" onClick="ExamDetail(${e.id})"><i class="fa fa-info-circle" aria-hidden="true" style="color: green;"></i></button> `;
-                tr += ` <button name="btnEdit" ${e.exam_status == -1 ? '' : 'disabled'} onClick="EditExam(${e.id})"><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
-                tr += ` <button name = "btnDelete" ${e.exam_status != -1 ? 'disabled' : ''} onClick="DeleteExam(${e.id})"><i class="fa fa-trash-o" style="color: red;"></i></button> `;
+                tr += ` <button name="btnEdit"  onClick="EditExam(${e.id})"><i class="fa fa-pencil-square-o" style="color: blue;"></i></button> `;
+                tr += ` <button name = "btnDelete"  onClick="DeleteExam(${e.id})"><i class="fa fa-trash-o" style="color: red;"></i></button> `;
                 tr += `</td>`;
                 tr += `</tr>`;
                 $('#tblData').append(tr);
@@ -550,9 +527,15 @@ function LoadTopics() {
             $('#configs').empty();
             if(data.statusCode == 200){
                 let totalPercent = 0;
+                configs = [];
                 data.content.forEach(cf=>{
                     totalPercent += examId == 0?0:cf.percent;
-                  
+                    if(examId !=0){
+                        configs.push({
+                            id: cf.id,
+                            percent:cf.percent
+                        });
+                    }
                     let el = `<div class="row config" id="${cf.id}">
                                 <div class="col-sm-10 col-xs-10 col-md-10 col-lg-10">
                                     <label class="checkbox-inline fw-bold">
