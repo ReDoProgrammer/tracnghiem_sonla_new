@@ -500,6 +500,10 @@ $(document).on('change', "input.ckbConfig", function () {
     let checked = $(this).is(':checked');
     let cf_id = $(this).closest('div.config').attr('id');
     $(`#cf_${cf_id}`).prop('readonly', !checked);
+    if(!checked){
+        $(`#cf_${cf_id}`).val(0);
+        $('input[name="txtPercent"]').keyup();
+    }
 })
 
 $(document).on('keyup', "input[name='txtPercent']", function () {   
