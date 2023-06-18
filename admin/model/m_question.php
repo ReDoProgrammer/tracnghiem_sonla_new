@@ -63,6 +63,7 @@ function getQuestion($id)
 {
     $q = mysql_query("SELECT 
         t.name AS topic,
+        t.id AS topic_id,
         m.fullname AS created_by,
         q.created_at,
         q.id,

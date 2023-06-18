@@ -234,8 +234,9 @@ function GetQuestion(id, readonly = false) {
                 let question = data.content;
                 $('#title').val(question.title);
                 $('#slTopics').val(question.topic_id);
-                $('.selectpicker').selectpicker('refresh');
-
+                $('div.mdlAddOrUpdate select.slTopics').val(question.topic_id);
+                $('div.mdlAddOrUpdate select.slTopics').selectpicker('refresh');
+             
 
                 $.ajax({
                     url: 'controller/option/list-by-question.php',
@@ -245,8 +246,7 @@ function GetQuestion(id, readonly = false) {
                         if (data.statusCode == 200) {
                             let options = data.content;
                             options.forEach(opt => {
-                                console.log(opt);
-                                AddOption(opt.id, opt.content, opt.correct == 1, readonly);
+                                AddOption(opt.id, true, !$('#ckbUseCKEditor').is(':checked'), opt.id, opt.content, opt.correct == 1, readonly);
                             })
                         }
 
@@ -410,7 +410,7 @@ function AddOption(id = '', exist = false, basic = true, optName = '', content =
 
     option += `<textarea data-option="${id}" name="${optName}" 
         class="form-control custom-control" 
-        rows="2" style="resize: vertical;" ${readonly ? 'readonly' : ''}></textarea>
+        rows="2" style="resize: vertical;" ${readonly ? 'readonly' : ''}>${basic?content:''}</textarea>
         <span type="submit" class="input-group-addon btn btn-secondary btnRemoveOption" 
         name="btnRemoveOption" ${readonly ? 'disabled' : ''}>
         <i class="fa fa-times" aria-hidden="true"></i></span>`;
