@@ -23,12 +23,12 @@
     <script src="assets/js/jquery.validate.min.js"></script>
     <script src="assets/js/jquery.validate.unobtrusive.min.js"></script>
     <script src="assets/js/knockout-2.2.0.js"></script>
-    <script src="assets/js/bootstrap.js"></script>
+  
     <script src="assets/js/jquery.treegrid.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/printThis.js"></script>
     <script src="./assets/plugins/sweetalert/sweetalert2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>-->
 
 
     <script src="assets/js/customize/common.js"></script>
@@ -103,7 +103,7 @@
 
     
 
-    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="assets/dist/jquery-ui/js/jquery-ui.js"></script>
     
 
 

@@ -20,7 +20,7 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/fonts/css/font-awesome.css" rel="stylesheet">
     <link href="assets/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet">
-    <link href="assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+    <link href="assets/dist/bootstrap-select 1.13.1/css/bootstrap-select.min.css" rel="stylesheet">
     
     <script src="assets/js/jquery-1.9.1.min.js"></script>
 
@@ -33,8 +33,9 @@
 
 
     <link href="assets/plugins/shadowbox/shadowbox.css" rel="stylesheet">
+    <script src="assets/js/bootstrap.js"></script>
     <script src="assets/plugins/shadowbox/shadowbox.js"></script>
-    <script src="assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="assets/dist/bootstrap-select 1.13.1/js/bootstrap-select.min.js"></script>
     <script type="text/javascript">Shadowbox.init();</script>
 
     <link href="assets/css/jquery.css" rel="stylesheet">
