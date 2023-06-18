@@ -267,28 +267,15 @@ function update($id, $title, $options, $topic_id, $updated_by)
     WHERE id =" . $id, dbconnect());
 
     $msg = new Message();
-    if ($result && mysql_affected_rows() > 0) {
+    if ($result && mysql_affected_rows() > 0) {        
         $array = json_decode(stripslashes($options), true);
-        $obj = new Option();
-        foreach ($array as $opt) {
-            $id = $opt['id'];
-            $content = $opt['option'];
-            $check = $opt['check'];
-            $result = $obj->update($id, $content, $check, $updated_by);
-
-            if ($result != true) {
-                $msg->icon = 'error';
-                $msg->title = "Cập nhật đáp án [" . $content . "] thất bại!";
-                $msg->content = $result;
-                $msg->statusCode = 500;
-                return $msg;
-            }
+        $update = oUpdateMany($id,$array,$updated_by);
+        if($update->statusCode !=201){
+            return $update;
         }
-
 
         $msg->icon = 'success';
         $msg->title = "Cập nhật câu hỏi thành công!";
-        $msg->content = $array;
         $msg->statusCode = 200;
     } else {
         $msg->icon = 'error';
@@ -296,29 +283,24 @@ function update($id, $title, $options, $topic_id, $updated_by)
         $msg->statusCode = 500;
     }
     return $msg;
-
 }
 function delete($id)
 {
-    $result = mysql_query("delete from questions where id= " . $id, dbconnect());
+    $sql = "DELETE questions, options
+    FROM questions
+    INNER JOIN options ON questions.id = options.question_id
+    WHERE questions.id = '".$id."'";
+    $result = mysql_query($sql,dbconnect());
     $msg = new Message();
-
-    if ($result && mysql_affected_rows() > 0) {
-        $obj = new Option();
-        if ($obj->deletebyQuestion($id)) {
-            $msg->icon = 'success';
-            $msg->title = 'Xóa câu hỏi và đáp án thành công!';
-            $msg->statusCode = 200;
-        } else {
-            $msg->icon = 'success';
-            $msg->title = 'Xóa câu hỏi thành công!';
-            $msg->statusCode = 200;
-        }
-    } else {
-        $msg->icon = 'error';
-        $msg->title = 'Xóa câu hỏi thất bại!';
-        $msg->content = "Lỗi: " . mysql_error();
+    if($result && mysql_affected_rows()>0){
+        $msg->title = "Xóa câu hỏi thành công!";
+        $msg->icon = "success";
+        $msg->statusCode = 200;        
+    }else{
+        $msg->title = "Xóa câu hỏi thất bại!";
+        $msg->icon = "error";
         $msg->statusCode = 500;
+        $msg->content = mysql_error();
     }
     return $msg;
 }

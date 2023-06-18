@@ -60,6 +60,40 @@ function oGetOptionsByQuestion($question_id)
     return $msg;
 }
 
+function oUpdateMany($question_id,$options,$user){
+    $sql = "DELETE FROM options WHERE question_id = '".$question_id."'
+            AND id IN(";
+    foreach($options as $opt){
+        $sql.="'".$opt['id']."'";
+        $sql.=$opt == end($options)?")":",";
+    }
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result && mysql_affected_rows()>0){
+        $sql = "INSERT INTO options(question_id,content,correct,created_by) VALUES";
+        foreach($options as $opt){
+            $sql.="('".$question_id."','".$opt['option']."','".$opt['check']."','".$user."')";
+            $sql.=$opt == end($options)?"":",";
+        }
+        $result = mysql_query($sql,dbconnect());
+        if($result && mysql_affected_rows()>0){
+            $msg->icon = "success";
+            $msg->statusCode = 201;
+            $msg->title = "Insert các đáp án của câu hỏi thành công!";
+        }else{
+            $msg->statusCode = 500;
+            $msg->title = "Insert các đáp án của câu hỏi thất bại!";
+            $msg->icon = "error";
+            $msg->content = mysql_error();
+        }
+    }else{
+        $msg->title = "Xóa các đáp án cũ thất bại!";
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 function oInsertMany($question_id,$options,$created_by){
     $sql ="INSERT INTO options(question_id,content,correct,created_by) VALUES";
     foreach($options as $opt){
@@ -130,3 +164,4 @@ function oDeletebyQuestion($question_id)
         return mysql_error();
     }
 }
+

@@ -1,5 +1,4 @@
 <?php
-include('../../model/m_db.php');
 include('../../model/m_question.php');
 
 //get form input

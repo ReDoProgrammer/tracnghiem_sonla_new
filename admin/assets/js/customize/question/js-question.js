@@ -64,6 +64,13 @@ $(function () {
     });
 })
 
+$("#txtSearch").on('keyup', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        $('#btnSearch').click();
+    }
+});
+
+
 $('#btnSubmitImport').click(function(){
     if(questions.length > 0){
         let user = $('#userId').data('user');
@@ -88,6 +95,7 @@ $('#btnSubmitImport').click(function(){
                     $('#modalImport').modal('hide');
                     $('#exceltable tbody').empty();
                     $('#excelfile').val('');
+                    LoadQuestions();
                 } else {
                     Swal.fire(
                         data.title,
@@ -297,6 +305,7 @@ $(document).on('click', "button[name='btnDelete']", function () {
                 type: 'post',
                 data: { id: trid },
                 success: function (data) {
+                    console.log(data);
                     if (data.statusCode == 200) {
                         Swal.fire({
                             position: 'top-end',
@@ -564,7 +573,7 @@ $('#btnSaveChanges').click(function () {
 
             }
         })
-    } else {//update an exist question
+    } else {//update an exist question 
         $.ajax({
             url: 'controller/question/update.php',
             type: 'post',
@@ -576,7 +585,6 @@ $('#btnSaveChanges').click(function () {
                 updated_by: user
             },
             success: function (data) {
-                console.log(data);
                 if (data.statusCode == 200) {
                     Swal.fire({
                         position: 'top-end',
