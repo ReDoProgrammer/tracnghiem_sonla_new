@@ -117,16 +117,16 @@ function LoadProvincesWithWorkplaces() {
         success: function (data) {
             // console.log(data);
             if (data.statusCode == 200) {
-                $('#slProvincesWorkplaces').empty();
-                data.content.forEach(p => {
-                    let opt = `<optgroup label="${p.province}" style="color:red !important;">`;
-                    JSON.parse(p.workplaces).forEach(el => {
-                        opt += `<option value="${el.id}">${el.name}</option>`;
-                    })
-                    opt += `</optgroup>  `
-                    $('#slProvincesWorkplaces').append(opt);
-                })
-                $('#slProvincesWorkplaces').selectpicker('refresh');
+                // $('#slProvincesWorkplaces').empty();
+                // data.content.forEach(p => {
+                //     let opt = `<optgroup label="${p.province}" style="color:red !important;">`;
+                //     JSON.parse(p.workplaces).forEach(el => {
+                //         opt += `<option value="${el.id}">${el.name}</option>`;
+                //     })
+                //     opt += `</optgroup>  `
+                //     $('#slProvincesWorkplaces').append(opt);
+                // })
+                // $('#slProvincesWorkplaces').selectpicker('refresh');
             }
         }
     })

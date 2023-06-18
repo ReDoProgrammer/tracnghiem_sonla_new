@@ -316,7 +316,7 @@ function ShowQuestion(id) {
                     content += `<label id="${o.id}" data-question = "${current_question.id}" 
                                         class="${current_question.checked && current_question.checked == o.id ? 'checked' : ''}">
                                         <span class="title">${String.fromCharCode(64 + idx++)}</span>
-                                        <input class="hide checkbox" type="checkbox" id="${o.id}"> ${o.content} </label>`
+                                        <input class="hide checkbox" type="checkbox" id="${o.id}" name="${current_question.id}"> ${o.content} </label>`
 
                 });
 

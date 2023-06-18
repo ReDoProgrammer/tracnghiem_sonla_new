@@ -19,9 +19,7 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" style="margin-top:5px">
-                                <select class="form-control selectpicker" id="slProvincesWorkplaces" data-live-search="true">
-                                                                     
-                                </select>
+                                <select class="form-control selectpicker" id="slProvincesWorkplaces" data-live-search="true"></select>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="margin-top:5px">
                                 <div class="input-group input-group-sm">
