@@ -45,11 +45,11 @@
 
 
     <script src="assets/js/jquery.min.js?t=1683896486"></script>
+    <script src="assets/js/bootstrap.min.js?t=1683896486"></script>
 
     <!-- plugins sweetalert2 -->
     <link type="text/css" href="assets/plugins/sweetalert2/sweetalert2.min.css?t=1683896486" rel="stylesheet">
     <script src="assets/plugins/sweetalert2/sweetalert2.min.js?t=1683896486"></script>
-    <script src = ""></script>
 </head>
 
 

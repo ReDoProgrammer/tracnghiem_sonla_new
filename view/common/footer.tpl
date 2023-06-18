@@ -147,7 +147,7 @@
     })
 
 </script>
-<script src="assets/js/bootstrap.min.js?t=1683896486"></script>
+
 
 <script src ="assets/dist/toast/js/jquery.toast.min.js"></script>
 

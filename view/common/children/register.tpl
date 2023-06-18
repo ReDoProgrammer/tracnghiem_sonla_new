@@ -144,7 +144,7 @@
         </div>
     </div>
 </div>
-<!-- <link rel="StyleSheet" href="assets/dist/bootstrap-select/bootstrap-select.min.css?t=1683896486"> -->
-<!-- <script type="text/javascript" src="assets/dist/bootstrap-select/bootstrap-select.min.js?t=1683896486"></script> -->
+<link rel="StyleSheet" href="assets/dist/bootstrap-select/bootstrap-select.min.css?t=1683896486">
+<script type="text/javascript" src="assets/dist/bootstrap-select/bootstrap-select.min.js?t=1683896486"></script>
 <script type="text/javascript" src="assets/js/member/js-register.js?t=1683896486"></script>
 <link rel="StyleSheet" href="assets/css/member/register.css?t=1683896486">
