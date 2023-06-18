@@ -389,15 +389,7 @@ function change_hot($id)
     }
     return $msg;
 }
-function countPages($search, $pageSize)
-{
-    $result = mysql_query("SELECT id
-    FROM exams e
-    WHERE e.title like '%" . $search . "%' ", dbconnect());
-    $count = mysql_num_rows($result);
-    $pages = $count % $pageSize == 0 ? $count / $pageSize : floor($count / $pageSize) + 1;
-    return $pages;
-}
+
 function retrieve($page, $search, $pageSize)
 {
     $sql = "SELECT 
@@ -422,7 +414,7 @@ function retrieve($page, $search, $pageSize)
     FROM exams e
     WHERE e.title like '%" . $search . "%'
     OR e.description like '%" . $search . "%'       
-    ORDER BY e.is_hot DESC, exam_status ";
+    ORDER BY e.id DESC ";
 
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
