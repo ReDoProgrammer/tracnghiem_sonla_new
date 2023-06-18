@@ -27,7 +27,7 @@
 }
 
 .slide {
-    // width: 250px;
+    width: 250px;
     flex: 0 0 250px; /* Each slide occupies full width of the container */
     scroll-snap-align: start; /* Snap to the start of each slide */
     padding: 10px; /* Optional padding between slides */
