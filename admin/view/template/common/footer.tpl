@@ -18,15 +18,15 @@
     <script type="text/javascript" src="assets/plugins/ckeditor/ckeditor.js"></script>
 
     <script src="assets/js/adminlte.min.js"></script>
-    <script src="assets/js/jquery.number.min.js"></script>
-    <script src="assets/js/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="assets/js/jquery.validate.min.js"></script>
-    <script src="assets/js/jquery.validate.unobtrusive.min.js"></script>
-    <script src="assets/js/knockout-2.2.0.js"></script>
+    <!--<script src="assets/js/jquery.number.min.js"></script>-->
+    <!--<script src="assets/js/jquery.unobtrusive-ajax.min.js"></script>-->
+    <!--<script src="assets/js/jquery.validate.min.js"></script>-->
+   <!-- <script src="assets/js/jquery.validate.unobtrusive.min.js"></script>-->
+   <!-- <script src="assets/js/knockout-2.2.0.js"></script>-->
   
-    <script src="assets/js/jquery.treegrid.min.js"></script>
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/printThis.js"></script>
+    <!--<script src="assets/js/jquery.treegrid.min.js"></script>-->
+    <!--<script src="assets/js/app.js"></script>-->
+    <!--<script src="assets/js/printThis.js"></script>-->
     <script src="./assets/plugins/sweetalert/sweetalert2.min.js"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>-->
 
@@ -59,6 +59,7 @@
             $(".pagination-container").addClass("text-right");
         }
     </script>
+
 
     <script type="text/javascript">
         function confirmDelete(delUrl) {

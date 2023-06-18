@@ -46,9 +46,9 @@
          -->
    
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="assets/dist/ionicons/ionicons.min.css">
     <link rel="icon" href="">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="assets/dist/chart/Chart.min.js"></script>
 
     <!-- SlimScroll 1.3.0 -->
     <script src="assets/plugins/slimScroll/jquery.slimscroll.min.js"></script>
