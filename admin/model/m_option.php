@@ -7,6 +7,7 @@
 
 include_once('m_db.php');
 include_once('classes/m_message.php');
+include_once('classes/m_option.php');
 function oGet($question_id, $random_options)
 {
     $sql = "SELECT id,content,correct FROM options WHERE question_id = '" . $question_id . "'";
@@ -52,6 +53,27 @@ function oGetOptionsByQuestion($question_id)
         $msg->content = $result;
     }else{
         $msg->title = "Load danh sách đáp án của câu hỏi thất bại";
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
+function oInsertMany($question_id,$options,$created_by){
+    $sql ="INSERT INTO options(question_id,content,correct,created_by) VALUES";
+    foreach($options as $opt){
+        $sql .="('".$question_id."','".$opt->content."','".$opt->check."','".$created_by."')";
+        $sql .= $opt==end($options)?"":",";
+    }
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result &&  mysql_affected_rows()>0){
+        $msg->statusCode = 201;
+        $msg->title = "Insert nhiều đáp án thành công!";
+        $msg->icon = "success";
+    }else{
+        $msg->title = "Insert nhiều đáp án thất bại!";
         $msg->statusCode = 500;
         $msg->icon = "error";
         $msg->content = mysql_error();

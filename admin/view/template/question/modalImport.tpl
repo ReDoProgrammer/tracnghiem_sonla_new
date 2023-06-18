@@ -7,14 +7,15 @@
             </div>
             <div class="modal-body">
                 <input type="file" id="excelfile" accept=".xls,.xlsx" style="margin-bottom:20px;"/>
-                <div class="form-group">
+                <div class="form-group mdlImport">
                     <label>Chủ đề</label>
-                    <select class="selectpicker form-control"  data-live-search="true" id="slTopicsInImporting">
+                    <select class="selectpicker form-control slTopics"  data-live-search="true" id="slTopicsInImporting">
                     </select>
                 </div>
                 <div class="table-responsive" style="display:block; height:450px; overflow-y:scroll; margin-top:10px;">
                     <table id="exceltable" class="table table-bordered table-striped table-hover"
                         style="margin-bottom: 0;">
+                        <tbody></tbody>
                     </table>
                 </div>
 
@@ -29,5 +30,4 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+<script src="assets/dist/xlsx/js/xlsx.full.min.js"></script>

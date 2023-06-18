@@ -7,9 +7,9 @@
                         update question</span></h5>
             </div>
             <div class="modal-body">
-                <div class="form-group">
+                <div class="form-group mdlAddOrUpdate">
                     <label>Chủ đề</label>
-                    <select class="selectpicker form-control"  data-live-search="true" id="slTopics">
+                    <select class="selectpicker form-control slTopics"  data-live-search="true" id="slTopics">
                     </select>
                 </div>
 

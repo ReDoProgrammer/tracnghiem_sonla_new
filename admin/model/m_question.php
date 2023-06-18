@@ -7,6 +7,7 @@
 
 include_once('m_option.php');
 include_once('classes/m_message.php');
+include_once('classes/m_option.php');
 
 
 function qGet($page, $search, $pageSize)
@@ -27,15 +28,15 @@ function qGet($page, $search, $pageSize)
   ";
 
 
-   //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
-   $pages = 1;
-   if (strcmp($pageSize, "All")!=0) {
-       $result = mysql_query($sql, dbconnect());
+    //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
+    $pages = 1;
+    if (strcmp($pageSize, "All") != 0) {
+        $result = mysql_query($sql, dbconnect());
 
-       $totalRows = mysql_num_rows($result);
-       $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
-       $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
-   }
+        $totalRows = mysql_num_rows($result);
+        $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
+        $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
+    }
 
     $local_list = mysql_query($sql, dbconnect());
     $msg = new Message();
@@ -162,6 +163,54 @@ function getQuestionsByTopic($topic_id)
     }
 }
 
+
+function qImport($topic_id, $questions, $created_by)
+{
+    $msg = new Message();
+    for ($i = 1; $i < count($questions); $i++) {
+        /*
+            - hàng đầu tiên (chỉ số 0) là tiêu đề
+            - chỉ lấy các option khác rỗng
+            - bỏ 2 cột đầu tiên là cột stt và tiêu đề câu hỏi
+        */
+        $title = $questions[$i][1];
+
+        $filteredArray = array_filter($questions[$i], 'filterNonEmptyStrings');
+
+        array_shift($filteredArray);
+        array_shift($filteredArray);
+
+        $answer = end($filteredArray); 
+        $options = array();
+        for($j=0; $j< count($filteredArray)-1; $j++){
+            $options[]=converToObject($j,$filteredArray[$j],convertAnswerToNumber($answer));
+        }
+       
+
+        $sql = "INSERT INTO questions(topic_id,title,created_by) 
+                VALUES('".$topic_id."','".$title."','".$created_by."')";
+        $result = mysql_query($sql,dbconnect());
+        if($result && mysql_affected_rows()>0){
+            $question_id = mysql_insert_id();
+            $result = oInsertMany($question_id,$options,$created_by);
+            if($result->statusCode !=201){
+                return $result;
+            }
+        }else{
+            $msg->icon = "error";
+            $msg->title = "Insert câu hỏi: ".$title." thất bại!";
+            $msg->content = mysql_error();
+            $msg->statusCode = 500;
+            return $msg;
+        }        
+    }
+    $msg = new Message();
+    $msg->statusCode = 201;
+    $msg->title = "Import danh sách câu hỏi thành công!";
+    $msg->icon = "success";
+    return $msg;
+}
+
 function create($title, $options, $topic_id, $created_by)
 {
     $result = mysql_query("INSERT INTO questions(title,topic_id,created_by) VALUES('" . $title . "'," . $topic_id . ",'" . $created_by . "')", dbconnect());
@@ -173,15 +222,15 @@ function create($title, $options, $topic_id, $created_by)
             $question_id = mysql_insert_id();
 
             $array = json_decode(stripslashes($options), true);
-        
+
             foreach ($array as $opt) {
                 $option = $opt['option'];
                 $check = $opt['check'];
                 $result = oCreate($question_id, $option, $check, $created_by);
-                
-                if($result!=true){
+
+                if ($result != true) {
                     $msg->icon = 'error';
-                    $msg->title = "Thêm mới đáp án [".$option."] thất bại!";
+                    $msg->title = "Thêm mới đáp án [" . $option . "] thất bại!";
                     $msg->content = $result;
                     $msg->statusCode = 500;
                     return $msg;
@@ -201,7 +250,7 @@ function create($title, $options, $topic_id, $created_by)
     } else {
         $msg->icon = 'error';
         $msg->title = "Thêm mới câu hỏi thất bại!";
-        $msg->content = "Lỗi: ".mysql_error();
+        $msg->content = "Lỗi: " . mysql_error();
         $msg->statusCode = 500;
     }
     return $msg;
@@ -209,7 +258,7 @@ function create($title, $options, $topic_id, $created_by)
 
 function update($id, $title, $options, $topic_id, $updated_by)
 {
-   $result = mysql_query("UPDATE questions 
+    $result = mysql_query("UPDATE questions 
     SET title='" . $title . "',       
         topic_id=" . $topic_id . ",
         updated_by=" . $updated_by . ",
@@ -217,7 +266,7 @@ function update($id, $title, $options, $topic_id, $updated_by)
     WHERE id =" . $id, dbconnect());
 
     $msg = new Message();
-    if($result && mysql_affected_rows()>0){
+    if ($result && mysql_affected_rows() > 0) {
         $array = json_decode(stripslashes($options), true);
         $obj = new Option();
         foreach ($array as $opt) {
@@ -225,10 +274,10 @@ function update($id, $title, $options, $topic_id, $updated_by)
             $content = $opt['option'];
             $check = $opt['check'];
             $result = $obj->update($id, $content, $check, $updated_by);
-            
-            if($result!=true){
+
+            if ($result != true) {
                 $msg->icon = 'error';
-                $msg->title = "Cập nhật đáp án [".$content."] thất bại!";
+                $msg->title = "Cập nhật đáp án [" . $content . "] thất bại!";
                 $msg->content = $result;
                 $msg->statusCode = 500;
                 return $msg;
@@ -240,35 +289,54 @@ function update($id, $title, $options, $topic_id, $updated_by)
         $msg->title = "Cập nhật câu hỏi thành công!";
         $msg->content = $array;
         $msg->statusCode = 200;
-    }else{
+    } else {
         $msg->icon = 'error';
-        $msg->title = "Cập nhật câu hỏi thất bại! Lỗi: ".mysql_error();
+        $msg->title = "Cập nhật câu hỏi thất bại! Lỗi: " . mysql_error();
         $msg->statusCode = 500;
     }
     return $msg;
-   
+
 }
 function delete($id)
 {
     $result = mysql_query("delete from questions where id= " . $id, dbconnect());
     $msg = new Message();
 
-    if ($result &&  mysql_affected_rows()>0) {
-        $obj = new Option();       
-        if($obj->deletebyQuestion($id)){
-            $msg->icon='success';
+    if ($result && mysql_affected_rows() > 0) {
+        $obj = new Option();
+        if ($obj->deletebyQuestion($id)) {
+            $msg->icon = 'success';
             $msg->title = 'Xóa câu hỏi và đáp án thành công!';
             $msg->statusCode = 200;
-        }else{
-            $msg->icon='success';
+        } else {
+            $msg->icon = 'success';
             $msg->title = 'Xóa câu hỏi thành công!';
             $msg->statusCode = 200;
         }
     } else {
-        $msg->icon='error';
+        $msg->icon = 'error';
         $msg->title = 'Xóa câu hỏi thất bại!';
-        $msg->content = "Lỗi: ".mysql_error();
+        $msg->content = "Lỗi: " . mysql_error();
         $msg->statusCode = 500;
     }
     return $msg;
+}
+
+function filterNonEmptyStrings($element)
+{
+    $trimmed = trim($element);
+    return !empty($trimmed);
+}
+
+function convertAnswerToNumber($answer) {
+    $answer = strtoupper($answer); // Chuyển đổi "answer" thành chữ hoa
+    $number = ord($answer) - ord('A');
+    return $number;
+}
+
+function converToObject($index,$content,$answer_index){
+    $opt = new Option();
+    $opt->content = $content;
+    $opt->check = $index == $answer_index?1:0;
+    return $opt;
 }

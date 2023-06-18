@@ -4,6 +4,7 @@ var index = 0;
 var questId = 0;
 var pageSize = 10;// giá trị mặc định của kích thước trang
 var options = [];
+var questions = [];
 
 $(function () {
     LoadQuestions();
@@ -20,13 +21,83 @@ $(function () {
             if (data.statusCode == 200) {
                 let topics = data.content;
                 topics.forEach(t => {
-                    $('#slTopics').append(`<option value="${t.id}">${t.name}</option>`);
+                    $('.slTopics').append(`<option value="${t.id}">${t.name}</option>`);
                 })
-                $('#slTopics').selectpicker('refresh');
+                $('.slTopics').selectpicker('refresh');
             }
 
         }
     })
+
+    //đổ dữ liệu từ file excel lên table
+    $('#excelfile').on('change', function (e) {
+        var file = e.target.files[0];
+        var reader = new FileReader();
+
+
+        reader.onload = function (e) {
+            var data = new Uint8Array(e.target.result);
+            var workbook = XLSX.read(data, { type: 'array' });
+
+            var sheetName = workbook.SheetNames[0]; // Lấy tên sheet đầu tiên
+            var worksheet = workbook.Sheets[sheetName];
+
+            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            questions = jsonData;
+
+            var table = $('#exceltable tbody');
+            table.empty();
+
+
+            for (var i = 1; i < jsonData.length; i++) {
+                let tr = `<tr>`;                
+                for (var j = 0; j < jsonData[i].length; j++) {
+                   tr+=`<td>${typeof jsonData[i][j]=='undefined'?'':jsonData[i][j]}</td>`;                    
+                }
+                tr += `</tr>`;
+              
+                table.append(tr);
+            }
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+})
+
+$('#btnSubmitImport').click(function(){
+    if(questions.length > 0){
+        let user = $('#userId').data('user');
+        $.ajax({
+            url:'controller/question/import.php',
+            type:'post',
+            data:{
+                created_by:user,
+                topic_id: $('div.mdlImport select.slTopics option:selected').val(),
+                questions
+            },
+            success:function(data){
+                console.log(data);
+                if (data.statusCode == 201) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: data.icon,
+                        title: data.title,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    $('#modalImport').modal('hide');
+                    $('#exceltable tbody').empty();
+                    $('#excelfile').val('');
+                } else {
+                    Swal.fire(
+                        data.title,
+                        data.content,
+                        data.icon
+                    )
+                }
+            }
+        })
+    }    
 })
 
 $('#btnPrint').click(async function () {
@@ -306,8 +377,8 @@ $(document).on('click', 'span[name="btnRemoveOption"]', function () {
     }
 
 });
-function AddOption(id = '',exist = false,basic = true,optName='', content = '', checked = false, readonly = false) {
-    if(!exist){
+function AddOption(id = '', exist = false, basic = true, optName = '', content = '', checked = false, readonly = false) {
+    if (!exist) {
         let now = new Date();
         optName = `${now.getDay()}_${now.getHours()}_${now.getMinutes()}_${now.getSeconds()}_${now.getMilliseconds()}`;
     }
@@ -351,7 +422,7 @@ function AddOption(id = '',exist = false,basic = true,optName='', content = '', 
 
 
     $('#options').append(option);
-    if(!basic){
+    if (!basic) {
         CKEDITOR.replace(optName);
         CKEDITOR.instances[optName].setData(content);
     }
@@ -361,16 +432,16 @@ function AddOption(id = '',exist = false,basic = true,optName='', content = '', 
 
 $('#ckbUseCKEditor').change(function () {
     options = [];
-    $('#options section.option').each(function(){
+    $('#options section.option').each(function () {
         let ta = $(this).find('textarea');
         let chk = $(this).find('input[type="checkbox"]');
-        if($(this).is(':checked')){
+        if ($(this).is(':checked')) {
             let opt = {
-                content:CKEDITOR.instances[option_name].getData().trim(),
-                checked:$(chk).is(':checked')
+                content: CKEDITOR.instances[option_name].getData().trim(),
+                checked: $(chk).is(':checked')
             };
             options.push(opt);
-        }else{ 
+        } else {
             let opt = {
                 content: $(ta).val(),
                 checked: $(chk).is('checked')
@@ -379,7 +450,7 @@ $('#ckbUseCKEditor').change(function () {
         }
         console.log(options)
     })
-   
+
 })
 
 
@@ -403,7 +474,7 @@ $(document).on('show.bs.modal', '#modalQuestion', function () {
 $('#btnSaveChanges').click(function () {
     let title = $('#title').val().trim();
     let user = $('#userId').data('user');
-    let topic_id = $('#slTopics option:selected').val();
+    let topic_id = $('div.mdlAddOrUpdate select.slTopics option:selected').val();
 
 
     if (title.length == 0) {
