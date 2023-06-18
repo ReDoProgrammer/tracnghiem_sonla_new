@@ -21,7 +21,7 @@
                 </div>
                 <hr/>
                 <div class="form-check">
-                    <input class="form-check-input" id="ckbUseCKEditor" type="checkbox" name="${optName}" value="">
+                    <input class="form-check-input" id="ckbUseCKEditor" disabled type="checkbox" name="${optName}" value="">
                     <label class="form-check-label">Sử dụng trình soạn thảo</label>
                 </div>
                 <div id='options'>

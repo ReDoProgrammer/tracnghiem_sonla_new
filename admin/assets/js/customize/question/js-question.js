@@ -492,8 +492,8 @@ $('#btnSaveChanges').click(function () {
 
 
         let option_name = $(element).find('textarea').attr('name');
-        let option = CKEDITOR.instances[option_name].getData().trim();
-
+        let option = $('#ckbUseCKEditor').is(':checked')?CKEDITOR.instances[option_name].getData().trim():$(`textarea[name="${option_name}"]`).val();
+     
         if (option.length === 0) {
             optValidate = false;
         }
@@ -517,7 +517,11 @@ $('#btnSaveChanges').click(function () {
         $('#errNoChecked').show().fadeOut(5000);
         return;
     }
-
+    if (options.length <=1) {
+        $('#errNoChecked').text('Vui lòng nhập ít nhất 02 đáp án!');
+        $('#errNoChecked').show().fadeOut(5000);
+        return;
+    }
 
     //create or update question based on question id
     if (questId == 0) {//insert a new question
