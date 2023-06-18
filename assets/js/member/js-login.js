@@ -40,9 +40,12 @@ $('#btnLoginWithUsernameOrEmail').on('click', function () {
                 })
                 window.location.href = "index.php?module=home&act=index";
             } else {
-                $('#divLoginMsg strong').text(data.title);
-                $('#divLoginMsg span').text(data.content);
-                $('#divLoginMsg').slideDown(200).delay(2000).slideUp(2000);
+                $.toast({
+                    heading: data.title,
+                    text: data.content,
+                    showHideTransition: 'fade',
+                    icon: data.icon
+                })
             }
         },
         error: function (jqXHR, exception) {
