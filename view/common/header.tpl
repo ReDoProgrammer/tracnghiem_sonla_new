@@ -17,7 +17,7 @@
     <link rel="canonical" class="site_url" href="https://tinhdoan.thionline.com.vn/vi/">
     <link rel="alternate" href="/vi/news/rss/" title="Bài viết" type="application/rss+xml">
     
-    <link rel="preload" as="script" href="assets/js/jquery.min.js?t=1683896486">
+    <link rel="preload" as="script" href="assets/js/jquery.min.js">
     <link rel="preload" as="script" href="assets/js/vi.js?t=1683896486">
     <link rel="preload" as="script" href="assets/js/global.js?t=1683896486">
     <link rel="preload" as="script" href="assets/js/news.js?t=1683896486">
@@ -29,8 +29,10 @@
     <link rel="preload" as="script" href="assets/js/jquery.ui.datepicker-vi.js?t=1683896486">
     <link rel="preload" as="script" href="assets/js/users.js?t=1683896486">
     <link rel="preload" as="script" href="assets/js/bootstrap.min.js?t=1683896486">
+    <link rel="preload" as="script" href="assets/dist/bootstrap-select/bootstrap-select.min.js?t=1683896486">
     <link rel="StyleSheet" href="assets/css/font-awesome.min.css?t=1683896486">
     <link rel="StyleSheet" href="assets/css/bootstrap.min.css?t=1683896486">
+    <!-- <link rel="StyleSheet" href="assets/dist/bootstrap/css/bootstrap.min.css"> -->
     <link rel="StyleSheet" href="assets/css/style.css?t=1683896486">
     <link rel="StyleSheet" href="assets/css/custom.css?t=1683896486">
     <link rel="StyleSheet" href="assets/css/style.responsive.css?t=1683896486">
@@ -41,11 +43,12 @@
     <link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.min.css?t=1683896486">
 
 
-    <script src="assets/js/jquery-3.7.0.js"></script>
+    <script src="assets/js/jquery.min.js?t=1683896486"></script>
 
     <!-- plugins sweetalert2 -->
-    <link type="text/css" href="assets/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <script src="assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link type="text/css" href="assets/plugins/sweetalert2/sweetalert2.min.css?t=1683896486" rel="stylesheet">
+    <script src="assets/plugins/sweetalert2/sweetalert2.min.js?t=1683896486"></script>
+    <script src = ""></script>
 </head>
 
 

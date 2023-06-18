@@ -20,80 +20,61 @@ $(function () {
 
 
     $('.btnSubmitRegister').prop('disabled', true);
-    $('.divWarningMsg').hide();
 
-    //kiểm tra username đã tồn tại trong hệ thống hay chưa
-    $('.txtUsername').focusout(function () {
-        if ($(this).val().trim().length > 0) {
+    $('input').focusout(function () {
+        let phone = $('.txtPhone').val().trim();
+        let username = $('.txtUsername').val().trim();
+        let email = $('.txtEmail').val().trim();
+        $('.divWarningMsg').empty();
+
+        if (username.length > 0) {
             $.ajax({
                 url: 'controller/member/check-username-exists.php',
                 type: 'get',
-                data: { username: $(this).val() },
+                data: { username },
                 success: function (count) {
                     isPassport = count == 0;
                     if (count > 0) {
-                        $('.divWarningMsg').slideDown(200);
-                        $('.divWarningMsg span').text('Tài khoản này đã tồn tại trên hệ thống!');
-                    } else {
-                        $('.divWarningMsg').slideUp(200);
+                        $('.divWarningMsg').append('- Tài khoản này đã tồn tại trên hệ thống!<br/>');
                     }
                 }
             })
         }
-    })
-
-
-    //kiểm tra email đã tồn tại trên hệ thống hay chưa
-    $('.txtEmail').focusout(function () {
-        if ($(this).val().trim().length > 0) {
-            if (validateEmail($(this).val())) {
+        if(email.length > 0){
+            if (validateEmail(email)) {
                 $.ajax({
                     url: 'controller/member/check-email-exists.php',
                     type: 'get',
-                    data: { email: $(this).val() },
+                    data: { email },
                     success: function (count) {
                         isPassport = count == 0;
                         if (count > 0) {
-                            $('.divWarningMsg').slideDown(200);
-                            $('.divWarningMsg span').text('Email này đã tồn tại trên hệ thống');
-                        } else {
-                            $('.divWarningMsg').slideUp(200);
+                            $('.divWarningMsg').append('- Email này đã tồn tại trên hệ thống <br/>');
                         }
                     }
                 })
             } else {
-                $('.divWarningMsg').slideDown(200);
-                $('.divWarningMsg span').text('Email không hợp lệ');
+                $('.divWarningMsg').append('- Email không hợp lệ<br/>');
                 isPassport = false;
             }
-
         }
-    })
-
-    //kiểm tra xem sdt đã tồn tại trên hệ thống hay chưa
-    $('.txtPhone').focusout(function () {
-        if ($(this).val().trim().length > 0) {
-            if (validatePhoneNumber($(this).val())) {
+        if(phone.length>0){
+            if (validatePhoneNumber(phone)) {
                 $.ajax({
                     url: 'controller/member/check-phone-exists.php',
                     type: 'get',
-                    data: { phone: $(this).val() },
+                    data: { phone },
                     success: function (count) {
                         isPassport = count == 0;
                         if (count > 0) {
-                            $('.divWarningMsg').slideDown(200);
-                            $('.divWarningMsg span').text('Số điện thoại này đã tồn tại trên hệ thống');
-                        } else {
-                            $('.divWarningMsg').slideUp(200);
-                        }
+                            $('.divWarningMsg').append('- Số điện thoại này đã tồn tại trên hệ thống <br/>');
+                        } 
                     }
                 })
             } else {
-                $('.divWarningMsg').slideDown(200);
-                $('.divWarningMsg span').text('Số điện thoại không hợp lệ');
+                $('.divWarningMsg').append('- Số điện thoại không hợp lệ <br/>');
                 isPassport = false;
             }
-
         }
     })
 
@@ -124,35 +105,35 @@ $('.btnSubmitRegister').click(function () {
 
     if (fullname.length == 0) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Vui lòng cung cấp họ tên của bạn');
+        $('.divWarningMsg').text('Vui lòng cung cấp họ tên của bạn');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (username.length == 0) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Vui lòng nhập tài khoản bạn muốn đăng ký với hệ thống');
+        $('.divWarningMsg').text('Vui lòng nhập tài khoản bạn muốn đăng ký với hệ thống');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (password.length == 0 || confirm_password.length == 0) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Vui lòng nhập đầy đủ 2 lần mật khẩu');
+        $('.divWarningMsg').text('Vui lòng nhập đầy đủ 2 lần mật khẩu');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (password !== confirm_password) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Mật khẩu 2 lần nhập không trùng khớp');
+        $('.divWarningMsg').text('Mật khẩu 2 lần nhập không trùng khớp');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (JOB && job_id == null) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Vui lòng chọn nghề nghiệp!');
+        $('.divWarningMsg').text('Vui lòng chọn nghề nghiệp!');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
@@ -160,14 +141,14 @@ $('.btnSubmitRegister').click(function () {
 
     if (POSITION && position_id == null) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Vui lòng chọn chức vụ!');
+        $('.divWarningMsg').text('Vui lòng chọn chức vụ!');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
 
     if (WORKPLACE && workplace_id == null) {
         $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg span').text('Vui lòng chọn đơn vị công tác!');
+        $('.divWarningMsg').text('Vui lòng chọn đơn vị công tác!');
         $('.divWarningMsg').delay(3000).slideUp(2000);
         return;
     }
@@ -210,22 +191,20 @@ $('.btnSubmitRegister').click(function () {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (msg) {
+        success: function (data) {
+            if (data.statusCode == 201) {
+                Swal.fire({
+                    icon: data.icon,
+                    title: data.title,
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: 'OK!'
+                }).then(_ => {
+                    let ip_address = '127.0.0.1';
+                    // await $.getJSON('https://api.ipify.org?format=json', function (data) {
+                    //     ip_address = data.ip;
+                    // });
 
-            Swal.fire({
-                icon: msg.icon,
-                title: msg.title,
-                showDenyButton: false,
-                showCancelButton: false,
-                confirmButtonText: 'OK!'
-
-            }).then((result) => {
-                console.log(result)
-                let ip_address = '127.0.0.1';
-                // await $.getJSON('https://api.ipify.org?format=json', function (data) {
-                //     ip_address = data.ip;
-                // });
-                if (result.statusCode == 201) {
                     $.ajax({
                         url: 'controller/member/login.php',
                         type: 'post',
@@ -244,9 +223,15 @@ $('.btnSubmitRegister').click(function () {
                             console.log(jqXHR)
                         }
                     })
-                }
 
-            })
+                })
+            } else {
+                Swal.fire({
+                    icon: data.icon,
+                    title: data.title,
+                    text: data.content
+                })
+            }
         }
     })
 

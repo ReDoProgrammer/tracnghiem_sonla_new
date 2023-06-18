@@ -54,17 +54,13 @@
 
             <div class="form-group">
                 <div class="text-right clearfix">
-                    <a href="javascript:void(0);" onclick="modalShowByObj('#guestReg_nv18', 'recaptchareset')">Đăng
-                        ký tài khoản</a>
+                    <a href="index.php?module=member&act=register">
+                        Đăng ký tài khoản
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="guestReg_nv18" class="hidden">
-        <div class="page panel panel-default bg-lavender box-shadow">
-           <?php include('register.tpl'); ?>
-        </div>
-    </div>
+    </div>   
 </div>
 
 <script src="assets/js/member/js_login.js"></script>

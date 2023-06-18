@@ -54,17 +54,7 @@
     </div>
 </nav>
 </div>
-<!-- SiteModal Required!!! -->
-<div id="sitemodal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-body">
-                <em class="fa fa-spinner fa-spin">&nbsp;</em>
-            </div>
-            <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times"></span></button>
-        </div>
-    </div>
-</div>
+
 <div id="timeoutsess" class="chromeframe">
     Bạn đã không sử dụng Site, <a onclick="timeoutsesscancel();" href="javascript:void(0);">Bấm vào đây để duy trì
         trạng thái đăng nhập</a>. Thời gian chờ: <span id="secField"> 60 </span> giây
