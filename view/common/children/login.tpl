@@ -63,4 +63,4 @@
     </div>   
 </div>
 
-<script src="assets/js/member/js_login.js"></script>
+<script src="assets/js/member/js-login.js"></script>

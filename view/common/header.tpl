@@ -41,6 +41,7 @@
     <link rel="StyleSheet" href="assets/css/owl.carousel.min.css">
     <link type="text/css" href="assets/css/jquery-ui.min.css?t=1683896486" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.min.css?t=1683896486">
+    <link rel="stylesheet" type="text/css" href="assets/dist/toast/css/jquery.toast.min.css">
 
 
     <script src="assets/js/jquery.min.js?t=1683896486"></script>

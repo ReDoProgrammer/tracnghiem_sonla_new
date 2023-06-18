@@ -115,17 +115,8 @@
 <script src="assets/js/owl.carousel.min.js?t=1683896486"></script>
 <script src="assets/js/custom.js?t=1683896486"></script>
 <script src="assets/js/main.js?t=1683896486"></script>
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "url": "https://tinhdoan.thionline.com.vn",
-    "logo": "assets/images/logo-tinhdoan.png"
-}
-</script>
-<script>
-    awe_owl();
-</script>
+
+
 <script type="text/javascript" src="assets/js/jquery-ui.min.js?t=1683896486"></script>
 <script type="text/javascript" src="assets/js/jquery.ui.datepicker-vi.js?t=1683896486"></script>
 <script type="text/javascript" src="assets/js/users.js?t=1683896486"></script>
@@ -157,6 +148,8 @@
 
 </script>
 <script src="assets/js/bootstrap.min.js?t=1683896486"></script>
+
+<script src ="assets/dist/toast/js/jquery.toast.min.js"></script>
 
 </body>
 
