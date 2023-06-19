@@ -355,7 +355,7 @@ $('#btnSaveChanges').click(function () {
         return;
     }
 
-    if (times < 1) {
+    if (times < 0) {
         $('#errNoChecked').text('Số lần thi không hợp lệ!');
         $('#errNoChecked').show().fadeOut(5000);
         return;
