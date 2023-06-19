@@ -163,7 +163,7 @@ function LoadExamSummary(id) {
             $('.ex_duration').attr('data-duration', exam.duration * 60);
             $('.ex_number_of_questions').text(`${exam.number_of_questions} câu`);
             $('.ex_number_of_questions').attr('data-noq', exam.number_of_questions);
-            $('.ex_times').text(exam.times);
+            $('.ex_times').text(exam.times>0?exam.times:'Unlimit');
             $('.ex_times').attr('data-times', exam.times);
 
             $('.ex_mark_per_question').text(exam.mark_per_question);

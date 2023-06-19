@@ -8,7 +8,7 @@
                 <b style="color: #fff;font-size: 22px;"> 
                 <span class="onlinetest-clock">
                     <span  id="current_times">1</span>/
-                    <span  id="total_times">2</span>
+                    <span  class="ex_times">2</span>
                 </span></b>
             </p>
             <p class="mg-0">
