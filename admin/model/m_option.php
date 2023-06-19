@@ -39,7 +39,10 @@ function oGet($question_id, $random_options)
 
 function oGetOptionsByQuestion($question_id)
 {
-    $sql = "SELECT id,content,correct FROM options WHERE question_id = " . $question_id;
+    $sql = "SELECT id,content,correct FROM options 
+            WHERE question_id = '".$question_id."'
+            ORDER BY id
+    ";
     $local_list = mysql_query($sql, dbconnect());
     $msg = new Message();
     if ($local_list) {
