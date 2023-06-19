@@ -17,6 +17,8 @@ function get($question_id, $random_options)
     $sql = "SELECT id,content,correct FROM options WHERE question_id = '" . $question_id . "'";
     if ($random_options == 1) {
         $sql .= "  ORDER BY RAND()";
+    }else{
+        $sql.=" ORDER BY id";
     }
 
     $options = mysql_query($sql, dbconnect());
