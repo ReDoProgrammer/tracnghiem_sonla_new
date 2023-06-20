@@ -124,7 +124,7 @@
             <div class="row">
                 <div class="form-group col-xs-24 col-sm-24 col-md-24 col-lg-24 text-center check-box required"
                     data-mess="">
-                    <input type="checkbox" class="ckbAgreement" />Tôi đồng ý với
+                    <input type="checkbox" class="ckbAgreement" disabled/>Tôi đồng ý với
                     <a onclick="ShowRegisterRules()"><span class="btn btn-default btn-xs">Quy định đăng ký thành
                             viên</span></a>
                 </div>

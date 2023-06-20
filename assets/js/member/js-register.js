@@ -4,8 +4,9 @@ var BIRTHDATE = true,
     JOB = true,
     POSITION = true,
     WORKPLACE = true;
-
+var isPassport = true;
 $(function () {
+    $('.divWarningMsg').hide();
     ConfigInputs();
     if (JOB) {
         LoadJobs();
@@ -26,8 +27,21 @@ $(function () {
         let username = $('.txtUsername').val().trim();
         let email = $('.txtEmail').val().trim();
         $('.divWarningMsg').empty();
+        $('.divWarningMsg').show();
 
-        if (username.length > 0) {
+        let password = $('.txtPassword').val().trim();
+        let confirm_password = $('.txtConfirmPassword').val().trim();
+        if(!validatePassword(password) || !validatePassword(confirm_password)){
+            $('.divWarningMsg').append('- Mật khẩu ít nhất 6 kí tự, không chứa khoảng trắng, bao gồm số và chữ!<br/>');
+            isPassport = false;
+        }else{
+            if(confirm_password !=password){
+                $('.divWarningMsg').append('- Mật khẩu 2 lần nhập không giống nhau!<br/>');
+                isPassport = false;
+            }
+        }
+
+        if (validateUsername(username)) {
             $.ajax({
                 url: 'controller/member/check-username-exists.php',
                 type: 'get',
@@ -35,12 +49,16 @@ $(function () {
                 success: function (count) {
                     isPassport = count == 0;
                     if (count > 0) {
+                        isPassport = false;
                         $('.divWarningMsg').append('- Tài khoản này đã tồn tại trên hệ thống!<br/>');
                     }
                 }
             })
+        }else{
+            $('.divWarningMsg').append('- Tài khoản ít nhất 4 kí tự, không chứa khoảng trắng và kí tự đặc biệt!<br/>');
+            isPassport = false;
         }
-        if(email.length > 0){
+        if(validateEmail(email)){
             if (validateEmail(email)) {
                 $.ajax({
                     url: 'controller/member/check-email-exists.php',
@@ -50,6 +68,7 @@ $(function () {
                         isPassport = count == 0;
                         if (count > 0) {
                             $('.divWarningMsg').append('- Email này đã tồn tại trên hệ thống <br/>');
+                            isPassport = false;
                         }
                     }
                 })
@@ -57,24 +76,33 @@ $(function () {
                 $('.divWarningMsg').append('- Email không hợp lệ<br/>');
                 isPassport = false;
             }
+        }else{
+            $('.divWarningMsg').append('- Định dạng email không hợp lệ!<br/>');
+             isPassport = false;
         }
-        if(phone.length>0){
-            if (validatePhoneNumber(phone)) {
-                $.ajax({
-                    url: 'controller/member/check-phone-exists.php',
-                    type: 'get',
-                    data: { phone },
-                    success: function (count) {
-                        isPassport = count == 0;
-                        if (count > 0) {
-                            $('.divWarningMsg').append('- Số điện thoại này đã tồn tại trên hệ thống <br/>');
-                        } 
-                    }
-                })
-            } else {
-                $('.divWarningMsg').append('- Số điện thoại không hợp lệ <br/>');
-                isPassport = false;
-            }
+        
+        if (validatePhoneNumber(phone)) {
+            $.ajax({
+                url: 'controller/member/check-phone-exists.php',
+                type: 'get',
+                data: { phone },
+                success: function (count) {
+                    isPassport = count == 0;
+                    if (count > 0) {
+                        $('.divWarningMsg').append('- Số điện thoại này đã tồn tại trên hệ thống <br/>');
+                    } 
+                }
+            })
+        } else {
+            $('.divWarningMsg').append('- Số điện thoại không hợp lệ <br/>');
+            isPassport = false;
+        }
+
+        if(isPassport){
+            $("input.ckbAgreement").removeAttr("disabled");
+            $('.divWarningMsg').hide();
+        }else{
+            $("input.ckbAgreement").attr("disabled", true);
         }
     })
 
@@ -88,7 +116,6 @@ $('.btnSubmitRegister').click(function () {
     let confirm_password = $('.txtConfirmPassword').val().trim();
     let email = $('.txtEmail').val().trim();
     let phone = $('.txtPhone').val().trim();
-    console.log({ fullname, username, password, confirm_password, email, phone });
 
 
     let gender = GENDER ? $('.rbtN').is(':checked') ? -1 : $('.rbtM').is(':checked') ? 1 : 0 : -1;
@@ -110,24 +137,18 @@ $('.btnSubmitRegister').click(function () {
         return;
     }
 
-    if (username.length == 0) {
-        $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg').text('Vui lòng nhập tài khoản bạn muốn đăng ký với hệ thống');
-        $('.divWarningMsg').delay(3000).slideUp(2000);
-        return;
-    }
+   
 
-    if (password.length == 0 || confirm_password.length == 0) {
-        $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg').text('Vui lòng nhập đầy đủ 2 lần mật khẩu');
-        $('.divWarningMsg').delay(3000).slideUp(2000);
-        return;
-    }
+    
+    
+
+    
 
     if (password !== confirm_password) {
         $('.divWarningMsg').slideDown(200);
         $('.divWarningMsg').text('Mật khẩu 2 lần nhập không trùng khớp');
         $('.divWarningMsg').delay(3000).slideUp(2000);
+        isPassport = false;
         return;
     }
 
@@ -309,7 +330,7 @@ function LoadPositions() {
 
 
 
-var isPassport = true;
+
 var avatar = null;
 
 
@@ -383,3 +404,12 @@ function formatDate(date) {
     return `${d[2]}-${d[1]}-${d[0]}`;
 }
 
+function validatePassword(pwd){
+    var passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    return passRegex.test(pwd);
+}
+
+function validateUsername(usr){
+    let regex = /^[a-zA-Z0-9_]{4,}$/;
+    return regex.test(usr);
+}
