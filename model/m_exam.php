@@ -415,43 +415,68 @@ function GetQuestions($exam_id)
 {
     $msg = new Message();
 
-    $exam = ExDetail($exam_id);
+    /*
+        Lấy thông tin bài thi 
+        và các cấu hình liên quan
+        -- đảo câu hỏi
+        -- đảo đáp án
+        -- số câu hỏi
+    */
+    $sql = "SELECT  e.id,e.title,
+                    e.random_questions,e.random_options,
+                    e.number_of_questions,
+                    ef.topic_id,ef.percent 
+            FROM exams e
+            INNER JOIN exam_configs ef ON ef.exam_id = e.id
+            WHERE e.id = '".$exam_id."' AND ef.percent>0";
+    $result = mysql_query($sql,dbconnect());
+    if($result && mysql_num_rows($result) > 0){
+        $arr = array();
+        while ($local = mysql_fetch_array($result)) {
+            $arr[] = $local;
+        }
+        $number_of_questions =intval($arr[0]['number_of_questions']);
+        $random_questions = intval($arr[0]['random_questions']);
+        
+        $sql = "SELECT * FROM( ";
+                foreach($arr as $i=>$t){
+                    $limit = round((intval($t['percent']) / 100) * $number_of_questions);
+                    $sql .= "SELECT q".$i.".id, q".$i.".title, q".$i.".topic
+                    FROM (
+                        SELECT q.id, q.title, q.topic_id,t.name AS topic
+                        FROM questions q
+                        INNER JOIN topics t ON q.topic_id = t.id
+                        WHERE q.topic_id = ".$t['topic_id']."";
+                        $sql.= $random_questions==1?" ORDER BY RAND()":"";
+                        $sql.= " LIMIT ".$limit."
+                    ) AS q".$i;
+                    $sql .= $t == end($arr)?"":" UNION ";
+                }
+                $sql .=")  AS subquery";
+                $sql.=$random_questions==1?" ORDER BY RAND();":"";
+            $result = mysql_query($sql,dbconnect());
+            if($result && mysql_num_rows($result)>0){
+                $arr = array();
+                while ($local = mysql_fetch_array($result)) {
+                    $arr[] = $local;
+                }
+                $msg->title = "Lấy đề thi thành công!";
+                $msg->icon = "success";
+                $msg->statusCode = 200;
+                $msg->content = $arr; 
+            }else{
+                $msg->icon = "error";
+                $msg->title = "Lấy đề thi thất bại!";
+                $msg->statusCode = 500;
+                $msg->content = mysql_error();
+            } 
 
-    if ($exam->statusCode != 200) {
+    }else{
+        $msg->title = "Lấy thông tin chi tiết bài thi thất bại!";
         $msg->icon = "error";
-        $msg->statusCode = $exam->statusCode;
-        $msg->title = "Load danh sách câu hỏi thất bại!";
-        $msg->content = $exam->content;
-        return $msg;
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
     }
-
-    $config = GetConfigs($exam_id);
-    if ($config->statusCode != 200) {
-        $msg->icon = "error";
-        $msg->statusCode = $exam->statusCode;
-        $msg->title = "Load danh sách câu hỏi thất bại!";
-        $msg->content = "Lỗi lấy chi tiết cấu hình. " . $config->content;
-        return $msg;
-    }
-
-    $ranks = $config->content;
-    $number_of_questions = $exam->content['number_of_questions'];
-    $random_questions = $exam->content['random_questions'] == 1;
-    $random_options = $exam->content['random_options'] == 1;
-
-
-
-    $arr = array();
-    foreach ($ranks as $c) {
-        $limit = round(($c['percent'] / 100) * $number_of_questions);
-        $qIds = GetQuestionsByTopic($c["topic_id"], $limit, $random_questions, $random_options)->content;
-        $arr = array_merge($arr, $qIds);
-    }
-
-    $msg->icon = 'success';
-    $msg->title = "Load danh sách id của câu hỏi của đề thi thành công!";
-    $msg->statusCode = 200;
-    $msg->content = $arr;
     return $msg;
 }
 

@@ -220,6 +220,7 @@ function LoadQuestionsByExam(exam_id) {
             type: 'get',
             data: { exam_id },
             success: function (data) {
+                console.log(data);
                 if (data.statusCode == 200 && data.content.length > 0) {
                     questions = data.content;
                     BindPagination();
