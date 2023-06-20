@@ -23,23 +23,28 @@ $(function () {
     $('.btnSubmitRegister').prop('disabled', true);
 
     $('input').focusout(function () {
-        let phone = $('.txtPhone').val().trim();
-        let username = $('.txtUsername').val().trim();
-        let email = $('.txtEmail').val().trim();
+        let phone = $('.txtPhone').val();
+        let username = $('.txtUsername').val();
+        let email = $('.txtEmail').val();
         $('.divWarningMsg').empty();
         $('.divWarningMsg').show();
 
         let password = $('.txtPassword').val().trim();
         let confirm_password = $('.txtConfirmPassword').val().trim();
-        if(!validatePassword(password) || !validatePassword(confirm_password)){
+        if (!validatePassword(password) || !validatePassword(confirm_password)) {
             $('.divWarningMsg').append('- Mật khẩu ít nhất 6 kí tự, không chứa khoảng trắng, bao gồm số và chữ!<br/>');
             isPassport = false;
-        }else{
-            if(confirm_password !=password){
-                $('.divWarningMsg').append('- Mật khẩu 2 lần nhập không giống nhau!<br/>');
-                isPassport = false;
-            }
         }
+        if (confirm_password != password) {
+            $('.divWarningMsg').append('- Mật khẩu 2 lần nhập không giống nhau!<br/>');
+            isPassport = false;
+        }
+        if (password.trim().length != password.length || confirm_password.trim().length != confirm_password.length) {
+            $('.divWarningMsg').append('- Mật khẩu không được chứa khoảng trắng!<br/>');
+            isPassport = false;
+        }
+
+
 
         if (validateUsername(username)) {
             $.ajax({
@@ -54,11 +59,11 @@ $(function () {
                     }
                 }
             })
-        }else{
+        } else {
             $('.divWarningMsg').append('- Tài khoản ít nhất 4 kí tự, không chứa khoảng trắng và kí tự đặc biệt!<br/>');
             isPassport = false;
         }
-        if(validateEmail(email)){
+        if (validateEmail(email)) {
             if (validateEmail(email)) {
                 $.ajax({
                     url: 'controller/member/check-email-exists.php',
@@ -76,11 +81,11 @@ $(function () {
                 $('.divWarningMsg').append('- Email không hợp lệ<br/>');
                 isPassport = false;
             }
-        }else{
+        } else {
             $('.divWarningMsg').append('- Định dạng email không hợp lệ!<br/>');
-             isPassport = false;
+            isPassport = false;
         }
-        
+
         if (validatePhoneNumber(phone)) {
             $.ajax({
                 url: 'controller/member/check-phone-exists.php',
@@ -90,7 +95,7 @@ $(function () {
                     isPassport = count == 0;
                     if (count > 0) {
                         $('.divWarningMsg').append('- Số điện thoại này đã tồn tại trên hệ thống <br/>');
-                    } 
+                    }
                 }
             })
         } else {
@@ -98,10 +103,10 @@ $(function () {
             isPassport = false;
         }
 
-        if(isPassport){
+        if (isPassport) {
             $("input.ckbAgreement").removeAttr("disabled");
             $('.divWarningMsg').hide();
-        }else{
+        } else {
             $("input.ckbAgreement").attr("disabled", true);
         }
     })
@@ -137,12 +142,12 @@ $('.btnSubmitRegister').click(function () {
         return;
     }
 
-   
 
-    
-    
 
-    
+
+
+
+
 
     if (password !== confirm_password) {
         $('.divWarningMsg').slideDown(200);
@@ -395,8 +400,8 @@ function validateEmail(email) {
     return pattern.test(email);
 }
 function validatePhoneNumber(phoneNumber) {
-    var pattern = /^0\d{9}$/;
-    return pattern.test(phoneNumber);
+    let regex = /^0\d{9}$/;
+    return regex.test(phoneNumber);
 }
 
 function formatDate(date) {
@@ -404,12 +409,12 @@ function formatDate(date) {
     return `${d[2]}-${d[1]}-${d[0]}`;
 }
 
-function validatePassword(pwd){
+function validatePassword(pwd) {
     var passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
     return passRegex.test(pwd);
 }
 
-function validateUsername(usr){
-    let regex = /^[a-zA-Z0-9_]{4,}$/;
+function validateUsername(usr) {
+    let regex = /^[^\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
     return regex.test(usr);
 }
