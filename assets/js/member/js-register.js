@@ -4,10 +4,11 @@ var BIRTHDATE = true,
     JOB = true,
     POSITION = true,
     WORKPLACE = true;
-    WORKINGUNIT = true;
-var isPassport = true;
+WORKINGUNIT = true;
+
 $(function () {
-    $('.divWarningMsg').hide();
+    $('.msgValidation').empty();
+
     ConfigInputs();
     if (JOB) {
         LoadJobs();
@@ -21,7 +22,6 @@ $(function () {
 
 
 
-    $('.btnSubmitRegister').prop('disabled', true);
 
     $('input').focusout(function () {
         let phone = $('.txtPhone').val();
@@ -33,14 +33,6 @@ $(function () {
         let password = $('.txtPassword').val();
         let confirm_password = $('.txtConfirmPassword').val();
 
-        if (password != confirm_password) {
-            $('.divWarningMsg').append('- Mật khẩu 2 lần nhập không khớp!<br/>');
-            isPassport = false;
-        } else
-            if (!validatePassword(password) || !validatePassword(confirm_password)) {
-                $('.divWarningMsg').append('- Mật khẩu ít nhất 6 kí tự, không chứa khoảng trắng, bao gồm số và chữ!<br/>');
-                isPassport = false;
-            }
 
 
 
@@ -61,28 +53,7 @@ $(function () {
             $('.divWarningMsg').append('- Tài khoản ít nhất 4 kí tự, không chứa khoảng trắng và kí tự đặc biệt!<br/>');
             isPassport = false;
         }
-        if (validateEmail(email)) {
-            if (validateEmail(email)) {
-                $.ajax({
-                    url: 'controller/member/check-email-exists.php',
-                    type: 'get',
-                    data: { email },
-                    success: function (count) {
-                        isPassport = count == 0;
-                        if (count > 0) {
-                            $('.divWarningMsg').append('- Email này đã tồn tại trên hệ thống <br/>');
-                            isPassport = false;
-                        }
-                    }
-                })
-            } else {
-                $('.divWarningMsg').append('- Email không hợp lệ<br/>');
-                isPassport = false;
-            }
-        } else {
-            $('.divWarningMsg').append('- Định dạng email không hợp lệ!<br/>');
-            isPassport = false;
-        }
+
 
         if (validatePhoneNumber(phone)) {
             $.ajax({
@@ -113,12 +84,13 @@ $(function () {
 
 
 $('.btnSubmitRegister').click(function () {
-    let fullname = $('input[name=txtFullname1]').val().trim();
-    let username = $('input[name=txtUsername]').val().trim();
-    let password = $('.txtPassword').val().trim();
-    let confirm_password = $('.txtConfirmPassword').val().trim();
-    let email = $('.txtEmail').val().trim();
-    let phone = $('.txtPhone').val().trim();
+
+    let fullname = $('#txtFullname').val().trim();
+    let username = $('#txtUsername').val().trim();
+    let password = $('#txtPassword').val();
+    let confirm_password = $('#txtConfirmPassword').val();
+    let email = $('#txtEmail').val();
+    let phone = $('#txtPhone').val();
 
 
     let gender = GENDER ? $('.rbtN').is(':checked') ? -1 : $('.rbtM').is(':checked') ? 1 : 0 : -1;
@@ -132,28 +104,113 @@ $('.btnSubmitRegister').click(function () {
     let workplace_id = WORKPLACE ? $('.slWorkPlaces option:selected').val() : '';
     let workingunit = $('.txtWorkingUnit').val();
 
-
+    $('.msgValidation').empty();
+    
     if (fullname.length == 0) {
-        $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg').text('Vui lòng cung cấp họ tên của bạn');
-        $('.divWarningMsg').delay(3000).slideUp(2000);
+        $('#msgFullname').text("Vui lòng nhập họ tên. Họ tên không thể để trống!");
+        $('#txtFullname').select();
+        return;
+    }
+
+    if (validateUsername(username)) {
+        $.ajax({
+            url: 'controller/member/check-username-exists.php',
+            type: 'get',
+            data: { username },
+            success: function (count) {
+                isPassport = count == 0;
+                if (count > 0) {
+                    $('#msgUsername').text("- Tài khoản này đã tồn tại trên hệ thống!");
+                    $('#txtUsername').select();
+                    return;
+                }
+            }
+        })
+    } else {
+        $('#msgUsername').text("- Tài khoản ít nhất 4 kí tự, không chứa khoảng trắng, tiếng Việt và kí tự đặc biệt!");
+        $('#txtUsername').select();
+        return;
+    }
+
+
+    if (!validatePassword(password)) {
+        $('#msgPassword').text("Mật khẩu ít nhất 6 kí tự, bao gồm chữ cái và số, không được chứa khoảng trắng!");
+        $('#msgPassword').select();
+        return;
+    }
+
+    if (!validatePassword(confirm_password)) {
+        $('#msgConfirmPassword').text("Mật khẩu ít nhất 6 kí tự, bao gồm chữ cái và số, không được chứa khoảng trắng!");
+        $('#msgConfirmPassword').select();
+        return;
+    }
+
+    if (password != confirm_password) {
+        $('#msgConfirmPassword').text("Mật khẩu 2 lần nhập không giống nhau!!");
+        $('#msgConfirmPassword').select();
         return;
     }
 
 
 
+    if (validateEmail(email)) {
+        $.ajax({
+            url: 'controller/member/check-email-exists.php',
+            type: 'get',
+            data: { email },
+            success: function (count) {
+                if (count > 0) {
+                    $('#msgEmail').text("Email này đã tồn tại trên hệ thống!");
+                    $('#txtEmail').select();
+                    return;
+                }
+            }
+        })
+    } else {
+        if(email.length == 0){
+            $('#msgEmail').text("Vui lòng cung cấp email của bạn!!");
+            $('#txtEmail').select();
+            return;
+        }else{
+            $('#msgEmail').text("Định dạng email không hợp lệ. Email là chữ không dấu, không chứa khoảng trắng và phải có địa chỉ máy chủ cụ thể, ví dụ: @gmail.com hoặc @yahoo.com!!");
+            $('#txtEmail').select();
+            return;
+        }
+       
+    }
 
+    if (validatePhoneNumber(phone)) {
+        $.ajax({
+            url: 'controller/member/check-phone-exists.php',
+            type: 'get',
+            data: { phone },
+            success: function (count) {
+                isPassport = count == 0;
+                if (count > 0) {
+                    $('#msgPhong').text('Số điện thoại này đã được dùng để đăng ký với hệ thống!');
+                    $('#txtPhone').select();
+                    return;
+                }
+            }
+        })
+    } else {
+        if(phone.length == 0){
+            $('#msgPhone').text('Vui lòng cung cấp số điện thoại của bạn!');
+            $('#txtPhone').select();
+            return;
+        }else{
+            $('#msgPhone').text('Số điện thoại không hợp lệ. Số điện thoại gồm 10 chữ số, bắt đầu bằng số 0, không được chứa khoảng trắng!');
+            $('#txtPhone').select();
+            return;
+        }
+      
+    }
 
-
-
-
-    if (password !== confirm_password) {
-        $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg').text('Mật khẩu 2 lần nhập không trùng khớp');
-        $('.divWarningMsg').delay(3000).slideUp(2000);
-        isPassport = false;
+    if(!$('#ckbAgreement').is(':checked')){
+        $('#msgAgreement').text('Vui lòng tick vào nút "Tôi đồng ý với quy định đăng ký thành viên" !!');
         return;
     }
+
 
     if (JOB && job_id == null) {
         $('.divWarningMsg').slideDown(200);

@@ -10,6 +10,8 @@
 
         <div class="form-detail">
 
+
+
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                     <div class="avatar">
@@ -23,37 +25,40 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-16 col-lg-16">
                     <div class="form-group">
-                        <input type="text" class="form-control required input txtFullname1"
-                            placeholder="Họ và tên (VD: Nguyễn Văn A)" value="" name="txtFullname1" maxlength="100"
-                            data-mess="">
+                        <input type="text" class="form-control required input txtFullname"
+                            placeholder="Họ và tên (VD: Nguyễn Văn A)" id="txtFullname" name="txtFullname"/>
+                        <span class="text-danger fw-bold msgValidation" id="msgFullname"></span>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="required form-control txtUsername" placeholder="Tên đăng nhập"
-                            value="" maxlength="30" 
-                            name="txtUsername"
-                            data-mess="Tên đăng nhập không hợp lệ: Tên đăng nhập chỉ được sử dụng chữ số, chữ cái, và các ký tự sau nằm giữa: gạch ngang, gạch dưới, cách trống và có từ 4 đến 30 ký tự">
+                        <input type="text" class="required form-control txtUsername tooltip-current" placeholder="Tên đăng nhập"
+                            name="txtUsername" id="txtUsername"/>
+                        <span class="text-danger fw-bold msgValidation" id="msgUsername"></span>
                     </div>
                     <div class="form-group">
                         <input type="password" autocomplete="off" class="password required form-control txtPassword"
-                            placeholder="Mật khẩu" value="" maxlength="32"  data-mess="Mật khẩu phải từ 8 đến 32 ký tự">
+                            placeholder="Mật khẩu" id="txtPassword" maxlength="32"  data-mess="Mật khẩu phải từ 8 đến 32 ký tự">
+                        <span class="text-danger fw-bold msgValidation" id="msgPassword"></span>
                     </div>
 
                     <div class="form-group">
-                        <input type="password" autocomplete="off"
-                            class="re-password required form-control txtConfirmPassword" placeholder="Lặp lại mật khẩu"
-                            value="" maxlength="32"  data-mess="Bạn chưa viết lại mật khẩu vào ô nhập lại mật khẩu">
+                        <input type="password" class="form-control txtConfirmPassword"
+                            placeholder="Lặp lại mật khẩu"
+                            id="txtConfirmPassword" maxlength="32">
+                        <span class="text-danger fw-bold msgValidation" id="msgConfirmPassword"></span>
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 mt-5">
-                    <input type="email" class="required form-control txtEmail" placeholder="Email" value=""
-                        maxlength="100" data-mess="Email chưa được khai báo">
+                    <input type="email" class="required form-control txtEmail" 
+                    placeholder="Email" id="txtEmail"/>
+                    <span class="text-danger fw-bold msgValidation" id="msgEmail"></span>
                 </div>
                 <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 mt-5">
-                    <input type="text" class="form-control required input txtPhone" placeholder="Điện thoại"
-                        name="custom_fields[phone]" data-mess="" />
+                    <input type="text" class="form-control required input txtPhone" 
+                    placeholder="Điện thoại" id="txtPhone" />
+                    <span class="text-danger fw-bold msgValidation" id="msgPhone"></span>
                 </div>
             </div>
 
@@ -118,22 +123,21 @@
             <br>
             <div class="clearfix"></div>
 
-            <div class="alert alert-danger fw-bold divWarningMsg">
-            </div>
-
             <div class="row">
                 <div class="form-group col-xs-24 col-sm-24 col-md-24 col-lg-24 text-center check-box required"
                     data-mess="">
-                    <input type="checkbox" class="ckbAgreement" disabled/>Tôi đồng ý với
+                    <input type="checkbox" id="ckbAgreement"/>Tôi đồng ý với
                     <a onclick="ShowRegisterRules()"><span class="btn btn-default btn-xs">Quy định đăng ký thành
-                            viên</span></a>
+                            viên</span></a><br/>
+                    <span class="text-danger fw-bold msgValidation" id="msgAgreement"></span>
                 </div>
+                
             </div>
 
             <div class="row">
                 <div class="text-center margin-bottom-lg col-xs-24 col-sm-24 col-md-24 col-lg-24">
                     <input type="button" value="Thiết lập lại" class="btn btn-default" />
-                    <button class="btn btn-primary btnSubmitRegister" visible>
+                    <button class="btn btn-primary btnSubmitRegister">
                         <i class="fa fa-user-plus" aria-hidden="true"></i>
                         Đăng ký tài khoản
                     </button>
