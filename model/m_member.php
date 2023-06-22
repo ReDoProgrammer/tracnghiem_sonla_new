@@ -199,12 +199,14 @@ function Register(
     $job_id,
     $position_id,
     $workplace_id,
+    $working_unit,
     $cfBirthdate,
     $cfGender,
     $cfAddress,
     $cfJob,
     $cfPosition,
-    $cfWorkPlace
+    $cfWorkPlace,
+    $cfWorkingUnit
 ) {
     $avatarurl = '';
     $isupload = true;
@@ -254,12 +256,16 @@ function Register(
         if ($cfWorkPlace) {
             $sql .= ",workplace_id = '" . $workplace_id . "'";
         }
+        if ($cfWorkingUnit) {
+            $sql .= ",working_unit = '" . $working_unit . "'";
+        }
         $sql .=",get_birthdate='".$cfBirthdate."'";
         $sql .=",get_gender='".$cfGender."'";
         $sql .=",get_address='".$cfAddress."'";
         $sql .=",get_job='".$cfJob."'";
         $sql .=",get_position='".$cfPosition."'";
         $sql .=",get_workplace='".$cfWorkPlace."'";
+        $sql .=",get_working_unit='".$cfWorkingUnit."'";
 
         $result =  mysql_query($sql, dbconnect());
 

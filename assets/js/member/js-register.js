@@ -4,6 +4,7 @@ var BIRTHDATE = true,
     JOB = true,
     POSITION = true,
     WORKPLACE = true;
+    WORKINGUNIT = true;
 var isPassport = true;
 $(function () {
     $('.divWarningMsg').hide();
@@ -129,7 +130,7 @@ $('.btnSubmitRegister').click(function () {
     let job_id = JOB ? $('.slJobs option:selected').val() : '';
     let position_id = POSITION ? $('.slPositions option:selected').val() : '';
     let workplace_id = WORKPLACE ? $('.slWorkPlaces option:selected').val() : '';
-
+    let workingunit = $('.txtWorkingUnit').val();
 
 
     if (fullname.length == 0) {
@@ -198,6 +199,7 @@ $('.btnSubmitRegister').click(function () {
     formData.append("job_id", job_id);
     formData.append("position_id", position_id);
     formData.append("workplace_id", workplace_id);
+    formData.append("working_unit", workingunit);
 
 
     formData.append("cfGender", GENDER ? 1 : 0);
@@ -206,6 +208,7 @@ $('.btnSubmitRegister').click(function () {
     formData.append("cfJob", JOB ? 1 : 0);
     formData.append("cfPosition", POSITION ? 1 : 0);
     formData.append("cfWorkPlace", WORKPLACE ? 1 : 0);
+    formData.append("cfWorkingUnit", WORKINGUNIT ? 1 : 0);
 
 
     $.ajax({
@@ -215,6 +218,7 @@ $('.btnSubmitRegister').click(function () {
         processData: false,
         contentType: false,
         success: function (data) {
+            console.log(data);
             if (data.statusCode == 201) {
                 Swal.fire({
                     icon: data.icon,
@@ -306,8 +310,10 @@ function ConfigInputs() {
                 GENDER = data.content.filter(x => x.cf_key == 'GET_GENDER')[0].cf_value == 1;
                 ADDRESS = data.content.filter(x => x.cf_key == 'GET_ADDRESS')[0].cf_value == 1;
                 WORKPLACE = data.content.filter(x => x.cf_key == 'GET_WORKPLACE')[0].cf_value == 1;
+                WORKINGUNIT = data.content.filter(x => x.cf_key == 'GET_WORKINGUNIT')[0].cf_value == 1;
                 JOB = data.content.filter(x => x.cf_key == 'GET_JOB')[0].cf_value == 1;
                 POSITION = data.content.filter(x => x.cf_key == 'GET_POSITION')[0].cf_value == 1;
+
             }
         }
     })

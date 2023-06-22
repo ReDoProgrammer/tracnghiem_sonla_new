@@ -96,7 +96,7 @@
 
              <div class="row get_workingunit">
                 <div class="form-group col-xs-24 col-sm-24 col-md-24 col-lg-24 mt-5">
-                    <input type="text" class="form-control txtPhone" placeholder="Bộ phận, phòng ban làm việc" value=""/>
+                    <input type="text" class="form-control txtWorkingUnit" placeholder="Bộ phận, phòng ban làm việc" value=""/>
                 </div> 
             </div>
 

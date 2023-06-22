@@ -21,6 +21,7 @@ $address = $_POST['address'];
 $job_id = $_POST['job_id'];
 $position_id = $_POST['position_id'];
 $workplace_id = $_POST['workplace_id'];
+$working_unit = $_POST['working_unit'];
 $avatar = $_FILES['avatar'];
 
 //get config values
@@ -31,9 +32,10 @@ $cfAddress = $_POST['cfAddress'];
 $cfJob = $_POST['cfJob'];
 $cfPosition = $_POST['cfPosition'];
 $cfWorkPlace = $_POST['cfWorkPlace'];
+$cfWorkingUnit = $_POST['cfWorkingUnit'];
 
 $result =Register($fullname,$avatar,$username,$password,$email,$phone,$gender,$birthdate,
-$province_code,$district_code,$ward_code,$address,$job_id,$position_id,$workplace_id,
-$cfBirthdate,$cfGender,$cfAddress,$cfJob,$cfPosition,$cfWorkPlace);
+$province_code,$district_code,$ward_code,$address,$job_id,$position_id,$workplace_id,$working_unit,
+$cfBirthdate,$cfGender,$cfAddress,$cfJob,$cfPosition,$cfWorkPlace,$cfWorkingUnit);
 header("Content-Type: application/json");
 echo json_encode($result);
