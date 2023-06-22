@@ -9,7 +9,27 @@ include_once('m_option.php');
 include_once('classes/m_message.php');
 include_once('classes/m_option.php');
 
+function qDeleteMany($ids){
+    $sql = "DELETE FROM questions WHERE id IN(";
+    
+    foreach($ids as $id){
+        $sql.=$id.($id==end($ids)?')':',');
+    }
 
+    $msg = new Message();
+    $result = mysql_query($sql,dbconnect());
+    if($result){
+        $msg->icon = "success";
+        $msg->title = "Xóa câu hỏi thành công!";
+        $msg->statusCode = 200;
+    }else{
+        $msg->icon = "error";
+        $msg->title = "Xóa câu hỏi thất bại!";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 function qGet($topic,$page, $search, $pageSize)
 {
     $sql = "SELECT 

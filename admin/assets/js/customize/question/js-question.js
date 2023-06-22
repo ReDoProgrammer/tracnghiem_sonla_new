@@ -86,7 +86,46 @@ $(function () {
 })
 
 $('#btnDeleteMany').click(function(){
-    console.log(1)
+    var checkedIds = [];
+    $('.check-one:checked').each(function() {
+      checkedIds.push(parseInt($(this).attr('id')));
+    });
+
+
+    Swal.fire({
+        title: `Bạn có chắc muốn xóa ${checkedIds.length>1?'những':''} câu hỏi được chọn này?`,
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Đúng! Tôi muốn xóa',
+        denyButtonText: `Hủy`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'controller/question/delete-many.php',
+                type: 'post',
+                data: { ids:checkedIds },
+                success: function (data) {
+                    if (data.statusCode == 200) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: data.icon,
+                            title: data.title,
+                            showConfirmButton: false,
+                            timer: 500
+                        });
+                        LoadQuestions();
+                    } else {
+                        Swal.fire(
+                            data.title,
+                            data.content,
+                            data.icon
+                        )
+                    }
+                }
+            })
+        }
+
+    })
 })
 
 $("#txtSearch").on('keyup', function (e) {
@@ -219,7 +258,7 @@ function LoadQuestions() {
                 questions.forEach(q => {
                     let tr = `<tr id = "${q.id}">`;
                     tr += `<td class="text-center" style="width: 2%;"> 
-                                    ${++index} <input class="form-check-input check-one" type="checkbox">
+                                    ${++index} <input class="form-check-input check-one" id="${q.id}" type="checkbox">
                             </td>`;
                     tr += `<td style="width:10%; font-weight: bold;">${q.topic}</td>`;
                     tr += `<td style="width: 50%; font-weight:bold; color: #3393FF"> ${q.title} </td>`;
