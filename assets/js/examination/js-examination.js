@@ -6,7 +6,7 @@ var exam_date;
 
 
 
-$(document).ready(function () {
+$(function () {
 
     $('#scrolldiv').hide();
     $('.TriSea-technologies-Switch').hide();

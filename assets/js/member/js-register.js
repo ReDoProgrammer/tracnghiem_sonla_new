@@ -29,20 +29,17 @@ $(function () {
         $('.divWarningMsg').empty();
         $('.divWarningMsg').show();
 
-        let password = $('.txtPassword').val().trim();
-        let confirm_password = $('.txtConfirmPassword').val().trim();
-        if (!validatePassword(password) || !validatePassword(confirm_password)) {
-            $('.divWarningMsg').append('- Mật khẩu ít nhất 6 kí tự, không chứa khoảng trắng, bao gồm số và chữ!<br/>');
+        let password = $('.txtPassword').val();
+        let confirm_password = $('.txtConfirmPassword').val();
+
+        if (password != confirm_password) {
+            $('.divWarningMsg').append('- Mật khẩu 2 lần nhập không khớp!<br/>');
             isPassport = false;
-        }
-        if (confirm_password != password) {
-            $('.divWarningMsg').append('- Mật khẩu 2 lần nhập không giống nhau!<br/>');
-            isPassport = false;
-        }
-        if (password.trim().length != password.length || confirm_password.trim().length != confirm_password.length) {
-            $('.divWarningMsg').append('- Mật khẩu không được chứa khoảng trắng!<br/>');
-            isPassport = false;
-        }
+        } else
+            if (!validatePassword(password) || !validatePassword(confirm_password)) {
+                $('.divWarningMsg').append('- Mật khẩu ít nhất 6 kí tự, không chứa khoảng trắng, bao gồm số và chữ!<br/>');
+                isPassport = false;
+            }
 
 
 
@@ -410,8 +407,8 @@ function formatDate(date) {
 }
 
 function validatePassword(pwd) {
-    var passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    return passRegex.test(pwd);
+    var regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+    return regex.test(pwd);
 }
 
 function validateUsername(usr) {

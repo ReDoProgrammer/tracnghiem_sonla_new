@@ -29,21 +29,19 @@
                     </div>
                     <div class="form-group">
                         <input type="text" class="required form-control txtUsername" placeholder="Tên đăng nhập"
-                            value="" maxlength="30" data-pattern="/^(.){4,30}$/" onkeypress="validErrorHidden(this);"
+                            value="" maxlength="30" 
                             name="txtUsername"
                             data-mess="Tên đăng nhập không hợp lệ: Tên đăng nhập chỉ được sử dụng chữ số, chữ cái, và các ký tự sau nằm giữa: gạch ngang, gạch dưới, cách trống và có từ 4 đến 30 ký tự">
                     </div>
                     <div class="form-group">
                         <input type="password" autocomplete="off" class="password required form-control txtPassword"
-                            placeholder="Mật khẩu" value="" maxlength="32" data-pattern="/^(.){8,32}$/"
-                            onkeypress="validErrorHidden(this);" data-mess="Mật khẩu phải từ 8 đến 32 ký tự">
+                            placeholder="Mật khẩu" value="" maxlength="32"  data-mess="Mật khẩu phải từ 8 đến 32 ký tự">
                     </div>
 
                     <div class="form-group">
                         <input type="password" autocomplete="off"
                             class="re-password required form-control txtConfirmPassword" placeholder="Lặp lại mật khẩu"
-                            value="" maxlength="32" data-pattern="/^(.){1,}$/" onkeypress="validErrorHidden(this);"
-                            data-mess="Bạn chưa viết lại mật khẩu vào ô nhập lại mật khẩu">
+                            value="" maxlength="32"  data-mess="Bạn chưa viết lại mật khẩu vào ô nhập lại mật khẩu">
                     </div>
                 </div>
             </div>
@@ -51,11 +49,11 @@
             <div class="row">
                 <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 mt-5">
                     <input type="email" class="required form-control txtEmail" placeholder="Email" value=""
-                        maxlength="100" onkeypress="validErrorHidden(this);" data-mess="Email chưa được khai báo">
+                        maxlength="100" data-mess="Email chưa được khai báo">
                 </div>
                 <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 mt-5">
                     <input type="text" class="form-control required input txtPhone" placeholder="Điện thoại"
-                        name="custom_fields[phone]" onkeypress="validErrorHidden(this);" data-mess="" />
+                        name="custom_fields[phone]" data-mess="" />
                 </div>
             </div>
 
@@ -64,13 +62,13 @@
                 <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 get_gender">
                     <div class="form-group radio-box required input btn-group col-sm-24 gender">
                         <label class="radio-box" style="margin-right: 5px;"> <input type="radio" name="gender" value="N"
-                                class="input rbtN" onclick="validErrorHidden(this,5);">
+                                class="input rbtN" >
                             N/A </label>
                         <label class="radio-box" style="margin-right: 5px;"> <input type="radio" name="gender" value="M"
-                                class="input rbtM" onclick="validErrorHidden(this,5);" checked="checked">
+                                class="input rbtM"  checked="checked">
                             Nam </label>
                         <label class="radio-box" style="margin-right: 0px;"> <input type="radio" name="gender" value="F"
-                                class="input rbtF" onclick="validErrorHidden(this,5);">
+                                class="input rbtF" >
                             Nữ </label>
                     </div>
                 </div>
