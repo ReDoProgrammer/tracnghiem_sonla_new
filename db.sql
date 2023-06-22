@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jun 22, 2023 at 02:24 PM
+-- Generation Time: Jun 23, 2023 at 12:34 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -3350,6 +3350,7 @@ CREATE TABLE `members` (
   `get_job` tinyint(1) NOT NULL default '1' COMMENT 'Lấy nghề nghiệp',
   `get_position` tinyint(1) NOT NULL default '1' COMMENT 'Lấy chức vụ',
   `get_workplace` tinyint(1) NOT NULL default '1' COMMENT 'Lấy đơn vị công tác',
+  `get_working_unit` tinyint(4) NOT NULL default '0' COMMENT 'Lấy bộ phận công tác',
   `working_unit` varchar(250) NOT NULL COMMENT 'Nơi làm việc',
   `get_address` tinyint(1) NOT NULL default '1' COMMENT 'Lấy địa chỉ',
   `applied_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
@@ -3371,17 +3372,18 @@ CREATE TABLE `members` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
 
 -- 
 -- Dumping data for table `members`
 -- 
 
-INSERT INTO `members` VALUES (18, 'admin', '2138cb5b0302e84382dd9b3677576b24', 'assets/images/avatar/logo.png', 'Quản trị ', 'nbinh88@gmail.com', '0916020488', '1987-06-19', 0, 1, 1, 1, 1, '', 1, '2013-11-13 00:00:00', 1, '2023-06-20 09:59:06', '127.0.0.1', 1, 'gfxvn.info', '14', '116', '03652', 'Tổ 4', 1, 1, 1, 0, '');
-INSERT INTO `members` VALUES (36, 'test12', '60474c9c10d7142b7508ce7a50acf414', '', 'test12', 'test12@gmail.com', '0911398853', '0000-00-00', 0, 0, 0, 0, 0, '', 0, '2023-06-20 15:34:58', 0, '2023-06-20 15:35:00', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (34, 'nhtruong', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'nhtruong@gmail.com', '0911397765', '0000-00-00', 0, 0, 0, 0, 1, '', 0, '2023-06-18 08:04:31', 0, '2023-06-18 08:04:32', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 8, 0, '');
-INSERT INTO `members` VALUES (35, 'test11', 'f696282aa4cd4f614aa995190cf442fe', '', 'test11', 'test11@gmail.com', '0912322321', '0000-00-00', 0, 0, 0, 0, 0, '', 0, '2023-06-20 14:56:53', 0, '2023-06-20 14:56:55', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (33, 'truongnh', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'truongnh@gmail.com', '0911397764', '0000-00-00', 0, 0, 0, 0, 1, '', 0, '2023-06-17 23:30:08', 0, '2023-06-18 08:08:02', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 1, 0, '');
+INSERT INTO `members` VALUES (18, 'admin', '2138cb5b0302e84382dd9b3677576b24', 'assets/images/avatar/logo.png', 'Quản trị ', 'nbinh88@gmail.com', '0916020488', '1987-06-19', 0, 1, 1, 1, 1, 0, '', 1, '2013-11-13 00:00:00', 1, '2023-06-20 09:59:06', '127.0.0.1', 1, 'gfxvn.info', '14', '116', '03652', 'Tổ 4', 1, 1, 1, 0, '');
+INSERT INTO `members` VALUES (36, 'test12', '60474c9c10d7142b7508ce7a50acf414', '', 'test12', 'test12@gmail.com', '0911398853', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-20 15:34:58', 0, '2023-06-20 15:35:00', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
+INSERT INTO `members` VALUES (34, 'nhtruong', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'nhtruong@gmail.com', '0911397765', '0000-00-00', 0, 0, 0, 0, 1, 0, '', 0, '2023-06-18 08:04:31', 0, '2023-06-18 08:04:32', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 8, 0, '');
+INSERT INTO `members` VALUES (35, 'test11', 'f696282aa4cd4f614aa995190cf442fe', '', 'test11', 'test11@gmail.com', '0912322321', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-20 14:56:53', 0, '2023-06-20 14:56:55', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
+INSERT INTO `members` VALUES (33, 'truongnh', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'truongnh@gmail.com', '0911397764', '0000-00-00', 0, 0, 0, 0, 1, 0, '', 0, '2023-06-17 23:30:08', 0, '2023-06-18 08:08:02', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 1, 0, '');
+INSERT INTO `members` VALUES (37, 'testwu', '482c811da5d5b4bc6d497ffa98491e38', '', 'Test wu', 'testwu@gmail.com', '0988548856', '0000-00-00', 0, 0, 0, 0, 0, 1, 'Working unit', 0, '2023-06-22 19:59:54', 0, '2023-06-22 19:59:55', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
 
