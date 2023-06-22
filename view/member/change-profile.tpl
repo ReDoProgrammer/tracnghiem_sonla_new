@@ -72,6 +72,13 @@
                     <select class="form-control" id="slPositions"></select>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24 form-group">
+                    <label>Bộ phận, phòng ban</label>
+                    <input type:text class = "form-control txtWorkingUnit" placeholder = "Đơn vị, bộ phận, phòng ban"/> 
+                </div>
+            </div>
         </div>
         <div class="panel-footer text-right">
             <button class="btn btn-primary">

@@ -107,12 +107,12 @@
 </div>
 
 
-<script>var nv_base_siteurl = "/", nv_lang_data = "vi", nv_lang_interface = "vi", nv_name_variable = "nv", nv_fc_variable = "op", nv_lang_variable = "language", nv_module_name = "news", nv_func_name = "main", nv_is_user = 0, nv_my_ofs = 7, nv_my_abbr = "+07", nv_cookie_prefix = "nv4", nv_check_pass_mstime = 59878000, nv_area_admin = 0, nv_safemode = 0, theme_responsive = 1, nv_is_recaptcha = 0;</script>
-<script src="assets/js/vi.js?t=1683896486"></script>
+<!--<script>var nv_base_siteurl = "/", nv_lang_data = "vi", nv_lang_interface = "vi", nv_name_variable = "nv", nv_fc_variable = "op", nv_lang_variable = "language", nv_module_name = "news", nv_func_name = "main", nv_is_user = 0, nv_my_ofs = 7, nv_my_abbr = "+07", nv_cookie_prefix = "nv4", nv_check_pass_mstime = 59878000, nv_area_admin = 0, nv_safemode = 0, theme_responsive = 1, nv_is_recaptcha = 0;</script>-->
+<!--<script src="assets/js/vi.js?t=1683896486"></script>-->
 <script src="assets/js/global.js?t=1683896486"></script>
-<script src="assets/js/news.js?t=1683896486"></script>
+<!-- <script src="assets/js/news.js?t=1683896486"></script>-->
 <script src="assets/js/jquery.lazyload.min.js?t=1683896486"></script>
-<script src="assets/js/owl.carousel.min.js?t=1683896486"></script>
+<!--<script src="assets/js/owl.carousel.min.js?t=1683896486"></script>-->
 <script src="assets/js/custom.js?t=1683896486"></script>
 <script src="assets/js/main.js?t=1683896486"></script>
 
@@ -120,7 +120,7 @@
 <script type="text/javascript" src="assets/js/jquery-ui.min.js?t=1683896486"></script>
 <script type="text/javascript" src="assets/js/jquery.ui.datepicker-vi.js?t=1683896486"></script>
 <script type="text/javascript" src="assets/js/users.js?t=1683896486"></script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $('#cuoc_thi_da_ket_thuc').owlCarousel({
         loop: true,
         margin: 0,
@@ -146,7 +146,7 @@
         }
     })
 
-</script>
+</script> -->
 
 
 <script src ="assets/dist/toast/js/jquery.toast.min.js"></script>
@@ -155,5 +155,5 @@
 
 </html>
 
-<script src="assets/js/member/js_profile.js"></script>
+<script src="assets/js/member/js-profile.js"></script>
 <script src="assets/js/config/js-site.js"></script>

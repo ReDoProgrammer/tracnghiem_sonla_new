@@ -5,7 +5,6 @@ $(document).ready(function(){
         success:function(data){
             if(data.statusCode == 200){
                 let p = data.content;
-                console.log(p);
                 if(p.avatar && p.avatar.trim().length > 0){
                    $('.pf_avatar').attr('src',p.avatar);
                    $('.pf_avatar').attr('alt',p.fullname);

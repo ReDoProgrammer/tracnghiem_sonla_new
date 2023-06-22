@@ -7,6 +7,6 @@
 
 include('../../model/m_workplace.php');
 
-$count = retrieve();
+$wps = retrieve();
 header("Content-Type: application/json");
-echo json_encode($count);
+echo json_encode($wps);
