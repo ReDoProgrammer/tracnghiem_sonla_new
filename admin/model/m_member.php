@@ -174,19 +174,39 @@ function reset_password($id,$default_password){
 
 function mbList($wp,$search, $page, $pageSize)
 {
-    $sql = "SELECT id,username,fullname,phone,email,
+    $sql = "SELECT m.id,m.username,m.fullname,
+            CASE WHEN m.get_birthdate = 1 THEN DATE_FORMAT(m.birthdate,'%d/%m/%Y')
+            ELSE '' END AS birthdate,
+            CASE WHEN m.get_gender = 1 THEN 
+                    CASE WHEN m.gender = 1 THEN 'Nam'
+                        WHEN m.gender = 0 THEN 'Nữ'
+                        ELSE 'Khác'
+                    END
+                ELSE ''
+            END AS gender,
+            m.phone,m.email,
+            CASE WHEN m.get_address = 1 THEN
+                CONCAT(m.address,', ',w.full_name,', ',d.full_name,',',pr.full_name)
+                ELSE '' END AS 'address',
+            CASE WHEN m.get_workplace = 1 THEN wp.name ELSE '' END AS workplace,
+            m.working_unit,
+            CASE WHEN m.get_job = 1 THEN j.name ELSE '' END AS job,
+            CASE WHEN m.get_position = 1 THEN p.name ELSE '' END AS position,
             DATE_FORMAT(applied_date,'%d/%m/%Y %T') AS applied_date,
             DATE_FORMAT(lasttime_login,'%d/%m/%Y %T') AS lasttime_login    
-            FROM members
-            WHERE (username LIKE '%" . $search . "%'
-            OR  fullname LIKE '%" . $search . "%'
-            OR  phone LIKE '%" . $search . "%'
-            OR  email LIKE '%" . $search . "%')
-            AND (
-                get_workplace = 0
-                OR workplace_id = '".$wp."' 
-            )
-            LIMIT " . ($page - 1) * $pageSize . "," . $pageSize ;
+            FROM members m
+            LEFT JOIN workplaces wp ON m.workplace_id = wp.id
+            LEFT JOIN wards w ON m.ward_code = w.code
+            LEFT JOIN districts d ON m.district_code = d.code
+            LEFT JOIN provinces pr ON m.province_code = pr.code
+            LEFT JOIN positions p ON m.position_id= p.id
+            LEFT JOIN jobs j ON m.job_id = j.id
+            WHERE (m.username LIKE '%" . $search . "%'
+            OR  m.fullname LIKE '%" . $search . "%'
+            OR  m.phone LIKE '%" . $search . "%'
+            OR  m.email LIKE '%" . $search . "%')";
+            $sql.= $wp!=null?" AND m.workplace_id ='".$wp."'":"";
+            $sql .=" LIMIT " . ($page - 1) * $pageSize . "," . $pageSize ;
 
     $local_list = mysql_query($sql, dbconnect());
     $msg = new Message();

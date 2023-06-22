@@ -51,13 +51,19 @@
                                                 <th class="text-center">
                                                     Họ tên
                                                 </th>
-
+                                                <th>Giới tính</th>
+                                                <th>Ngày sinh</th>
                                                 <th class="text-center">
                                                     Điện thoại
                                                 </th>
                                                 <th class="text-center">
                                                     Email
                                                 </th>
+                                                <th>Địa chỉ</th>
+                                                <th>Đơn vị công tác</th>
+                                                <th>Nơi làm việc</th>
+                                                <th>Nghề nghiệp</th>
+                                                <th>Chức vụ</th>
                                                 <th class="text-center">
                                                     Ngày tham gia
                                                 </th>

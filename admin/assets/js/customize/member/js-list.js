@@ -117,16 +117,16 @@ function LoadProvincesWithWorkplaces() {
         success: function (data) {
             // console.log(data);
             if (data.statusCode == 200) {
-                // $('#slProvincesWorkplaces').empty();
-                // data.content.forEach(p => {
-                //     let opt = `<optgroup label="${p.province}" style="color:red !important;">`;
-                //     JSON.parse(p.workplaces).forEach(el => {
-                //         opt += `<option value="${el.id}">${el.name}</option>`;
-                //     })
-                //     opt += `</optgroup>  `
-                //     $('#slProvincesWorkplaces').append(opt);
-                // })
-                // $('#slProvincesWorkplaces').selectpicker('refresh');
+                $('#slProvincesWorkplaces').empty();
+                data.content.forEach(p => {
+                    let opt = `<optgroup label="${p.province}" style="color:red !important;">`;
+                    JSON.parse(p.workplaces).forEach(el => {
+                        opt += `<option value="${el.id}">${el.name}</option>`;
+                    })
+                    opt += `</optgroup>  `
+                    $('#slProvincesWorkplaces').append(opt);
+                })
+                $('#slProvincesWorkplaces').selectpicker('refresh');
             }
         }
     })
@@ -142,6 +142,7 @@ function LoadMembers() {
             wp:$('#slProvincesWorkplaces option:selected').val()
         },
         success: function (data) {
+            console.log(data)
             if (data.statusCode == 200) {
                 $('#tblData').empty();
                 let idx = (page - 1) * pageSize;
@@ -151,9 +152,16 @@ function LoadMembers() {
                         <td class="fw-bold text-primary">
                             <a href="#" name="member-detail">${m.username}</a>
                         </td>
-                        <td>${m.fullname}</td>
-                        <td>${m.phone}</td>
-                        <td>${m.email}</td>
+                        <td class="text-nowrap fw-bold">${m.fullname}</td>
+                        <td>${m.gender}</td>
+                        <td class="text-nowrap">${m.birthdate}</td>
+                        <td class="text-nowrap">${m.phone}</td>
+                        <td class="text-nowrap">${m.email}</td>
+                        <td class="text-nowrap">${m.address}</td>
+                        <td class="text-nowrap">${m.workplace}</td>
+                        <td class="text-nowrap">${m.working_unit}</td>
+                        <td class="text-nowrap">${m.job}</td>
+                        <td class="text-nowrap">${m.position}</td>
                         <td>${m.applied_date}</td>
                         <td>${m.lasttime_login}</td>
                         <td class="text-center">
