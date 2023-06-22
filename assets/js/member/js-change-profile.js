@@ -23,8 +23,27 @@ $(function () {
     LoadJobs();
     LoadWorkPlaces();
     LoadPositions();
+    LoadMemberDetail();
+})
+
+$('#btnSaveChanges').click(function(){
 
 })
+
+
+function LoadMemberDetail(){
+    $.ajax({
+        url:'controller/member/detail.php',
+        type:'get',
+        success:function(data){
+            console.log(data);
+            if(data.statusCode == 200){
+                let p = data.content;
+            }
+        }
+    })
+}
+
 
 function LoadWorkPlaces(){
     $.ajax({

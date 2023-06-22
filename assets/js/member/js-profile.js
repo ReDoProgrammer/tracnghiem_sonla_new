@@ -17,7 +17,6 @@ $(document).ready(function(){
                 }
                 localStorage.setItem('candidate',p.id);
 
-                $('input.pf_username').val(p.username);
                 
                 $('.pf_username').text(p.username);
                 $('.pf_email').text(p.email);
@@ -29,14 +28,13 @@ $(document).ready(function(){
                 `)
                 $('.pf_current_ip_address').text(p.current_ip_address);
 
-                $('input.pf_fullname').val(p.fullname);  
+
                 $('.pf_fullname').text(p.fullname);
                 $('.pf_fullname').attr('data-userid',p.id);
                 $('.pf_birthdate').text(p.birthdate);
                 $('.pf_gender').text(p.gender);
                 $('.pf_phone').text(p.phone);
-                $('input.pf_phone').val(p.phone);
-                $('input.pf_email').val(p.email);
+               
 
                 $('.pf_job').text(p.job);
                 $('.pf_address').text(p.address);

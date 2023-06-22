@@ -7,6 +7,27 @@
 include_once('classes/m_message.php');
 include_once('classes/m_profile.php');
 include_once('m_db.php');
+
+function mDetail($id){
+    $sql = "SELECT * FROM members WHERE id = '".$id."'";
+    $result = mysql_query($sql,dbconnect());
+
+    $msg = new Message();
+
+    if($result && mysql_num_rows($result)>0){
+        $detail = mysql_fetch_array($result);
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Lấy thông tin chi tiết tài khoản thành công!";
+        $msg->content = $detail;
+    }else{
+        $msg->icon = "error";
+        $msg->title = "Lấy thông tin tài khoản thất bại";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 function login($username_or_email, $login_password, $ip_address)
 {
     $sql = "SELECT * from members WHERE (username ='" . $username_or_email . "' OR email = '" . $username_or_email . "') ";

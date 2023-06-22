@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="panel-footer text-right">
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" id="btnSaveChanges">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
                 Lưu thay đổi
             </button>
