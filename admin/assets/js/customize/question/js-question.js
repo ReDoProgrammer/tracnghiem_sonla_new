@@ -50,18 +50,43 @@ $(function () {
 
 
             for (var i = 1; i < jsonData.length; i++) {
-                let tr = `<tr>`;                
+                let tr = `<tr>`;
                 for (var j = 0; j < jsonData[i].length; j++) {
-                   tr+=`<td>${typeof jsonData[i][j]=='undefined'?'':jsonData[i][j]}</td>`;                    
+                    tr += `<td>${typeof jsonData[i][j] == 'undefined' ? '' : jsonData[i][j]}</td>`;
                 }
                 tr += `</tr>`;
-              
+
                 table.append(tr);
             }
         };
 
         reader.readAsArrayBuffer(file);
     });
+
+    $(document).on('change','input[type="checkbox"]',function () {
+        var isChecked = $(this).prop('checked');
+        if ($(this).hasClass('check-all')) {
+            $('input[type="checkbox"]').not('.check-all').prop('checked', isChecked);
+        } else {
+            var allChecked = $('input[type="checkbox"]').not('.check-all').length === $('input[type="checkbox"]:checked').not('.check-all').length;
+            $('.check-all').prop('checked', allChecked);
+        }
+        
+
+        if($('input.check-one:checked').length>0){
+            $("#btnDeleteMany").removeAttr('disabled');
+        }else{
+            $("#btnDeleteMany").prop("disabled", true);
+        }
+    });
+
+    $('#slFilterTopics').on('change',function(){
+        $('#btnSearch').click();
+    })
+})
+
+$('#btnDeleteMany').click(function(){
+    console.log(1)
 })
 
 $("#txtSearch").on('keyup', function (e) {
@@ -71,18 +96,18 @@ $("#txtSearch").on('keyup', function (e) {
 });
 
 
-$('#btnSubmitImport').click(function(){
-    if(questions.length > 0){
+$('#btnSubmitImport').click(function () {
+    if (questions.length > 0) {
         let user = $('#userId').data('user');
         $.ajax({
-            url:'controller/question/import.php',
-            type:'post',
-            data:{
-                created_by:user,
+            url: 'controller/question/import.php',
+            type: 'post',
+            data: {
+                created_by: user,
                 topic_id: $('div.mdlImport select.slTopics option:selected').val(),
                 questions
             },
-            success:function(data){
+            success: function (data) {
                 console.log(data);
                 if (data.statusCode == 201) {
                     Swal.fire({
@@ -105,7 +130,7 @@ $('#btnSubmitImport').click(function(){
                 }
             }
         })
-    }    
+    }
 })
 
 $('#btnPrint').click(async function () {
@@ -183,8 +208,9 @@ function LoadQuestions() {
     $.ajax({
         url: 'controller/question/list.php',
         type: 'get',
-        data: { page, search, pageSize },
+        data: { page, search, pageSize,topic:$('#slFilterTopics option:selected').val() },
         success: function (data) {
+            console.log(data);
             $('#tblQuestions').empty();
             if (data.statusCode == 200) {
                 questions = data.content;
@@ -192,7 +218,9 @@ function LoadQuestions() {
 
                 questions.forEach(q => {
                     let tr = `<tr id = "${q.id}">`;
-                    tr += `<td class="text-center" style="width: 2%;"> ${++index} </td>`;
+                    tr += `<td class="text-center" style="width: 2%;"> 
+                                    ${++index} <input class="form-check-input check-one" type="checkbox">
+                            </td>`;
                     tr += `<td style="width:10%; font-weight: bold;">${q.topic}</td>`;
                     tr += `<td style="width: 50%; font-weight:bold; color: #3393FF"> ${q.title} </td>`;
                     tr += `<td style="width: 8%" class="text-center">`
@@ -244,7 +272,7 @@ function GetQuestion(id, readonly = false) {
                 $('#slTopics').val(question.topic_id);
                 $('div.mdlAddOrUpdate select.slTopics').val(question.topic_id);
                 $('div.mdlAddOrUpdate select.slTopics').selectpicker('refresh');
-             
+
 
                 $.ajax({
                     url: 'controller/option/list-by-question.php',
@@ -419,7 +447,7 @@ function AddOption(id = '', exist = false, basic = true, optName = '', content =
 
     option += `<textarea data-option="${id}" name="${optName}" 
         class="form-control custom-control" 
-        rows="2" style="resize: vertical;" ${readonly ? 'readonly' : ''}>${basic?content:''}</textarea>
+        rows="2" style="resize: vertical;" ${readonly ? 'readonly' : ''}>${basic ? content : ''}</textarea>
         <span type="submit" class="input-group-addon btn btn-secondary btnRemoveOption" 
         name="btnRemoveOption" ${readonly ? 'disabled' : ''}>
         <i class="fa fa-times" aria-hidden="true"></i></span>`;
@@ -501,8 +529,8 @@ $('#btnSaveChanges').click(function () {
 
 
         let option_name = $(element).find('textarea').attr('name');
-        let option = $('#ckbUseCKEditor').is(':checked')?CKEDITOR.instances[option_name].getData().trim():$(`textarea[name="${option_name}"]`).val();
-     
+        let option = $('#ckbUseCKEditor').is(':checked') ? CKEDITOR.instances[option_name].getData().trim() : $(`textarea[name="${option_name}"]`).val();
+
         if (option.length === 0) {
             optValidate = false;
         }
@@ -526,7 +554,7 @@ $('#btnSaveChanges').click(function () {
         $('#errNoChecked').show().fadeOut(5000);
         return;
     }
-    if (options.length <=1) {
+    if (options.length <= 1) {
         $('#errNoChecked').text('Vui lòng nhập ít nhất 02 đáp án!');
         $('#errNoChecked').show().fadeOut(5000);
         return;

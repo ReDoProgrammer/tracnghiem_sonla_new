@@ -19,6 +19,11 @@
                 <div class="box box-warning">
                     <div class="box-body">
                         <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 mt-5">
+                                <select class="form-control  slTopics" id="slFilterTopics">
+                                    <option value="All">Tất cả</option>
+                                </select>
+                            </div>
                             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="margin-top:5px">
                                 <div class="input-group input-group-sm">
                                     <input type="text" class="form-control" id="txtSearch"
@@ -31,7 +36,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="margin-top:5px">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="margin-top:5px">
                                 <div class="row" style="margin-bottom: 5px;">
                                     <div class="col-sm-12 text-right">
                                         <button class="btn bg-aqua btn-flat btn-margin" id="btnAddNew"><i
@@ -54,7 +59,9 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center" style="padding-top: 20px;padding-bottom: 20px">
-                                                    STT
+                                                    <div class="form-check" style="width:50px;">
+                                                        <input class="form-check-input check-all" type="checkbox">
+                                                    </div>
                                                 </th>
                                                 <th class="text-left">
                                                     Chủ đề
@@ -89,6 +96,11 @@
                                             style="margin-top:0 !important;"></ul>
                                     </div>
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right form-inline">
+                                        <span>
+                                            <Button class="btn btn-sm btn-danger" disabled id="btnDeleteMany">
+                                                Xóa <i class="fa fa-trash-o"></i>
+                                            </Button>
+                                        </span>
                                         <div class="form-group text-right">
                                             <label>Số câu hỏi:</label>
                                             <select class="form-control" style="width:100px; margin-left:10px;"

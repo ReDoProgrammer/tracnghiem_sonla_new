@@ -10,7 +10,7 @@ include_once('classes/m_message.php');
 include_once('classes/m_option.php');
 
 
-function qGet($page, $search, $pageSize)
+function qGet($topic,$page, $search, $pageSize)
 {
     $sql = "SELECT 
         t.name AS topic,
@@ -23,8 +23,11 @@ function qGet($page, $search, $pageSize)
     FROM questions q
     JOIN topics  t ON q.topic_id = t.id  
     JOIN members m ON q.created_by = m.id 
-    WHERE q.title like '%" . $search . "%'
-    GROUP BY t.name,q.id, q.title,created_by, applied
+    WHERE q.title like '%" . $search . "%'";
+    if($topic!="All"){
+        $sql.= " AND q.topic_id = '".$topic."'";
+    }
+    $sql.= " GROUP BY t.name,q.id, q.title,created_by, applied
   ";
 
 
