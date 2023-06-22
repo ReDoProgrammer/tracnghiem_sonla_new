@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jun 22, 2023 at 11:33 AM
+-- Generation Time: Jun 22, 2023 at 02:24 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -481,7 +481,7 @@ CREATE TABLE `configs` (
   `updated_by` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cf_key` (`cf_key`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
 -- 
 -- Dumping data for table `configs`
@@ -513,6 +513,7 @@ INSERT INTO `configs` VALUES (24, 'SITE_GOOGLEMAP', 'https://www.google.com/maps
 INSERT INTO `configs` VALUES (25, 'SITE_FACEBOOK', 'https://www.facebook.com?page=icttracnghiem', 'GLOBAL', 'BASIC', '<label>Link Facebook:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:53:05', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (26, 'SITE_ADDRESS', 'Số 06, ngõ 2A, phố Xuân Thủy, tổ 8, phường Chiềng Lề, thành phố Sơn La, tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Địa chỉ <span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:54:15', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (27, 'SITE_BANNER', '/assets/imagesimages/gui/banner.jpg', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 18:54:15', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (32, 'GET_WORKINGUNIT', '1', 'MEMBER', 'REGISTER', 'Chỗ làm việc', 'input', '2023-06-22 11:26:59', 18, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -530,7 +531,7 @@ CREATE TABLE `counter_ips` (
 -- Dumping data for table `counter_ips`
 -- 
 
-INSERT INTO `counter_ips` VALUES ('127.0.0.1', '2023-06-22 08:11:01');
+INSERT INTO `counter_ips` VALUES ('127.0.0.1', '2023-06-22 11:27:22');
 
 -- --------------------------------------------------------
 
@@ -560,7 +561,7 @@ CREATE TABLE `counter_values` (
 -- Dumping data for table `counter_values`
 -- 
 
-INSERT INTO `counter_values` VALUES (1, 172, 1, 171, 0, 25, 4, 6, 35, 2023, 1543, 102002, '2017-10-07 22:46:46', 58234);
+INSERT INTO `counter_values` VALUES (1, 172, 2, 171, 0, 25, 5, 6, 36, 2023, 1544, 102003, '2017-10-07 22:46:46', 58234);
 
 -- --------------------------------------------------------
 
