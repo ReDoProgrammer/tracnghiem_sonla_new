@@ -21,7 +21,7 @@
                     </a>
                 </div>
                 <div class="col-xs-24 col-sm-24 col-md-4 col-lg-4">
-                    <a href="" class="t-submit" id="btnHEDoExam"
+                    <a href="" class="t-submit" id="btnHEDoExam" 
                         style="height:95px; margin: 0 auto; margin-right:10px; padding-top:20px !important; margin-bottom: 5px;">
                         Tham gia<br> ngay 
                         <i class="fa fa-play"></i>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-xs-24 col-sm-24 col-md-8 col-lg-8">
                     <div class="t-countdown">
-                        <div class="top">Cuộc thi sẽ kết thúc trong</div>
+                        <div class="top" id="he_type">Cuộc thi sẽ kết thúc trong</div>
                         <div class="bottom" id="he_countdown">
                             <div class="count timeTo timeTo-black" data-time="2023-07-03 23:59:59"
                                 style="font-family: Verdana, sans-serif; font-size: 25px;">
