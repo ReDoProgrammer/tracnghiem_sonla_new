@@ -1,6 +1,8 @@
 var exam_id = '';
 var user_id = '';
 var exam_date;
+var total_times = 0;
+var current_times = 0;
 
 
 
@@ -39,10 +41,7 @@ $(function () {
 })
 
 $('#btnOpenExam').click(function () {
-    let times = $(`span.exam_times`).text();
-    exam_date = ExamDate();
-
-    if (times > parseInt($('.ex_times').text())) {
+    if (total_times != 0 && current_times > total_times) {
         Swal.fire(
             'Số lần làm bài của bạn đã đạt mức tối đa',
             'Bạn không thể làm lại bài thi này!',
@@ -51,6 +50,8 @@ $('#btnOpenExam').click(function () {
         return;
     }
 
+
+    exam_date = ExamDate();
     $('#ex_summary').slideUp(500);
     $('#showQuestion').slideDown(500);
     $('#scrolldiv').show();
@@ -73,7 +74,7 @@ var timeOut = false;
 $('#btnSaveExamResult').click(async function (e) {
     e.preventDefault();
 
-    let spent_duration =  $('.ex_duration').data('duration') - localStorage.getItem('duration');
+    let spent_duration = $('.ex_duration').data('duration') - localStorage.getItem('duration');
 
 
     let submited = true;
@@ -148,11 +149,13 @@ function LoadExamSummary(id) {
         type: 'get',
         data: { id },
         success: function (data) {
-            console.log(data);
             exam = data.content;
-            if(exam.exam_status!=0){
-                $('#btnOpenExam').addClass('disabled');             
+            if (exam.exam_status != 0) {
+                $('#btnOpenExam').addClass('disabled');
             }
+
+            total_times = exam.times;
+            
 
             $('#ex_title').text(exam.title);
             $('#ex_title').attr('data-exam', id);
@@ -163,9 +166,8 @@ function LoadExamSummary(id) {
             $('.ex_duration').attr('data-duration', exam.duration * 60);
             $('.ex_number_of_questions').text(`${exam.number_of_questions} câu`);
             $('.ex_number_of_questions').attr('data-noq', exam.number_of_questions);
-            $('.ex_times').text(exam.times>0?exam.times:'Unlimit');
+            $('.ex_times').text(exam.times > 0 ? exam.times : 'Unlimit');
             $('.ex_times').attr('data-times', exam.times);
-
             $('.ex_mark_per_question').text(exam.mark_per_question);
 
             $('.ex_random_questions').html(`${exam.random_questions == 1 ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o" aria-hidden="true"></i>'}`);
@@ -199,6 +201,8 @@ function LoadTimes() {
         type: 'get',
         data: { exam_id },
         success: function (data) {
+            current_times = data.content;
+            current_times++;
             if (data.statusCode == 200) {
                 $('#btnOpenExam').html(`Mở bài thi lần <span class="exam_times">${++data.content}</span>`);
             }
@@ -337,7 +341,6 @@ function ShowQuestion(id) {
 $(document).on('change', "#switchMode", function (e) {
     single = $(this).is(':checked');
     $('#modeName').text(`${single ? 'Single' : 'Multi'}`);
-    console.log(current_question_id)
     if ($(this).is(':checked')) {
         ShowQuestion(current_question_id);
     } else {
@@ -437,17 +440,21 @@ var getUrlParameter = function getUrlParameter(sParam) {
     return false;
 };
 
-function ExamDate(){
+function ExamDate() {
     let d = new Date();
     let date = d.getDate();
-    let month = d.getMonth()+1;
+    let month = d.getMonth() + 1;
     let year = d.getFullYear();
     let hours = d.getHours();
     let minutes = d.getMinutes();
     let seconds = d.getSeconds();
 
-    return `${year}-${month<10?'0'+month:month}-${date<10?'0'+date:date} ${hours<10?'0'+hours:hours}:${minutes<10?'0'+minutes:minutes}:${seconds<10?'0'+seconds:seconds}`;
+    return `${year}-${month < 10 ? '0' + month : month}-${date < 10 ? '0' + date : date} ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
+}
 
+function isInteger(str) {
+    // Sử dụng biểu thức chính quy để kiểm tra xem chuỗi chỉ chứa các chữ số
+    return /^\d+$/.test(str);
 }
 

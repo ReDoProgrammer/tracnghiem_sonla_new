@@ -43,7 +43,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                         Số lần thi
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 fw-bold ex_times" data-times="">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 fw-bold ex_times" data-times="" id="totalTimes">
                         
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
