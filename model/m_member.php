@@ -8,8 +8,49 @@ include_once('classes/m_message.php');
 include_once('classes/m_profile.php');
 include_once('m_db.php');
 
+function  mChangeProfile($user_id,$fullname,$birthdate,$gender,$phone,$email,$province_code,
+$district_code,$ward_code,$address,$job_id,$workplace_id,$position_id,$working_unit){
+    $sql = "UPDATE members
+            SET fullname = '".$fullname."',
+                gender = '".$gender."',
+                birthdate = '".$birthdate."',
+                phone = '".$phone."',
+                email = '".$email."',
+                province_code = '".$province_code."',
+                district_code = '".$district_code."',
+                ward_code = '".$ward_code."',
+                address = '".$address."',
+                job_id = '".$job_id."',
+                workplace_id = '".$workplace_id."',
+                position_id = '".$position_id."',
+                working_unit = '".$working_unit."',
+                get_gender = 1,
+                get_birthdate = 1,
+                get_job = 1,
+                get_position = 1,
+                get_workplace = 1,
+                get_working_unit = 1,
+                get_address = 1
+            WHERE id = '".$user_id."'
+                ";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+
+    if($result && mysql_affected_rows()>0){
+        $msg->title = "Cập nhật thông tin thành viên thành công!";
+        $msg->icon = "success";
+        $msg->statusCode = 200;
+    }else{
+        $msg->title = "Cập nhật thông tin thành viên thất bại!";
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 function mDetail($id){
-    $sql = "SELECT * FROM members WHERE id = '".$id."'";
+    $sql = "SELECT *,  DATE_FORMAT(birthdate,'%d/%m/%Y') as mBirthdate FROM members WHERE id = '".$id."'";
     $result = mysql_query($sql,dbconnect());
 
     $msg = new Message();
