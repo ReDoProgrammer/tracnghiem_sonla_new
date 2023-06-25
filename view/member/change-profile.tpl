@@ -16,7 +16,7 @@
                     <div class="row">
                          <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
                             <label>Tài khoản</label>
-                            <input type:text class="form-control pf_username"  disabled data-userid/>
+                            <input type:text class="form-control pf_username" id="pf_username" disabled data-userid/>
                         </div>
                         <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
                             <label>Họ tên</label>
