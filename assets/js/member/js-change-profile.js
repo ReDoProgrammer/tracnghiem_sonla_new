@@ -49,18 +49,21 @@ $('#btnSaveChanges').click(function () {
     let workplace_id = $('#slWorkplaces option:selected').val();
     let position_id = $('#slPositions option:selected').val();
     let working_unit = $('#txtWorkingUnit').val();
-    console.log({ user_id, fullname, birthdate, gender, phone, email, province_code, district_code, ward_code, address, job_id, workplace_id, position_id, working_unit });
-    return;
+    console.log({ user_id, fullname, birthdate, gender, phone, email, province_code, 
+        district_code, ward_code, address, job_id, workplace_id, position_id, working_unit });
+
 
     if (fullname.trim().length == 0) {
         $.toast({
             heading: "Ràng buộc dữ liệu!!",
             text: "Họ tên không được để trống!!",
             showHideTransition: 'fade',
-            icon: data.icon
+            icon: "warning"
         })
         return;
     }
+
+    return;
 
 
     $.ajax({
@@ -202,7 +205,6 @@ function LoadWards(district_code) {
 }
 
 function LoadDistricts(province_code) {
-    console.log(set_district_code)
     if (typeof province_code != 'undefined') {
         $.ajax({
             url: 'controller/location/districts.php',

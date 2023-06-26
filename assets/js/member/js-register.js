@@ -133,14 +133,14 @@ $('.btnSubmitRegister').click(function () {
     }
 
 
-    if (!validatePassword(password)) {
-        $('#msgPassword').text("Mật khẩu ít nhất 6 kí tự, bao gồm chữ cái và số, không được chứa khoảng trắng!");
+    if (validatePassword(password).length >0) {
+        $('#msgPassword').text(validatePassword(password));
         $('#msgPassword').select();
         return;
     }
 
-    if (!validatePassword(confirm_password)) {
-        $('#msgConfirmPassword').text("Mật khẩu ít nhất 6 kí tự, bao gồm chữ cái và số, không được chứa khoảng trắng!");
+    if (validatePassword(confirm_password).length>0) {
+        $('#msgConfirmPassword').text(validatePassword(confirm_password));
         $('#msgConfirmPassword').select();
         return;
     }
@@ -470,8 +470,18 @@ function formatDate(date) {
 }
 
 function validatePassword(pwd) {
-    var regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
-    return regex.test(pwd);
+     // Kiểm tra các ràng buộc
+     var hasWhitespace = /\s/.test(pwd);
+     var hasEnoughLength = pwd.length >= 6;
+     var hasEnoughCharacterTypes = /[a-zA-Z]/.test(pwd) && /\d/.test(pwd);
+     if (hasWhitespace) {
+        return 'Mật khẩu không được chứa khoảng trắng.';
+      } else if (!hasEnoughLength) {
+        return 'Mật khẩu phải có ít nhất 6 kí tự.';
+      } else if (!hasEnoughCharacterTypes) {
+        return 'Mật khẩu phải chứa ít nhất 1 kí tự chữ cái và 1 kí tự số.';
+      } 
+      return '';
 }
 
 function validateUsername(usr) {
