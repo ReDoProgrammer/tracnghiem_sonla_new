@@ -1,6 +1,6 @@
-var province_code = '';
-var district_code = '';
-var ward_code = '';
+var set_province_code = '';
+var set_district_code = '';
+var set_ward_code = '';
 
 $(async function () {
     await $.ajax({
@@ -23,7 +23,7 @@ $(async function () {
     LoadPositions();
     LoadMemberDetail();
 
-    $(document).on('change', '.slProvinces', function () {
+    $(document).on('change', '#slProvinces', function () {
         LoadDistricts($('#slProvinces option:selected').val());
     })
 
@@ -123,18 +123,11 @@ function LoadMemberDetail() {
 
                 if (p.get_address == 1) {
                     await $('#slProvinces').val(p.province_code);
-                    province_code = p.province_code;
-                    district_code = p.district_code;
-                    ward_code = p.ward_code;
+                    set_province_code = p.province_code;
+                    set_district_code = p.district_code;
+                    set_ward_code = p.ward_code;
                     $('#slProvinces').trigger('change');
-
-
-
                 }
-
-
-
-
 
 
                 $('#slJobs').val(p.job_id);
@@ -186,32 +179,30 @@ function LoadJobs() {
     })
 }
 
-function LoadWards(district_code) {
+function LoadWards(district_code) {    
     if (typeof district_code != 'undefined') {
         $.ajax({
             url: 'controller/location/wards.php',
             type: 'get',
             data: { district_code },
             success: async function (data) {
-                $('.slWards').empty();
+                $('#slWards').empty();
                 if (data.statusCode == 200) {
                     await data.content.forEach(w => {
-                        $('.slWards').append(`<option value="${w.code}">${w.full_name}</option>`)
+                        $('#slWards').append(`<option value="${w.code}">${w.full_name}</option>`)
                     })
                    
-                    if ($('#slDistricts option:selected').val() == district_code) {
-                        $('.slWards').val(ward_code);
+                    if (set_ward_code.trim().length>0 && district_code.trim() == set_district_code.trim()) {
+                        $('#slWards').val(set_ward_code);
                     }
-
                 }
             }
         })
     }
-
 }
 
 function LoadDistricts(province_code) {
-    console.log(district_code)
+    console.log(set_district_code)
     if (typeof province_code != 'undefined') {
         $.ajax({
             url: 'controller/location/districts.php',
@@ -224,8 +215,8 @@ function LoadDistricts(province_code) {
                         $('#slDistricts').append(`<option value="${d.code}">${d.full_name}</option>`);
                     })
                     
-                    if ($('#slProvinces option:selected').val() == province_code) {
-                        $('#slDistricts').val(district_code);
+                    if (province_code == set_province_code) {
+                        $('#slDistricts').val(set_district_code);
                     }
                     $('#slDistricts').trigger('change');
                 }
