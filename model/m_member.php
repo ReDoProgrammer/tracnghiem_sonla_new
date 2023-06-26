@@ -8,6 +8,42 @@ include_once('classes/m_message.php');
 include_once('classes/m_profile.php');
 include_once('m_db.php');
 
+function CheckDuplicatePhone($phone,$user_id){
+    $sql = "SELECT * FROM members WHERE phone = '".$phone."' AND id !='".$user_id."'";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Kiểm tra trùng lặp số điện thoại thành công!";
+        $msg->content = mysql_num_rows($result);
+    }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Kiểm tra trùng lặp số điện thoại thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
+function CheckDuplicateEmail($email,$user_id){
+    $sql = "SELECT * FROM members WHERE email = '".$email."' AND id !='".$user_id."'";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $msg->statusCode = 200;
+        $msg->icon = "success";
+        $msg->title = "Kiểm tra trùng lặp email thành công!";
+        $msg->content = mysql_num_rows($result);
+    }else{
+        $msg->statusCode = 500;
+        $msg->icon = "error";
+        $msg->title = "Kiểm tra trùng lặp email thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 function  mChangeProfile($user_id,$fullname,$birthdate,$gender,$phone,$email,$province_code,
 $district_code,$ward_code,$address,$job_id,$workplace_id,$position_id,$working_unit){
     $sql = "UPDATE members

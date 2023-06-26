@@ -8,9 +8,16 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-24 col-sm-8 col-md-8 col-lg-8">
-                    <img src="/assets/imagesimages/gui/logo-doan.png" 
-                    class="pf_avatar img-thumbnail img-responsive" id="pf_avatar"
-                    style="width:100%; height:auto; max-height:260px;"/>
+                    <div class="avatar">
+                        <div class="content">
+                            <img src="http://placehold.it/175x180"
+                            class ="pf_avatar" id = "pf_avatar"
+                             style="width:100%; height:auto; max-height:185px;"/>
+                            <button class="btn btn-xs btn-warning btnImportAvatar">
+                                <i class="fa fa-camera" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-xs-24 col-sm-16 col-md-16 col-lg-16">
                     <div class="row">
@@ -21,6 +28,7 @@
                         <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
                             <label>Họ tên</label>
                             <input type:text class="form-control pf_fullname" id="pf_fullname"/>
+                            <span class="text-danger fw-bold msgValidation" id="msgFullname"></span>
                         </div>
                     </div>
 
@@ -57,14 +65,32 @@
                         <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
                             <label>Điện thoại</label>
                             <input type:text class="form-control pf_phone" id="pf_phone" />
+                            <span class="text-danger fw-bold msgValidation" id="msgPhone"></span>
                         </div>
                          <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
                             <label>Email</label>
                             <input type:text class="form-control pf_email" id="pf_email"/>
+                            <span class="text-danger fw-bold msgValidation" id="msgEmail"></span>
                         </div>
                     </div>
 
-                    <div class="row">
+                   <div class="row">
+                        <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
+                            <label>Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="txtNewPassword"/>
+                            <span class="text-danger fw-bold msgValidation" id="msgNewPassword"></span>
+                        </div>
+                         <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
+                            <label>Xác nhận mật khẩu mới</label>
+                            <input type="password" class="form-control" id="txtConfirmNewPassword"/>
+                            <span class="text-danger fw-bold msgValidation" id="msgConfirmNewPassword"></span>
+                        </div>
+                   </div>
+                    
+                </div>
+            </div>
+
+             <div class="row">
                         <div class="col-xs-24 col-sm-24 col-md-12 col-lg-12 form-group">
                             <label>Tỉnh, thành phố</label>
                             <select class="form-control slProvinces" id="slProvinces"></select>
@@ -85,9 +111,6 @@
                             <input type:text class="form-control txtAddress" id="txtAddress"/>
                         </div>
                     </div>
-                    
-                </div>
-            </div>
 
             <div class="row">
                 <div class="col-xs-24 col-sm-12 col-md-8 col-lg-8 form-group">
@@ -126,3 +149,4 @@
 
 <?php   include('view/common/footer.tpl'); ?>
 <script src="assets/js/member/js-change-profile.js"></script>
+<link rel="StyleSheet" href="assets/css/member/register.css?t=1683896486">

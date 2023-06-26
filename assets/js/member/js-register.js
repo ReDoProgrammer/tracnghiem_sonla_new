@@ -19,67 +19,6 @@ $(function () {
     if (WORKPLACE) {
         LoadWorkPlaces();
     }
-
-
-
-
-    $('input').focusout(function () {
-        let phone = $('.txtPhone').val();
-        let username = $('.txtUsername').val();
-        let email = $('.txtEmail').val();
-        $('.divWarningMsg').empty();
-        $('.divWarningMsg').show();
-
-        let password = $('.txtPassword').val();
-        let confirm_password = $('.txtConfirmPassword').val();
-
-
-
-
-        if (validateUsername(username)) {
-            $.ajax({
-                url: 'controller/member/check-username-exists.php',
-                type: 'get',
-                data: { username },
-                success: function (count) {
-                    isPassport = count == 0;
-                    if (count > 0) {
-                        isPassport = false;
-                        $('.divWarningMsg').append('- Tài khoản này đã tồn tại trên hệ thống!<br/>');
-                    }
-                }
-            })
-        } else {
-            $('.divWarningMsg').append('- Tài khoản ít nhất 4 kí tự, không chứa khoảng trắng và kí tự đặc biệt!<br/>');
-            isPassport = false;
-        }
-
-
-        if (validatePhoneNumber(phone)) {
-            $.ajax({
-                url: 'controller/member/check-phone-exists.php',
-                type: 'get',
-                data: { phone },
-                success: function (count) {
-                    isPassport = count == 0;
-                    if (count > 0) {
-                        $('.divWarningMsg').append('- Số điện thoại này đã tồn tại trên hệ thống <br/>');
-                    }
-                }
-            })
-        } else {
-            $('.divWarningMsg').append('- Số điện thoại không hợp lệ <br/>');
-            isPassport = false;
-        }
-
-        if (isPassport) {
-            $("input.ckbAgreement").removeAttr("disabled");
-            $('.divWarningMsg').hide();
-        } else {
-            $("input.ckbAgreement").attr("disabled", true);
-        }
-    })
-
 })
 
 
@@ -104,7 +43,6 @@ $('.btnSubmitRegister').click(function () {
     let workplace_id = WORKPLACE ? $('.slWorkPlaces option:selected').val() : '';
     let workingunit = $('.txtWorkingUnit').val();
 
-    $('.msgValidation').empty();
     
     if (fullname.length == 0) {
         $('#msgFullname').text("Vui lòng nhập họ tên. Họ tên không thể để trống!");
