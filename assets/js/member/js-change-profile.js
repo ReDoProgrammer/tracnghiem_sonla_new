@@ -151,6 +151,7 @@ $('#btnSaveChanges').click(function () {
 
     let formData = new FormData();
 
+    formData.append("id", user_id);
     formData.append("fullname", fullname);
     formData.append("avatar", avatar == null ? '' : avatar);
     formData.append("gender", gender);
@@ -167,16 +168,12 @@ $('#btnSaveChanges').click(function () {
     formData.append("position_id", position_id);
     formData.append("working_unit", working_unit);
 
-    console.log(1,formData);
-    return;
-
     $.ajax({
         url: 'controller/member/update-profile.php',
-        type: 'post',
-        data: {
-            user_id, fullname, birthdate, gender, phone, email, province_code, district_code, ward_code, address,
-            job_id, workplace_id, position_id, working_unit
-        },
+        type:'post',
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function (data) {
             console.log(data);
             if (data.statusCode == 200) {

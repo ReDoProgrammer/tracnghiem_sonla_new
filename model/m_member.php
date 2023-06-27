@@ -8,16 +8,17 @@ include_once('classes/m_message.php');
 include_once('classes/m_profile.php');
 include_once('m_db.php');
 
-function CheckDuplicatePhone($phone,$user_id){
-    $sql = "SELECT * FROM members WHERE phone = '".$phone."' AND id !='".$user_id."'";
-    $result = mysql_query($sql,dbconnect());
+function CheckDuplicatePhone($phone, $user_id)
+{
+    $sql = "SELECT * FROM members WHERE phone = '" . $phone . "' AND id !='" . $user_id . "'";
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result){
+    if ($result) {
         $msg->statusCode = 200;
         $msg->icon = "success";
         $msg->title = "Kiểm tra trùng lặp số điện thoại thành công!";
         $msg->content = mysql_num_rows($result);
-    }else{
+    } else {
         $msg->statusCode = 500;
         $msg->icon = "error";
         $msg->title = "Kiểm tra trùng lặp số điện thoại thất bại!";
@@ -26,16 +27,17 @@ function CheckDuplicatePhone($phone,$user_id){
     return $msg;
 }
 
-function CheckDuplicateEmail($email,$user_id){
-    $sql = "SELECT * FROM members WHERE email = '".$email."' AND id !='".$user_id."'";
-    $result = mysql_query($sql,dbconnect());
+function CheckDuplicateEmail($email, $user_id)
+{
+    $sql = "SELECT * FROM members WHERE email = '" . $email . "' AND id !='" . $user_id . "'";
+    $result = mysql_query($sql, dbconnect());
     $msg = new Message();
-    if($result){
+    if ($result) {
         $msg->statusCode = 200;
         $msg->icon = "success";
         $msg->title = "Kiểm tra trùng lặp email thành công!";
         $msg->content = mysql_num_rows($result);
-    }else{
+    } else {
         $msg->statusCode = 500;
         $msg->icon = "error";
         $msg->title = "Kiểm tra trùng lặp email thất bại!";
@@ -44,60 +46,111 @@ function CheckDuplicateEmail($email,$user_id){
     return $msg;
 }
 
-function  mChangeProfile($user_id,$fullname,$birthdate,$gender,$phone,$email,$province_code,
-$district_code,$ward_code,$address,$job_id,$workplace_id,$position_id,$working_unit){
-    $sql = "UPDATE members
-            SET fullname = '".$fullname."',
-                gender = '".$gender."',
-                birthdate = '".$birthdate."',
-                phone = '".$phone."',
-                email = '".$email."',
-                province_code = '".$province_code."',
-                district_code = '".$district_code."',
-                ward_code = '".$ward_code."',
-                address = '".$address."',
-                job_id = '".$job_id."',
-                workplace_id = '".$workplace_id."',
-                position_id = '".$position_id."',
-                working_unit = '".$working_unit."',
-                get_gender = 1,
-                get_birthdate = 1,
-                get_job = 1,
-                get_position = 1,
-                get_workplace = 1,
-                get_working_unit = 1,
-                get_address = 1
-            WHERE id = '".$user_id."'
-                ";
-    $result = mysql_query($sql,dbconnect());
+function mChangeProfile(
+    $id,
+    $fullname,
+    $avatar,
+    $birthdate,
+    $gender,
+    $password,
+    $phone,
+    $email,
+    $province_code,
+    $district_code,
+    $ward_code,
+    $address,
+    $job_id,
+    $workplace_id,
+    $position_id,
+    $working_unit
+) {
+    $avatarurl = '';
+    $isupload = true;
     $msg = new Message();
 
-    if($result && mysql_affected_rows()>0){
-        $msg->title = "Cập nhật thông tin thành viên thành công!";
-        $msg->icon = "success";
-        $msg->statusCode = 200;
-    }else{
-        $msg->title = "Cập nhật thông tin thành viên thất bại!";
+    $sql = "SELECT avatar FROM members WHERE id = '" . $id . "'";
+    $result = mysql_query($sql, dbconnect());
+    if ($result && mysql_num_rows($result) > 0) {
+        $m = mysql_fetch_array($result);
+        if (strlen($m["avatar"]) > 0) {
+            unlink('../../'+$m["avatar"]);
+        }
+
+        if (isset($avatar['name'])) {
+            $avatardir = 'assets/images/upload/avatar/';
+            $storeddir = '../../' . $avatardir;
+            $filename = time() . '_' . basename($avatar["name"]);
+            $uploadfile = $storeddir . $filename;
+            $isupload = move_uploaded_file($avatar['tmp_name'], $uploadfile);
+            if ($isupload) {
+                $avatarurl = $avatardir . $filename;
+            }
+        }
+
+        if ($isupload) {
+            $sql = "UPDATE members
+                SET fullname = '" . $fullname . "',
+                    password = '" . MD5($password) . "',
+                    avatar = '" . $avatarurl . "',
+                    gender = '" . $gender . "',
+                    birthdate = '" . $birthdate . "',
+                    phone = '" . $phone . "',
+                    email = '" . $email . "',
+                    province_code = '" . $province_code . "',
+                    district_code = '" . $district_code . "',
+                    ward_code = '" . $ward_code . "',
+                    address = '" . $address . "',
+                    job_id = '" . $job_id . "',
+                    workplace_id = '" . $workplace_id . "',
+                    position_id = '" . $position_id . "',
+                    working_unit = '" . $working_unit . "',
+                    get_gender = 1,
+                    get_birthdate = 1,
+                    get_job = 1,
+                    get_position = 1,
+                    get_workplace = 1,
+                    get_working_unit = 1,
+                    get_address = 1
+                WHERE id = '" . $id . "'
+                    ";
+            $result = mysql_query($sql, dbconnect());
+            $msg = new Message();
+
+            if ($result) {
+                $msg->title = "Cập nhật thông tin thành viên thành công!";
+                $msg->icon = "success";
+                $msg->statusCode = 200;
+            } else {
+                $msg->title = "Cập nhật thông tin thành viên thất bại!";
+                $msg->icon = "error";
+                $msg->statusCode = 500;
+                $msg->content = mysql_error();
+            }
+        }
+    } else {
+        $msg->title = "Không tìm thấy tài khoản phù hợp!";
         $msg->icon = "error";
-        $msg->statusCode = 500;
-        $msg->content = mysql_error();
+        $msg->statusCode = 404;
     }
+
+
     return $msg;
 }
 
-function mDetail($id){
-    $sql = "SELECT *,  DATE_FORMAT(birthdate,'%d/%m/%Y') as mBirthdate FROM members WHERE id = '".$id."'";
-    $result = mysql_query($sql,dbconnect());
+function mDetail($id)
+{
+    $sql = "SELECT *,  DATE_FORMAT(birthdate,'%d/%m/%Y') as mBirthdate FROM members WHERE id = '" . $id . "'";
+    $result = mysql_query($sql, dbconnect());
 
     $msg = new Message();
 
-    if($result && mysql_num_rows($result)>0){
+    if ($result && mysql_num_rows($result) > 0) {
         $detail = mysql_fetch_array($result);
         $msg->statusCode = 200;
         $msg->icon = "success";
         $msg->title = "Lấy thông tin chi tiết tài khoản thành công!";
         $msg->content = $detail;
-    }else{
+    } else {
         $msg->icon = "error";
         $msg->title = "Lấy thông tin tài khoản thất bại";
         $msg->statusCode = 500;
@@ -202,7 +255,7 @@ function login($username_or_email, $login_password, $ip_address)
 
                     $profile->address = $account['address'];
                     $profile->get_address = $account['get_address'];
-                    $profile->province_code =$account['province_code'];
+                    $profile->province_code = $account['province_code'];
                     $profile->district_code = $account['district_code'];
                     $profile->ward_code = $account['ward_code'];
                     $profile->detail = $account['detail'];
@@ -271,12 +324,12 @@ function CheckPhoneExist($phone)
 function CheckUsernameExist($username)
 {
     $result = mysql_query("SELECT * from members WHERE username ='" . $username . "'", dbconnect());
-    return  mysql_num_rows($result);
+    return mysql_num_rows($result);
 }
 function CheckEmailExists($email)
 {
     $result = mysql_query("SELECT * from members WHERE email ='" . $email . "'", dbconnect());
-    return  mysql_num_rows($result);
+    return mysql_num_rows($result);
 }
 
 
@@ -357,15 +410,15 @@ function Register(
         if ($cfWorkingUnit) {
             $sql .= ",working_unit = '" . $working_unit . "'";
         }
-        $sql .=",get_birthdate='".$cfBirthdate."'";
-        $sql .=",get_gender='".$cfGender."'";
-        $sql .=",get_address='".$cfAddress."'";
-        $sql .=",get_job='".$cfJob."'";
-        $sql .=",get_position='".$cfPosition."'";
-        $sql .=",get_workplace='".$cfWorkPlace."'";
-        $sql .=",get_working_unit='".$cfWorkingUnit."'";
+        $sql .= ",get_birthdate='" . $cfBirthdate . "'";
+        $sql .= ",get_gender='" . $cfGender . "'";
+        $sql .= ",get_address='" . $cfAddress . "'";
+        $sql .= ",get_job='" . $cfJob . "'";
+        $sql .= ",get_position='" . $cfPosition . "'";
+        $sql .= ",get_workplace='" . $cfWorkPlace . "'";
+        $sql .= ",get_working_unit='" . $cfWorkingUnit . "'";
 
-        $result =  mysql_query($sql, dbconnect());
+        $result = mysql_query($sql, dbconnect());
 
 
         if ($result && mysql_affected_rows() > 0) {
