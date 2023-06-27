@@ -53,7 +53,7 @@ $('#btnSaveChanges').click(function () {
     let workplace_id = $('#slWorkplaces option:selected').val();
     let position_id = $('#slPositions option:selected').val();
     let working_unit = $('#txtWorkingUnit').val();
-    
+
     if (fullname.trim().length == 0) {
         $('#msgFullname').text('Họ tên không được để trống!');
         $('#pf_fullname').select();
@@ -170,7 +170,7 @@ $('#btnSaveChanges').click(function () {
 
     $.ajax({
         url: 'controller/member/update-profile.php',
-        type:'post',
+        type: 'post',
         data: formData,
         processData: false,
         contentType: false,
@@ -178,13 +178,12 @@ $('#btnSaveChanges').click(function () {
             console.log(data);
             if (data.statusCode == 200) {
                 Swal.fire({
-                    position: 'top-end',
                     icon: data.icon,
-                    title: data.content,
-                    showConfirmButton: false,
-                    timer: 1500
+                    title: 'Successfull!!!',
+                    text: data.title,
+                }).then(_ => {
+                    window.location.href = "index.php?module=member&act=login";
                 })
-                window.location.href = "index.php?module=home&act=index";
             } else {
                 $.toast({
                     heading: data.title,
@@ -229,7 +228,7 @@ function LoadMemberDetail() {
                     await $('#slProvinces').val(p.province_code);
                     set_province_code = p.province_code;
                     set_district_code = p.district_code;
-                    set_ward_code = p.ward_code;  
+                    set_ward_code = p.ward_code;
                     $('#txtAddress').val(p.address);
                 }
                 $('#slProvinces').trigger('change');

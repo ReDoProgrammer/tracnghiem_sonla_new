@@ -117,9 +117,11 @@ function mChangeProfile(
             $msg = new Message();
 
             if ($result) {
-                $msg->title = "Cập nhật thông tin thành viên thành công!";
+                $msg->title = "Cập nhật thông tin thành viên thành công. Bạn cần phải đăng nhập lại!";
                 $msg->icon = "success";
                 $msg->statusCode = 200;
+                session_start();
+                unset($_SESSION['profile']); 
             } else {
                 $msg->title = "Cập nhật thông tin thành viên thất bại!";
                 $msg->icon = "error";
