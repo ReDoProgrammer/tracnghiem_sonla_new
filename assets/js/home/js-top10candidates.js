@@ -1,7 +1,7 @@
 
 $(function () {
     $.ajax({
-        url: 'controller/exam/top10candidates.php',
+        url: 'controller/statistic/top10candidates.php',
         type: 'get',
         success: function (data) {
             if (data.statusCode == 200) {
