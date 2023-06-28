@@ -165,6 +165,7 @@ function Top10Candidates()
             JOIN exam_results er ON er.member_id = m.id
             JOIN exam_result_details erd ON erd.exam_result_id = er.id
             JOIN exams e ON er.exam_id = e.id
+            WHERE e.is_stat = 1
             GROUP BY m.id,e.id,er.id
             ORDER BY mark_ratio DESC,spent_duration 
             LIMIT 10
