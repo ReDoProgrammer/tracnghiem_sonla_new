@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <div class="text-center">
              <h2 class="fw-bold text-info" style="font-size:1.8rem;color:#ec1d32;">SỐ LIỆU THỐNG KÊ</h2>
-            <p id="chart_title" class="fw-bold text-primary">Cuộc thi tìm hiểu Lịch sử Đảng hộ huyện Bắc Quang (giai đoạn 1947 - 2022) - Tuần 1</p>             
+            <p id="e_title" class="fw-bold text-primary">Cuộc thi tìm hiểu Lịch sử Đảng hộ huyện Bắc Quang (giai đoạn 1947 - 2022) - Tuần 1</p>             
         </div>
        
     </div>
