@@ -15,7 +15,9 @@
                         <tr>
                             <th class="text-center">STT</th>
                             <th class="text-left">Đơn vị</th>
-                            <th class="text-center">Số người<br/>Tham gia/Tổng số</th>
+                            <th class="text-center">Số người đăng ký</th>
+                            <th class="text-center">Số người tham gia thi</th>
+                            <th class="text-center">Tỉ lệ tham gia</th>
                             <th class="text-center">Số lần thi</th>
                         </tr>
                     </thead>

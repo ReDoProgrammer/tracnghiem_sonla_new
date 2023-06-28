@@ -199,6 +199,8 @@ function Top10Units()
             FROM workplaces wp
             LEFT JOIN members m ON m.workplace_id = wp.id
             LEFT JOIN exam_results er ON er.member_id = m.id
+            LEFT JOIN exams e ON er.exam_id = e.id
+            WHERE e.is_stat = 1
             GROUP BY wp.id
             HAVING candidates > 0
             ORDER BY candidates DESC, exam_times DESC
