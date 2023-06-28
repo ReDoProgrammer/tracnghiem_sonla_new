@@ -191,17 +191,18 @@ function Top10Candidates()
 
 function Top10Units()
 {
-    $sql = "SELECT wp.name AS workplace,
-                COUNT(m.id) AS candidates,
-                COUNT(er.id) AS exam_times
+    $sql = "SELECT
+                wp.name AS workplace,
+                COUNT(DISTINCT er.member_id) AS candidates,
+                COUNT(DISTINCT m.id) AS total_members,
+                COUNT(DISTINCT er.id) AS exam_times
             FROM workplaces wp
-            JOIN members m ON m.workplace_id = wp.id
-            JOIN exam_results er ON er.member_id = m.id
+            LEFT JOIN members m ON m.workplace_id = wp.id
+            LEFT JOIN exam_results er ON er.member_id = m.id
             GROUP BY wp.id
-            ORDER BY candidates DESC,
-            exam_times DESC
-            LIMIT 10
-    ";
+            HAVING candidates > 0
+            ORDER BY candidates DESC, exam_times DESC
+            LIMIT 10";
     $result = mysql_query($sql, dbconnect());
     $msg = new Message();
     if ($result) {

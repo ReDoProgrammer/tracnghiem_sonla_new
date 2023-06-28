@@ -1,6 +1,6 @@
 $(function () {
     $.ajax({
-        url: 'controller/exam/top10units.php',
+        url: 'controller/statistic/top10units.php',
         type: 'get',
         success: function (data) {
             if(data.statusCode == 200){
@@ -10,7 +10,7 @@ $(function () {
                                 <td class="text-center" >
                                     ${index++}
                                 </td>
-                                <td class="text-left">
+                                <td class="fw-bold text-primary">
                                     ${u.workplace}
                                 </td>
                                 <td class="text-center" >
