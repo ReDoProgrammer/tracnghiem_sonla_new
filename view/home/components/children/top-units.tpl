@@ -1,4 +1,4 @@
- <div class="col-xs-24 col-md-8">
+ <div class="col-xs-24 col-md-24">
     <div class="notifications-index">
         <div class="notification-item">
             <div class="headline">
