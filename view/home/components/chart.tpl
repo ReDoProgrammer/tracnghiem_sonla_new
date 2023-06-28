@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <div class="text-center">
              <h2 class="fw-bold text-info" style="font-size:1.8rem;color:#ec1d32;">SỐ LIỆU THỐNG KÊ</h2>
-            <p id="e_title" class="fw-bold text-primary">Cuộc thi tìm hiểu Lịch sử Đảng hộ huyện Bắc Quang (giai đoạn 1947 - 2022) - Tuần 1</p>             
+            <p id="e_title" class="fw-bold text-primary"></p>             
         </div>
        
     </div>
@@ -15,7 +15,11 @@
             </div>
             <div class="col-md-18 col-lg-18"></div>
         </div>
+        <div class="row text-center">
+            <h2 id = "h2Notice" class="text-danger">KHÔNG CÓ DỮ LIỆU VỀ CUỘC THI CỦA TỈNH NÀY</h2>
+        </div>
         <canvas id="combinedChart" style="max-height:520px; margin-bottom:10px;"></canvas>
+        
     </div>
 </div>
 

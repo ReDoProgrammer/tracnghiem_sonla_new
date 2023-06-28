@@ -88,6 +88,9 @@ function LoadChart() {
                         data: data,
                         options: options
                     });
+                    $('#h2Notice').hide();
+                }else{
+                    $('#h2Notice').show();
                 }
                 
             }
