@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jun 25, 2023 at 02:36 AM
+-- Generation Time: Jun 28, 2023 at 10:26 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -487,15 +487,15 @@ CREATE TABLE `configs` (
 -- Dumping data for table `configs`
 -- 
 
-INSERT INTO `configs` VALUES (1, 'GET_BIRTHDATE', '0', 'MEMBER', 'REGISTER', 'Ngày sinh', 'input:text', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (1, 'GET_BIRTHDATE', '1', 'MEMBER', 'REGISTER', 'Ngày sinh', 'input:text', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (2, 'GET_ADDRESS', '0', 'MEMBER', 'REGISTER', 'Địa chỉ', '', '2023-05-31 23:27:51', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (3, 'GET_GENDER', '0', 'MEMBER', 'REGISTER', 'Giới tính', '', '2023-06-05 22:20:50', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (3, 'GET_GENDER', '1', 'MEMBER', 'REGISTER', 'Giới tính', '', '2023-06-05 22:20:50', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (5, 'GET_JOB', '0', 'MEMBER', 'REGISTER', 'Nghề nghiệp', '', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (6, 'GET_POSITION', '0', 'MEMBER', 'REGISTER', 'Chức vụ', '', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (4, 'GET_WORKPLACE', '0', 'MEMBER', 'REGISTER', 'Đơn vị công tác', '', '2023-06-05 09:52:33', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (10, 'RULES', 'https://www.google.com/maps?ll=21.32752,103.9095&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=1570758637398736261', 'MEMBER', 'PRE_REGISTER', 'Nội quy đăng ký thành viên', '', '2023-06-06 21:01:02', 0, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (29, 'SITE_ICON', '/assets/imagesimages/gui/logo-doan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (30, 'SITE_LOGO', '/assets/imagesimages/gui/logo-tinhdoan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (29, 'SITE_ICON', 'assets/images/logo-doan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (30, 'SITE_LOGO', 'assets/images/logo-tinhdoan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (11, 'DEFAULT_PASSWORD', 'Password@123', 'MEMBER', 'PROFILE', 'Mật khẩu mặc định', '', '2023-06-08 16:31:19', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (12, 'SITE_NAME', 'Hệ thống thi trắc nghiệm tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Tên site <span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:46:06', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (13, 'SITE_URL', 'https://khuyenhoc.sonla.gov.vn', 'GLOBAL', 'BASIC', '<label>Site url<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:46:06', 18, '0000-00-00 00:00:00', 0);
@@ -531,7 +531,7 @@ CREATE TABLE `counter_ips` (
 -- Dumping data for table `counter_ips`
 -- 
 
-INSERT INTO `counter_ips` VALUES ('127.0.0.1', '2023-06-25 00:58:29');
+INSERT INTO `counter_ips` VALUES ('127.0.0.1', '2023-06-25 15:47:20');
 
 -- --------------------------------------------------------
 
@@ -561,7 +561,7 @@ CREATE TABLE `counter_values` (
 -- Dumping data for table `counter_values`
 -- 
 
-INSERT INTO `counter_values` VALUES (1, 175, 2, 174, 0, 25, 8, 6, 39, 2023, 1547, 102006, '2017-10-07 22:46:46', 58234);
+INSERT INTO `counter_values` VALUES (1, 175, 6, 174, 0, 25, 12, 6, 43, 2023, 1551, 102010, '2017-10-07 22:46:46', 58234);
 
 -- --------------------------------------------------------
 
@@ -1786,6 +1786,7 @@ CREATE TABLE `exams` (
   `random_options` tinyint(1) NOT NULL default '0',
   `regulation` longtext NOT NULL,
   `is_hot` tinyint(1) NOT NULL default '0',
+  `is_stat` tinyint(4) NOT NULL default '0' COMMENT 'Thống kê theo tỉnh thành',
   `created_at` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `created_by` int(11) NOT NULL,
   `updated_at` timestamp NULL default NULL,
@@ -1798,10 +1799,8 @@ CREATE TABLE `exams` (
 -- Dumping data for table `exams`
 -- 
 
-INSERT INTO `exams` VALUES (10, 'EX202300000010', 'Cuộc thi không giới hạn lần thi', '/assets/imagesimages/1234.jpg', '<p>\n	đ&acirc;y l&agrave; m&ocirc; tả cuộc thi kh&ocirc;ng giới hạn lần thi</p>\n', 60, 100, 1, 0, '2023-06-19 23:28:00', '2023-06-29 23:29:00', 1, 0, '<p>\n	Đ&acirc;y l&agrave; quy chế cuộc thi</p>\n', 0, '2023-06-19 23:29:44', 18, '2023-06-19 23:32:33', 18);
-INSERT INTO `exams` VALUES (6, 'EX20230000006', 'Cuộc thi tìm hiểu ảnh đẹp thiên nhiên quý III năm 2023', '/assets/imagesimages/shutterstock_1263201358-2280x1282.jpg', '<p>\n	Đ&acirc;y l&agrave; m&ocirc; tả cuộc thi. Cuộc thi ảnh đẹp thi&ecirc;n nhi&ecirc;n l&agrave; nơi tranh t&agrave;i của c&aacute;c nhiếp ảnh gia chuy&ecirc;n nghiệp cũng như b&aacute;n chuy&ecirc;n nghiệp tr&ecirc;n to&agrave;n quốc.</p>\n', 60, 60, 60, 4, '2023-06-17 23:04:00', '2023-06-29 21:24:00', 1, 1, '<p>\n	Quy chế cuộc thi, đ&acirc;y l&agrave; quy chế cuộc thi..</p>\n', 0, '2023-06-17 21:25:04', 18, '2023-06-19 23:21:43', 18);
-INSERT INTO `exams` VALUES (11, 'EX202300000011', 'Test lần thi', '/assets/imagesimages/123.jpg', '<p>\n	đ&acirc;y l&agrave; m&ocirc; tả cuộc thi test</p>\n', 100, 100, 1, 2, '2023-06-24 23:21:00', '2023-06-28 23:22:00', 0, 0, '<p>\n	Quy chế cuộc thi</p>\n', 1, '2023-06-24 23:22:39', 18, NULL, 0);
-INSERT INTO `exams` VALUES (12, 'EX202300000012', 'Test cuộc thi tiêu điểm, chưa diễn ra', '/assets/imagesimages/banner_3932899_1682220186_bdea1e96-83d8-4eb1-b996-f0cbc68a5701.jpg', '<p>\n	đ&acirc;y l&agrave; m&ocirc; tả về cuộc thi được chọn l&agrave;m ti&ecirc;u điểm, thời điểm chưa xảy ra cuộc thi</p>\n', 100, 100, 1, 1, '2023-07-01 00:58:00', '2023-07-27 00:59:00', 0, 0, '<p>\n	Quy chế cuộc thi</p>\n', 0, '2023-06-25 01:01:03', 18, NULL, 0);
+INSERT INTO `exams` VALUES (11, 'EX202300000011', 'Test lần thi', '/assets/imagesimages/123.jpg', '<p>\n	đ&acirc;y l&agrave; m&ocirc; tả cuộc thi test</p>\n', 100, 100, 2, 2, '2023-06-27 23:21:00', '2023-06-28 23:22:00', 0, 0, '<p>\n	Quy chế cuộc thi</p>\n', 0, 1, '2023-06-24 23:22:39', 18, '2023-06-25 13:04:21', 18);
+INSERT INTO `exams` VALUES (12, 'EX202300000012', 'Test cuộc thi tiêu điểm, chưa diễn ra', '/assets/imagesimages/banner_3932899_1682220186_bdea1e96-83d8-4eb1-b996-f0cbc68a5701.jpg', '<p>\n	đ&acirc;y l&agrave; m&ocirc; tả về cuộc thi được chọn l&agrave;m ti&ecirc;u điểm, thời điểm chưa xảy ra cuộc thi</p>\n', 100, 100, 2, 1, '2023-07-01 00:58:00', '2023-07-27 00:59:00', 1, 1, '<p>\n	Quy chế cuộc thi</p>\n', 1, 0, '2023-06-25 01:01:03', 18, '2023-06-25 13:05:23', 18);
 
 -- --------------------------------------------------------
 
@@ -1831,11 +1830,7 @@ INSERT INTO `exam_configs` VALUES (4, 3, 25, '2023-06-17 21:13:15', 18);
 INSERT INTO `exam_configs` VALUES (4, 2, 30, '2023-06-17 21:13:15', 18);
 INSERT INTO `exam_configs` VALUES (4, 1, 30, '2023-06-17 21:13:15', 18);
 INSERT INTO `exam_configs` VALUES (9, 4, 30, '2023-06-19 22:55:28', 18);
-INSERT INTO `exam_configs` VALUES (10, 4, 0, '2023-06-19 23:32:33', 18);
 INSERT INTO `exam_configs` VALUES (5, 3, 20, '2023-06-19 22:41:47', 18);
-INSERT INTO `exam_configs` VALUES (10, 3, 0, '2023-06-19 23:32:33', 18);
-INSERT INTO `exam_configs` VALUES (10, 1, 50, '2023-06-19 23:32:33', 18);
-INSERT INTO `exam_configs` VALUES (10, 2, 50, '2023-06-19 23:32:33', 18);
 INSERT INTO `exam_configs` VALUES (9, 1, 50, '2023-06-19 22:55:28', 18);
 INSERT INTO `exam_configs` VALUES (8, 4, 50, '2023-06-19 22:52:02', 18);
 INSERT INTO `exam_configs` VALUES (8, 1, 50, '2023-06-19 22:52:02', 18);
@@ -1843,15 +1838,18 @@ INSERT INTO `exam_configs` VALUES (5, 2, 40, '2023-06-19 22:41:47', 18);
 INSERT INTO `exam_configs` VALUES (5, 1, 0, '2023-06-19 22:41:47', 18);
 INSERT INTO `exam_configs` VALUES (9, 8, 10, '2023-06-19 22:55:28', 18);
 INSERT INTO `exam_configs` VALUES (9, 9, 10, '2023-06-19 22:55:28', 18);
-INSERT INTO `exam_configs` VALUES (6, 2, 50, '2023-06-19 23:21:43', 18);
-INSERT INTO `exam_configs` VALUES (6, 1, 50, '2023-06-19 23:21:43', 18);
-INSERT INTO `exam_configs` VALUES (10, 8, 0, '2023-06-19 23:32:33', 18);
-INSERT INTO `exam_configs` VALUES (10, 9, 0, '2023-06-19 23:32:33', 18);
-INSERT INTO `exam_configs` VALUES (11, 1, 40, '2023-06-24 23:22:39', 18);
-INSERT INTO `exam_configs` VALUES (11, 2, 40, '2023-06-24 23:22:39', 18);
-INSERT INTO `exam_configs` VALUES (11, 3, 20, '2023-06-24 23:22:39', 18);
-INSERT INTO `exam_configs` VALUES (12, 1, 30, '2023-06-25 01:01:03', 18);
-INSERT INTO `exam_configs` VALUES (12, 2, 70, '2023-06-25 01:01:03', 18);
+INSERT INTO `exam_configs` VALUES (12, 4, 0, '2023-06-25 13:05:23', 18);
+INSERT INTO `exam_configs` VALUES (12, 3, 0, '2023-06-25 13:05:23', 18);
+INSERT INTO `exam_configs` VALUES (12, 9, 0, '2023-06-25 13:05:23', 18);
+INSERT INTO `exam_configs` VALUES (12, 8, 0, '2023-06-25 13:05:23', 18);
+INSERT INTO `exam_configs` VALUES (11, 3, 20, '2023-06-25 13:04:21', 18);
+INSERT INTO `exam_configs` VALUES (11, 2, 40, '2023-06-25 13:04:21', 18);
+INSERT INTO `exam_configs` VALUES (11, 1, 40, '2023-06-25 13:04:21', 18);
+INSERT INTO `exam_configs` VALUES (12, 2, 70, '2023-06-25 13:05:23', 18);
+INSERT INTO `exam_configs` VALUES (12, 1, 30, '2023-06-25 13:05:23', 18);
+INSERT INTO `exam_configs` VALUES (11, 4, 0, '2023-06-25 13:04:21', 18);
+INSERT INTO `exam_configs` VALUES (11, 8, 0, '2023-06-25 13:04:21', 18);
+INSERT INTO `exam_configs` VALUES (11, 9, 0, '2023-06-25 13:04:21', 18);
 
 -- --------------------------------------------------------
 
@@ -1873,7 +1871,7 @@ CREATE TABLE `exam_results` (
   PRIMARY KEY  (`id`),
   KEY `member_id` (`member_id`),
   KEY `exam_id` (`exam_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
 
 -- 
 -- Dumping data for table `exam_results`
@@ -1910,6 +1908,10 @@ INSERT INTO `exam_results` VALUES (28, 41, 10, 5, '2023-06-24 23:30:52', 17, 41,
 INSERT INTO `exam_results` VALUES (29, 18, 10, 1, '2023-06-25 01:31:00', 50, 18, '2023-06-25 01:31:53', '0000-00-00 00:00:00', 0);
 INSERT INTO `exam_results` VALUES (30, 18, 11, 1, '2023-06-25 01:34:13', 4, 18, '2023-06-25 01:34:19', '0000-00-00 00:00:00', 0);
 INSERT INTO `exam_results` VALUES (31, 18, 11, 2, '2023-06-25 01:34:28', 4, 18, '2023-06-25 01:34:35', '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_results` VALUES (32, 42, 11, 1, '2023-06-28 09:36:21', 131, 42, '2023-06-28 09:38:33', '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_results` VALUES (33, 42, 11, 2, '2023-06-28 09:47:53', 114, 42, '2023-06-28 09:49:48', '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_results` VALUES (34, 43, 11, 1, '2023-06-28 10:18:50', 114, 43, '2023-06-28 10:20:44', '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_results` VALUES (35, 44, 11, 1, '2023-06-28 20:28:04', 99, 44, '2023-06-28 20:29:44', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -3374,6 +3376,170 @@ INSERT INTO `exam_result_details` VALUES (31, 57, 226, 0, '2023-06-25 01:34:35',
 INSERT INTO `exam_result_details` VALUES (31, 58, 227, 0, '2023-06-25 01:34:35', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `exam_result_details` VALUES (31, 59, 232, 0, '2023-06-25 01:34:35', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `exam_result_details` VALUES (31, 60, 238, 0, '2023-06-25 01:34:35', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 3, 11, 8, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 4, 15, 12, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 5, 19, 16, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 18, 68, 68, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 23, 88, 91, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 24, 95, 95, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 25, 97, 99, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 26, 103, 103, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 27, 107, 107, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 28, 108, 111, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 29, 113, 115, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 30, 119, 119, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 61, 253, 253, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 31, 122, 123, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 32, 124, 126, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 33, 130, 130, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 34, 134, 134, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 35, 138, 138, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 36, 142, 142, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 37, 146, 146, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 38, 150, 150, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 39, 151, 154, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 40, 157, 158, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 41, 162, 162, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 42, 163, 166, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 43, 167, 170, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 44, 172, 174, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 45, 178, 178, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 46, 180, 182, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 47, 183, 186, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 48, 187, 190, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 49, 193, 194, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 51, 202, 202, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 53, 207, 210, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 54, 214, 214, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 55, 216, 218, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 56, 222, 222, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 57, 226, 226, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 58, 227, 230, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 59, 232, 234, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (32, 60, 238, 238, '2023-06-28 09:38:33', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 3, 11, 10, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 4, 15, 14, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 5, 19, 18, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 18, 68, 70, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 23, 88, 90, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 24, 95, 94, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 25, 97, 98, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 26, 103, 102, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 27, 107, 106, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 28, 108, 110, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 29, 113, 114, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 30, 119, 118, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 61, 253, 252, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 31, 122, 122, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 32, 124, 125, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 33, 130, 129, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 34, 134, 133, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 35, 138, 137, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 36, 142, 141, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 37, 146, 145, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 38, 150, 149, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 39, 151, 153, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 40, 157, 157, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 41, 162, 161, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 42, 163, 165, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 43, 167, 169, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 44, 172, 173, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 45, 178, 177, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 46, 180, 181, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 47, 183, 185, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 48, 187, 190, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 49, 193, 193, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 51, 202, 201, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 53, 207, 209, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 54, 214, 213, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 55, 216, 217, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 56, 222, 221, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 57, 226, 225, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 58, 227, 229, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 59, 232, 233, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (33, 60, 238, 237, '2023-06-28 09:49:48', 42, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 3, 11, 9, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 4, 15, 13, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 5, 19, 17, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 18, 68, 69, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 23, 88, 89, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 24, 95, 93, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 25, 97, 97, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 26, 103, 101, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 27, 107, 105, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 28, 108, 109, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 29, 113, 113, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 30, 119, 117, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 61, 253, 251, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 31, 122, 121, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 32, 124, 125, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 33, 130, 128, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 34, 134, 132, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 35, 138, 136, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 36, 142, 141, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 37, 146, 145, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 38, 150, 149, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 39, 151, 153, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 40, 157, 155, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 41, 162, 162, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 42, 163, 166, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 43, 167, 167, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 44, 172, 173, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 45, 178, 177, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 46, 180, 181, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 47, 183, 185, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 48, 187, 189, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 49, 193, 194, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 51, 202, 202, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 53, 207, 210, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 54, 214, 214, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 55, 216, 218, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 56, 222, 222, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 57, 226, 226, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 58, 227, 230, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 59, 232, 234, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (34, 60, 238, 238, '2023-06-28 10:20:44', 43, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 3, 11, 9, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 4, 15, 15, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 5, 19, 19, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 18, 68, 70, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 23, 88, 90, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 24, 95, 94, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 25, 97, 98, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 26, 103, 102, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 27, 107, 106, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 28, 108, 110, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 29, 113, 114, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 30, 119, 118, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 61, 253, 252, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 31, 122, 122, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 32, 124, 126, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 33, 130, 130, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 34, 134, 132, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 35, 138, 136, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 36, 142, 140, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 37, 146, 144, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 38, 150, 148, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 39, 151, 152, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 40, 157, 156, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 41, 162, 160, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 42, 163, 164, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 43, 167, 168, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 44, 172, 172, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 45, 178, 176, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 46, 180, 181, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 47, 183, 185, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 48, 187, 188, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 49, 193, 192, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 51, 202, 201, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 53, 207, 209, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 54, 214, 212, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 55, 216, 217, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 56, 222, 220, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 57, 226, 225, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 58, 227, 228, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 59, 232, 232, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
+INSERT INTO `exam_result_details` VALUES (35, 60, 238, 236, '2023-06-28 20:29:44', 44, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -3967,22 +4133,16 @@ CREATE TABLE `members` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=42 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- 
 -- Dumping data for table `members`
 -- 
 
-INSERT INTO `members` VALUES (18, 'admin', '2138cb5b0302e84382dd9b3677576b24', 'assets/images/avatar/logo.png', 'Quản trị ', 'nbinh88@gmail.com', '0916020488', '1987-06-19', 0, 1, 1, 1, 1, 0, '', 1, '2013-11-13 00:00:00', 1, '2023-06-25 00:55:11', '127.0.0.1', 1, 'gfxvn.info', '14', '116', '03652', 'Tổ 4', 1, 1, 1, 0, '');
-INSERT INTO `members` VALUES (36, 'test12', '60474c9c10d7142b7508ce7a50acf414', '', 'test12', 'test12@gmail.com', '0911398853', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-20 15:34:58', 0, '2023-06-20 15:35:00', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (34, 'nhtruong', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'nhtruong@gmail.com', '0911397765', '0000-00-00', 0, 0, 0, 0, 1, 0, '', 0, '2023-06-18 08:04:31', 0, '2023-06-18 08:04:32', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 8, 0, '');
-INSERT INTO `members` VALUES (35, 'test11', 'f696282aa4cd4f614aa995190cf442fe', '', 'test11', 'test11@gmail.com', '0912322321', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-20 14:56:53', 0, '2023-06-20 14:56:55', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (33, 'truongnh', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'truongnh@gmail.com', '0911397764', '0000-00-00', 0, 0, 0, 0, 1, 0, '', 0, '2023-06-17 23:30:08', 0, '2023-06-18 08:08:02', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 1, 0, '');
-INSERT INTO `members` VALUES (37, 'testwu', '7ea199bf22fa034a19547285be261b0a', '', 'test wu', 'testwu123@gmail.com', '0984212345', '0000-00-00', 0, 0, 0, 0, 0, 0, 'working unit', 0, '2023-06-22 14:08:26', 0, '2023-06-22 14:08:28', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (38, 'testwu1', '96ce80bab13bb4c5001c3d18ec005641', '', 'testwu1', 'testwu1@gmail.com', '0984253236', '0000-00-00', 0, 0, 0, 0, 0, 1, 'working unit 1', 0, '2023-06-22 14:11:13', 0, '2023-06-22 14:11:14', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (39, 'testnwu', 'f9a84352acf284b40e8a61807b4ea2c1', '', 'test no woking unit', 'testnwu1@gmaill.com', '0988321565', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-22 14:12:33', 0, '2023-06-22 14:12:35', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (40, 'test123', '16d7a4fca7442dda3ad93c9a726597e4', 'assets/images/upload/avatar/1687423180_images.jpg', 'Test họ tên ràng buộc', 'test123@af.com', '0911398843', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-22 15:39:40', 0, '2023-06-22 15:39:41', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
-INSERT INTO `members` VALUES (41, 'test1234', '16d7a4fca7442dda3ad93c9a726597e4', '', 'test1234', 'test1234@gmail.com', '0944322123', '0000-00-00', 0, 0, 0, 0, 0, 0, '', 0, '2023-06-23 08:25:35', 0, '2023-06-24 22:27:15', '127.0.0.1', 0, '', '', '', '', '', 0, 0, 0, 0, '');
+INSERT INTO `members` VALUES (18, 'admin', 'd00f5d5217896fb7fd601412cb890830', 'assets/images/upload/avatar/1687872346_logo-doan.png', 'Administrator', 'redo2011dht@gmail.com', '0911397764', '1987-06-19', 1, 1, 1, 1, 1, 1, 'Đội chiếu phim tuyên truyền Nhà hát Ca múa nhạc Tổng hợp Đam San', 1, '2013-11-13 00:00:00', 1, '2023-06-27 20:25:51', '127.0.0.1', 1, 'gfxvn.info', '64', '626', '23677', 'Thôn 4', 1, 5, 1, 0, '');
+INSERT INTO `members` VALUES (42, 'truongnh', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Hữu Trường', 'truongnh@gmail.com', '0911397765', '1987-06-19', 1, 1, 1, 1, 1, 1, '', 1, '2023-06-28 09:35:07', 0, '2023-06-28 09:36:05', '127.0.0.1', 1, '', '64', '631', '23857', 'TDP 8', 2, 5, 1, 0, '');
+INSERT INTO `members` VALUES (43, 'khangnpm', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Phúc Minh Khang', 'khangnpm@gmail.com', '0941170516', '2016-05-17', 1, 1, 1, 1, 1, 1, '', 1, '2023-06-28 10:17:13', 0, '2023-06-28 10:18:31', '127.0.0.1', 1, '', '64', '631', '23857', '', 2, 1, 8, 0, '');
+INSERT INTO `members` VALUES (44, 'vyndm', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Đoàn Minh Vy', 'vyndm@gmail.com', '0888030119', '2019-01-03', 1, 1, 1, 1, 1, 1, 'Nhà mẫu giáo TT số 2', 1, '2023-06-28 20:06:15', 0, '2023-06-28 20:07:34', '127.0.0.1', 0, '', '64', '626', '23677', 'Thôn 4', 2, 4, 8, 0, '');
 
 -- --------------------------------------------------------
 
@@ -4039,7 +4199,7 @@ CREATE TABLE `nhat_ky` (
   `agent` varchar(250) NOT NULL,
   `action_ip` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1961 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1965 ;
 
 -- 
 -- Dumping data for table `nhat_ky`
@@ -6005,6 +6165,10 @@ INSERT INTO `nhat_ky` VALUES (1957, 0, '', 'Đăng nhập hệ thống', 1685067
 INSERT INTO `nhat_ky` VALUES (1958, 0, '', 'Đăng nhập hệ thống', 1685067210, 'login', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36', '127.0.0.1');
 INSERT INTO `nhat_ky` VALUES (1959, 0, '', 'Săm soi khu vực thông báo', 1686139001, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
 INSERT INTO `nhat_ky` VALUES (1960, 0, '', 'Săm soi khu vực thông báo', 1687191620, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
+INSERT INTO `nhat_ky` VALUES (1961, 0, '', 'Săm soi khu vực thông báo', 1687657085, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
+INSERT INTO `nhat_ky` VALUES (1962, 0, '', 'Săm soi khu vực thông báo', 1687657086, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
+INSERT INTO `nhat_ky` VALUES (1963, 0, '', 'Săm soi khu vực thông báo', 1687673303, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
+INSERT INTO `nhat_ky` VALUES (1964, 0, '', 'Săm soi khu vực thông báo', 1687673321, 'list_mem', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', '127.0.0.1');
 
 -- --------------------------------------------------------
 
