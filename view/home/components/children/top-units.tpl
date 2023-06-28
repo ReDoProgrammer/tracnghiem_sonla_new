@@ -14,8 +14,8 @@
                     <thead>
                         <tr>
                             <th class="text-center">STT</th>
-                            <th class="text-center">Tên</th>
-                            <th class="text-center">Số người</th>
+                            <th class="text-left">Đơn vị</th>
+                            <th class="text-center">Số người<br/>Tham gia/Tổng số</th>
                             <th class="text-center">Số lần thi</th>
                         </tr>
                     </thead>
