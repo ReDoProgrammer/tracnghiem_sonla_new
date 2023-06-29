@@ -155,7 +155,7 @@ function LoadExamSummary(id) {
             }
 
             total_times = exam.times;
-            
+
 
             $('#ex_title').text(exam.title);
             $('#ex_title').attr('data-exam', id);
@@ -274,9 +274,19 @@ function BindPagination() {
 
 //hiển thị nội dung của câu hỏi dựa vào id câu hỏi
 function ShowQuestion(id) {
-    if ($('#switchMode').is(':checked')) {
+    let isSingle = $('#switchMode').is(':checked');// lấy mode làm bài thi
+    isSingle ? $('#navPagination').show() : $('#navPagination').hide();
+    if (isSingle) {// nếu chế độ single thì làm trống nội dung tránh trùng lặp
         $('#showQuestion').empty();
-        current_question_id = id;
+        $('#showQuestion').css({
+            'height': null,
+            'overflow-y': null
+        });
+    } else {
+        $('#showQuestion').css({
+            'height': '410px',
+            'overflow-y': 'scroll'
+        });
     }
 
     let ro = $('.ex_random_options').data('ro');
@@ -285,53 +295,53 @@ function ShowQuestion(id) {
         type: 'get',
         data: { id, ro },
         success: function (data) {
-
             if (data.statusCode == 200) {
+                //Lấy câu hỏi dựa từ mảng đã lưu dựa vào id
                 let current_question = questions.filter(x => x.id == id)[0];
 
+                /*
+                    Kiểm tra câu hỏi đầu hoặc cuối của mảng để ẩn button
+                */
                 current_index = $.inArray(current_question, questions);
-                if (current_index == 0) {
-                    $('#preQuestion').addClass('disabled');
-                } else {
-                    $('#preQuestion').removeClass('disabled');
-                }
-                if (current_index == questions.length - 1) {
-                    $('#nextQuestion').addClass('disabled');
-                } else {
-                    $('#nextQuestion').removeClass('disabled');
+                if (isSingle) {
+                    current_index == 0 ? $('#preQuestion').addClass('disabled') : $('#preQuestion').removeClass('disabled');
+                    current_index == questions.length - 1 ? $('#nextQuestion').addClass('disabled') : $('#nextQuestion').removeClass('disabled');
                 }
 
+                //Đổ các đáp án tương ứng của câu hỏi
                 options = data.content;
                 let number = $(`#questionsPagination li#${id} a`).text();
                 $(`#questionsPagination li a.active`).removeClass('active');
                 $(`#questionsPagination li#${id} a`).addClass('active');
 
+                //tiêu đề câu hỏi
                 let content = `<div class="test" id="${current_question.id}">
-                        <p class="question-info">
-                            <h4 id="${current_question.id}">Câu hỏi số ${number} - Chủ đề: <span style="color:#2e66ad; font-weight: bold;">${current_question.topic}</span></h4>
-                            <a class="fr btn-feedback btn-onclick report" id="${current_question.id}">
-                                    <img class="not-hover" src="assets/images/icons/icon-feedback.png">
-                                    <img class="hover" src="assets/images/icons/icon-feedback_hover.png">
-                                    <span>Báo lỗi</span>
-                            </a>
-                    </p>
+                                <p class="question-info">
+                                    <h4 id="${current_question.id}">Câu hỏi số ${number} - Chủ đề: <span style="color:#2e66ad; font-weight: bold;">${current_question.topic}</span></h4>
+                                    <a class="fr btn-feedback btn-onclick report" id="${current_question.id}">
+                                            <img class="not-hover" src="assets/images/icons/icon-feedback.png">
+                                            <img class="hover" src="assets/images/icons/icon-feedback_hover.png">
+                                            <span>Báo lỗi</span>
+                                    </a>
+                                </p>
                     <div class="question">${current_question.title}</div>`;
+
+                //đổ các đáp án
                 let idx = 1;
+                content +=`<section id="${id}">`
                 options.forEach(o => {
                     content += `<label id="${o.id}" data-question = "${current_question.id}" 
                                         class="${current_question.checked && current_question.checked == o.id ? 'checked' : ''}">
                                         <span class="title">${String.fromCharCode(64 + idx++)}</span>
-                                        <input class="hide checkbox" type="checkbox" id="${o.id}" name="${current_question.id}"> ${o.content} </label>`
+                                        <input class="hide checkbox" type="checkbox" id="${o.id}" name="${id}"> ${o.content} 
+                                </label>`
 
                 });
+                content+=`</section>`
 
-                content += `<div class="clearfix"></div>
-                                                    </div>`;
+                content += `</div>`;
                 $('#showQuestion').append(content);
             }
-        },
-        error: function (jqXHR, exception) {
-            console.log(jqXHR);
         }
     })
 }
@@ -385,7 +395,7 @@ $(document).on('click', "#preQuestion", function (e) {
 
 //sự kiện click vào đáp án của câu hỏi
 $(document).on('click', "#showQuestion label", function () {
-    $("#showQuestion label.checked").removeClass('checked');
+    $(`section#${$(this).data('question')} label.checked`).removeClass('checked');
     $(this).addClass('checked');
 
     let question_id = $(this).data('question');
