@@ -19,6 +19,19 @@ function EditExam(id) {
     $('#modalTitle').text('Cập nhật cuộc thi');
 }
 
+function SetForeCastCandidates(id){
+    $.ajax({
+        url:'controller/exam/set-forecast-candidates.php',
+        type:'post',
+        data:{id},
+        success:function(data){
+            if(data.statusCode == 200){
+                LoadData();
+            }
+        }
+    })
+}
+
 function detail(id) {
     $.ajax({
         url: 'controller/exam/detail.php',
@@ -170,6 +183,11 @@ function LoadData() {
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
                             <input type="checkbox" ${e.exam_status != 0 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id})" ${e.is_hot == 1 ? 'checked' : ''}></label>
+                        </div>`;
+                tr += `</td>`;
+                tr += `<td class="text-center">`
+                tr += ` <div class="form-group" >
+                            <input type="checkbox" onClick="SetForeCastCandidates(${e.id})" ${e.forecast_candidates == 1 ? 'checked' : ''}></label>
                         </div>`;
                 tr += `</td>`;
 

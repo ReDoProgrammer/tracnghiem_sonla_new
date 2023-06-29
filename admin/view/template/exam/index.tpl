@@ -82,6 +82,9 @@
                                                 <th class="text-center">
                                                    Tiêu điểm
                                                 </th>
+                                                <th class="text-center">
+                                                   Dự đoán
+                                                </th>
                                                  <th class="text-center">
                                                     Đảo C.H
                                                 </th>

@@ -390,6 +390,25 @@ function change_hot($id)
     return $msg;
 }
 
+function SetForeCastCandidates($id){
+    $sql = "UPDATE exams
+            SET forecast_candidate = CASE WHEN forecast_candidate = 0 THEN 1 ELSE 0 END
+            WHERE id = '".$id."'";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result && mysql_num_rows($result)>0){
+        $msg->title = "Thay đổi trạng thái dự đoán thí sinh thành công!";
+        $msg->icon = "success";
+        $msg->statusCode = 200;        
+    }else{
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->title = "Thay đổi trạng thái dự đoán thí sinh thất bại!";
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
+
 function retrieve($page, $search, $pageSize)
 {
     $sql = "SELECT 
@@ -405,6 +424,7 @@ function retrieve($page, $search, $pageSize)
         e.random_questions,
         e.random_options,
         e.is_hot,
+        e.forecast_candidates,
         e.regulation,        
         CASE
             WHEN `begin` < CURRENT_TIMESTAMP( ) AND `end` < CURRENT_TIMESTAMP( ) THEN 1
