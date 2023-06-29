@@ -21,20 +21,27 @@ $(function () {
 
 
 
-    $('#QuestionsContent').scroll(function () {
+    $('#showQuestion').scroll(function () {
+        // var scrollTop = $('#showQuestion').scrollTop() + 50; // Add 50px to account for the top border
+        // var visibleIDs = 0;
 
-        var testDivs = $("#showQuestion .test");
-        // Kiểm tra xem các thẻ div có class "test" có đạt đến viền trên của thẻ div "QuestionsContent" không
-        testDivs.each(function () {
-            var $this = $(this);
-            if ($this.offset().top <= $("#QuestionsContent").offset().top + 50) {
-                $('#questionsPagination li a.active').removeClass('active');
-                $(`#questionsPagination li#${$this.attr("id")} a`).addClass('active');
-                current_question_id = $('#questionsPagination li a.active').parents().attr('id');
-            }
-        });
+        // $('.test').each(function () {
+        //     var $test = $(this);
+        //     var position = $test.position();
+
+        //     if (position.top <= scrollTop && position.top + $test.outerHeight() >= scrollTop) {
+        //         visibleIDs=$test.attr('id');
+        //     }
+        // });
+        // if (typeof visibleIDs != 'undefined' && visibleIDs.length > 0) {
+        //     $('#questionsPagination li a.active').removeClass('active');
+        //     $(`#questionsPagination li#${visibleIDs} a`).addClass('active');
+        //     current_question_id = visibleIDs;
+        // }
 
 
+
+       
     });
 
 
@@ -276,8 +283,7 @@ function BindPagination() {
 function ShowQuestion(id) {
     let isSingle = $('#switchMode').is(':checked');// lấy mode làm bài thi
     isSingle ? $('#navPagination').show() : $('#navPagination').hide();
-    if (isSingle) {// nếu chế độ single thì làm trống nội dung tránh trùng lặp
-        $('#showQuestion').empty();
+    if (isSingle) {// nếu chế độ single thì làm trống nội dung tránh trùng lặp        
         $('#showQuestion').css({
             'height': null,
             'overflow-y': null
@@ -328,7 +334,7 @@ function ShowQuestion(id) {
 
                 //đổ các đáp án
                 let idx = 1;
-                content +=`<section id="${id}">`
+                content += `<section id="${id}">`
                 options.forEach(o => {
                     content += `<label id="${o.id}" data-question = "${current_question.id}" 
                                         class="${current_question.checked && current_question.checked == o.id ? 'checked' : ''}">
@@ -337,7 +343,7 @@ function ShowQuestion(id) {
                                 </label>`
 
                 });
-                content+=`</section>`
+                content += `</section>`
 
                 content += `</div>`;
                 $('#showQuestion').append(content);
@@ -351,6 +357,7 @@ function ShowQuestion(id) {
 $(document).on('change', "#switchMode", function (e) {
     single = $(this).is(':checked');
     $('#modeName').text(`${single ? 'Single' : 'Multi'}`);
+    $('#showQuestion').empty();// làm trống nội dung để tránh trùng lặp
     if ($(this).is(':checked')) {
         ShowQuestion(current_question_id);
     } else {

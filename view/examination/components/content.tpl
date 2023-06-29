@@ -1,6 +1,4 @@
-<div id="showQuestion" class="boxtest" style="display: block;"  onscroll="getVisibleChildIDs()">
- 
-</div>
+<div id="showQuestion" class="boxtest" style="display: block;" ></div>
 <nav aria-label="Page navigation example" id="navPagination" class="text-center">
   <ul class="pagination">
     <li class="page-item" id="preQuestion"><a class="page-link" href="#">Câu trước đó</a></li>   
