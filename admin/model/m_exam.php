@@ -392,11 +392,11 @@ function change_hot($id)
 
 function SetForeCastCandidates($id){
     $sql = "UPDATE exams
-            SET forecast_candidate = CASE WHEN forecast_candidate = 0 THEN 1 ELSE 0 END
+            SET forecast_candidates = CASE WHEN forecast_candidates = 0 THEN 1 ELSE 0 END
             WHERE id = '".$id."'";
     $result = mysql_query($sql,dbconnect());
     $msg = new Message();
-    if($result && mysql_num_rows($result)>0){
+    if($result && mysql_affected_rows()>0){
         $msg->title = "Thay đổi trạng thái dự đoán thí sinh thành công!";
         $msg->icon = "success";
         $msg->statusCode = 200;        
@@ -480,7 +480,9 @@ function detail($id)
                 e.times,
                 description,
                 DATE_FORMAT(e.begin, '%d/%m/%Y %H:%i') AS begin,
-                DATE_FORMAT(e.end, '%d/%m/%Y %H:%i') AS end,       
+                DATE_FORMAT(e.end, '%d/%m/%Y %H:%i') AS end,  
+                e.is_hot,
+                e.forecast_candidates,     
                 e.random_questions,
                 e.random_options,
                 CASE
@@ -607,6 +609,7 @@ function update(
     $begin,
     $end,
     $is_hot,
+    $forecast_candidates,
     $random_questions,
     $random_options,
     $configs,
@@ -626,7 +629,8 @@ function update(
         times = '" . $times . "',
         begin = '" . $begin . "',
         end = '" . $end . "',    
-        is_hot = '" . $is_hot . "',   
+        is_hot = '" . $is_hot . "', 
+        forecast_candidates = '".$forecast_candidates."',  
         random_questions = '" . $random_questions . "',
         random_options = '" . $random_options . "',
         regulation = '" . $regulation . "',

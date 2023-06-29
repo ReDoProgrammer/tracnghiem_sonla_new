@@ -25,7 +25,15 @@ function SetForeCastCandidates(id){
         type:'post',
         data:{id},
         success:function(data){
+            console.log(data);
             if(data.statusCode == 200){
+                $.toast({
+                    heading: 'Information',
+                    text: data.title,
+                    icon: data.icon,
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
                 LoadData();
             }
         }
@@ -38,6 +46,7 @@ function detail(id) {
         type: 'get',
         data: { id },
         success: function (data) {
+            console.log(data);
             if (data.statusCode == 200) {
                 let exam = data.content;
                 $('#txtTitle').val(exam.title);
@@ -54,6 +63,7 @@ function detail(id) {
                 $('#dtpEnd').val(exam.end);
 
                 $('#ckbHotExam').prop('checked', exam.is_hot == 1);
+                $('#ckbForeCastCandidates').prop('checked', exam.forecast_candidates == 1);
                 $('#ckbRandomOptions').prop('checked', exam.random_options == 1);
                 $('#ckbRandomQuestions').prop('checked', exam.random_questions == 1);
                 
