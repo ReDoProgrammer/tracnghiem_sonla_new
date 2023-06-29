@@ -307,6 +307,7 @@ $('#btnSaveChanges').click(function () {
     let begin = $('#dtpBegin').val();
     let end = $('#dtpEnd').val();
     let is_hot = $('#ckbHotExam').is(':checked') ? 1 : 0;
+    let forecast_candidates = $('#ckbForeCastCandidates').is(':checked')?1:0;
     let random_questions = $('#ckbRandomQuestions').is(':checked') ? 1 : 0;
     let random_options = $('#ckbRandomOptions').is(':checked') ? 1 : 0;
     let regulation = CKEDITOR.instances['txaRegulation'].getData();
@@ -390,7 +391,6 @@ $('#btnSaveChanges').click(function () {
 
 
 
-
     if (examId == 0) {//insert a new exam
         $.ajax({
             url: 'controller/exam/create.php',
@@ -407,6 +407,7 @@ $('#btnSaveChanges').click(function () {
                 begin: Date2TimeStamp(begin),
                 end: Date2TimeStamp(end),
                 is_hot,
+                forecast_candidates,
                 random_questions,
                 random_options,
                 regulation,
@@ -451,6 +452,7 @@ $('#btnSaveChanges').click(function () {
                 begin: Date2TimeStamp(begin),
                 end: Date2TimeStamp(end),
                 is_hot,
+                forecast_candidates,
                 random_questions,
                 random_options,
                 configs,
