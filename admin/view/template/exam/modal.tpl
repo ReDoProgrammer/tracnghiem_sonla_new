@@ -73,15 +73,19 @@
                 <hr />
 
                 <div class="form-group row">                    
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
                                 id="ckbHotExam">Tiêu điểm</label>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                        <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
+                                id="ckbForeCastCandidates">Dự đoán số thí sinh</label>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
                                 id="ckbRandomQuestions">Đảo câu hỏi</label>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <label class="checkbox-inline" style="font-weight:bold;"><input type="checkbox" value=""
                                 id="ckbRandomOptions">Đảo đáp án</label>
                     </div>
