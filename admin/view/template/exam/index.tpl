@@ -78,7 +78,10 @@
                                                 </th> 
                                                  <th class="text-center">
                                                     Trạng thái
-                                                </th>                                              
+                                                </th>  
+                                                <th class="text-center">
+                                                   Thống kê
+                                                </th>                                            
                                                 <th class="text-center">
                                                    Tiêu điểm
                                                 </th>

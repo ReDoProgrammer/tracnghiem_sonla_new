@@ -390,6 +390,31 @@ function change_hot($id)
     return $msg;
 }
 
+function SetStatistic($id){
+    $sql = "UPDATE exams SET is_stat = 0";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        $sql1 = "UPDATE exams SET is_stat = 1 WHERE id = '".$id."'";
+        $result1 = mysql_query($sql1,dbconnect());
+        if($result1 && mysql_affected_rows()>0){
+            $msg->title = "Thiết lập trạng thái truy vấn cho bài thi thành công!";
+            $msg->statusCode = 200;
+            $msg->icon = "success";
+        }else{
+            $msg->title = "Thiết lập trạng thái truy vấn cho bài thi thất bại!";
+            $msg->icon = "error";
+            $msg->statusCode = 500;
+            $msg->content = mysql_error();
+        }
+    }else{
+        $msg->title = "Thiết lập trạng thái mặc định cho các bài thi thất bại!";
+        $msg->icon = "error";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 function SetForeCastCandidates($id){
     $sql = "UPDATE exams
             SET forecast_candidates = CASE WHEN forecast_candidates = 0 THEN 1 ELSE 0 END
@@ -423,6 +448,7 @@ function retrieve($page, $search, $pageSize)
         DATE_FORMAT(e.end, '%d/%m/%Y %T') end,
         e.random_questions,
         e.random_options,
+        e.is_stat,
         e.is_hot,
         e.forecast_candidates,
         e.regulation,        

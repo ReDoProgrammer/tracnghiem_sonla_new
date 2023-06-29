@@ -19,13 +19,34 @@ function EditExam(id) {
     $('#modalTitle').text('Cập nhật cuộc thi');
 }
 
+function SetStatistic(id){
+
+    $.ajax({
+        url:'controller/exam/set-statistic.php',
+        type:'post',
+        data:{id},
+        success:function(data){
+            if(data.statusCode == 200){
+                $.toast({
+                    heading: 'Information',
+                    text: data.title,
+                    icon: data.icon,
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+                LoadData();
+            }
+        }
+    })
+}
+
+
 function SetForeCastCandidates(id){
     $.ajax({
         url:'controller/exam/set-forecast-candidates.php',
         type:'post',
         data:{id},
         success:function(data){
-            console.log(data);
             if(data.statusCode == 200){
                 $.toast({
                     heading: 'Information',
@@ -190,6 +211,14 @@ function LoadData() {
                 tr += `<td class="text-center text-nowrap">`;
                 tr += `${e.exam_status == -1 ? '<span class="text-warning">Chưa diễn ra</span>' : e.exam_status == 0 ? '<span class="text-info">Đang diễn ra</span>' : '<span class="text-danger">Đã kết thúc</span>'}`;
                 tr += `</td>`;
+                
+                tr += `<td class="text-center">`;
+                tr += ` <div class="form-group" >
+                            <input type="checkbox" onClick="SetStatistic(${e.id})" ${e.is_stat == 1 ? 'checked' : ''}></label>
+                        </div>`;
+                tr += `</td>`;
+                tr+= '</td>';
+
                 tr += `<td class="text-center">`
                 tr += ` <div class="form-group" >
                             <input type="checkbox" ${e.exam_status != 0 ? 'disabled' : ''} onClick="ChangeHotExam(${e.id})" ${e.is_hot == 1 ? 'checked' : ''}></label>
