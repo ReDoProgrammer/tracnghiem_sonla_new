@@ -47,6 +47,7 @@
    
 
     <link rel="stylesheet" href="assets/dist/ionicons/ionicons.min.css">
+    <link rel="stylesheet" href="assets/dist/toast/css/jquery.toast.min.css">
     <link rel="icon" href="">
     <script src="assets/dist/chart/Chart.min.js"></script>
 

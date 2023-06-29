@@ -32,6 +32,8 @@
 
 
     <script src="assets/js/customize/common.js"></script>
+    <script src="assets/dist/toast/js/jquery.toast.min.js"></script>
+
 
     <script>
         $("input.print-page").click(function () {
