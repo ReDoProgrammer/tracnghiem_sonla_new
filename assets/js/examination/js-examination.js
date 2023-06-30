@@ -214,6 +214,43 @@ $('#btnOpenExam').click(function () {
     countdown();
 })
 
+function Report(id){
+    let q = questions.find(x=>x.id == id);
+    console.log(q);
+    Swal.fire({
+        title:`<strong>Phản hồi lỗi câu hỏi <b class="text-danger">${q.title}</b></strong>`,
+        html:
+          `<div class="panel">            
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-group">
+                        <label>Nhóm lỗi</label>
+                        <select class="form-control" id="sllErrorType">
+                            <option value="1">Lỗi tiêu đề</option>
+                            <option value="2">Lỗi đáp án</option>
+                            <option value="3">Lỗi khác</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-16 col-lg-16 form-group">
+                        <label>Mô tả ngắn gọn về lỗi</label>
+                        <input type="text" class="form-control" id="txtErrorDescription"/>
+                    </div>
+                </div>
+            </div>            
+          </div>`,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        customClass: 'swal-wide',
+        confirmButtonText:
+          '<i class="fa fa-thumbs-up"></i> Great!',
+        confirmButtonAriaLabel: 'Thumbs up, great!',
+        cancelButtonText:
+          '<i class="fa fa-thumbs-down"></i>',
+        cancelButtonAriaLabel: 'Thumbs down'
+      })
+}
+
 // load danh sách câu hỏi dựa vào id của đề thi
 function LoadQuestionsByExam(exam_id) {
 
@@ -310,10 +347,11 @@ function ShowQuestion(id) {
                     let content = `<div class="test" id="${current_question.id}">
                                     <p class="question-info">
                                         <h4 id="${current_question.id}">Câu hỏi số ${number} - Chủ đề: <span style="color:#2e66ad; font-weight: bold;">${current_question.topic}</span></h4>
-                                        <a class="fr btn-feedback btn-onclick report" id="${current_question.id}">
+                                        <a class="fr btn-feedback btn-onclick report" id="${current_question.id}" onclick="Report(${current_question_id})">
                                                 <img class="not-hover" src="assets/images/icons/icon-feedback.png">
                                                 <img class="hover" src="assets/images/icons/icon-feedback_hover.png">
                                                 <span>Báo lỗi</span>
+                                                
                                         </a>
                                     </p>
                         <div class="question">${current_question.title}</div>`;
@@ -370,10 +408,11 @@ function ShowMultiQuestions() {
                     let content = `<div class="test" id="${q.id}">
                                     <p class="question-info">
                                         <h4 id="${q.id}">Câu hỏi số ${number} - Chủ đề: <span style="color:#2e66ad; font-weight: bold;">${q.topic}</span></h4>
-                                        <a class="fr btn-feedback btn-onclick report" id="${q.id}">
+                                        <a class="fr btn-feedback btn-onclick report" id="${q.id}" onclick="Report(${q.id})">
                                                 <img class="not-hover" src="assets/images/icons/icon-feedback.png">
                                                 <img class="hover" src="assets/images/icons/icon-feedback_hover.png">
                                                 <span>Báo lỗi</span>
+                                                
                                         </a>
                                     </p>
                         <div class="question">${q.title}</div>`;

@@ -31,3 +31,8 @@
 <link rel="stylesheet" href="assets/css/pretty-switch.css">
 <script src="assets/js/examination/js-examination.js"></script>
 
+<style>
+    .swal-wide{
+        width:850px !important;
+    }
+</style>
