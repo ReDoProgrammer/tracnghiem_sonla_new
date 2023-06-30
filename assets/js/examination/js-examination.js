@@ -22,29 +22,24 @@ $(function () {
 
 
     $('#showQuestion').scroll(function () {
-        // var scrollTop = $('#showQuestion').scrollTop() + 50; // Add 50px to account for the top border
-        // var visibleIDs = 0;
+        // var showQuestionTop = $(this).scrollTop();
+        // var showQuestionBottom = showQuestionTop + $(this).height();
 
-        // $('.test').each(function () {
-        //     var $test = $(this);
-        //     var position = $test.position();
+        // $("#showQuestion div.test").each(function () {
+        //     var showQuestionOffset = $(this).offset().top;
+        //     var scrollTop = $(this).scrollTop();
 
-        //     if (position.top <= scrollTop && position.top + $test.outerHeight() >= scrollTop) {
-        //         visibleIDs=$test.attr('id');
-        //     }
+        //     $("#showQuestion div.test").each(function () {
+        //         var testOffset = $(this).offset().top - showQuestionOffset;
+
+        //         if (testOffset <= scrollTop) {
+        //             var testId = $(this).attr("id");
+        //             $(`#questionsPagination li a.active`).removeClass('active');
+        //             $(`#questionsPagination li#${testId} a`).addClass('active');
+        //         }
+        //     });
         // });
-        // if (typeof visibleIDs != 'undefined' && visibleIDs.length > 0) {
-        //     $('#questionsPagination li a.active').removeClass('active');
-        //     $(`#questionsPagination li#${visibleIDs} a`).addClass('active');
-        //     current_question_id = visibleIDs;
-        // }
-
-
-
-
     });
-
-
 })
 
 
@@ -273,6 +268,9 @@ function ShowQuestion(id) {
     $(`#questionsPagination li#${id} a`).addClass('active');
 
 
+    //lưu id của câu hỏi hiện tại
+    current_question_id = id;
+
     let isSingle = $('#switchMode').is(':checked');// lấy mode làm bài thi
     isSingle ? $('#navPagination').show() : $('#navPagination').hide();
 
@@ -339,14 +337,6 @@ function ShowQuestion(id) {
             }
         })
     } else {
-        // let _1stId = parseInt(questions[0].id);
-        // if (id != _1stId) {
-        //     var targetDiv = $("#showQuestion div.test#" + _1stId);
-        //     var targetOffset = targetDiv.offset().top - $("#showQuestion").offset().top - 50;
-        //     $("#showQuestion").scrollTop(targetOffset);
-        // }
-
-
         var targetDiv = $("#showQuestion div.test#" + id);
 
         if (targetDiv.length > 0 && $("#showQuestion").length > 0) {
@@ -354,7 +344,7 @@ function ShowQuestion(id) {
             var targetOffset = targetDiv.offset().top - showQuestionOffset + $("#showQuestion").scrollTop() - 10;
             $("#showQuestion").animate({ scrollTop: targetOffset }, 400);
         }
-      
+
     }
 
 
@@ -416,6 +406,8 @@ $(document).on('change', "#switchMode", function (e) {
     single = $(this).is(':checked');
     $('#modeName').text(`${single ? 'Single' : 'Multi'}`);
     $('#showQuestion').empty();// làm trống nội dung để tránh trùng lặp
+
+
     if ($(this).is(':checked')) {
         ShowQuestion(current_question_id);
     } else {
