@@ -47,28 +47,7 @@ $(function () {
 
 })
 
-$('#btnOpenExam').click(function () {
-    if (total_times != 0 && current_times > total_times) {
-        Swal.fire(
-            'Số lần làm bài của bạn đã đạt mức tối đa',
-            'Bạn không thể làm lại bài thi này!',
-            'error'
-        )
-        return;
-    }
 
-
-    exam_date = ExamDate();
-    $('#ex_summary').slideUp(500);
-    $('#showQuestion').slideDown(500);
-    $('#scrolldiv').show();
-    $('.TriSea-technologies-Switch').show();
-    $('#freeRemaining').show();
-    $('#navPagination').show();
-    let id = $('#ex_title').attr('data-exam');
-    LoadQuestionsByExam(id);
-
-})
 
 var questions = [];
 var current_question_id = -1;//câu hỏi hiện tại đang được chọn
@@ -217,14 +196,34 @@ function LoadTimes() {
     })
 }
 
+$('#btnOpenExam').click(function () {
+    if (total_times != 0 && current_times > total_times) {
+        Swal.fire(
+            'Số lần làm bài của bạn đã đạt mức tối đa',
+            'Bạn không thể làm lại bài thi này!',
+            'error'
+        )
+        return;
+    }
 
+
+    exam_date = ExamDate();
+    $('#ex_summary').slideUp(500);
+    $('#showQuestion').slideDown(500);
+    $('#scrolldiv').show();
+    $('.TriSea-technologies-Switch').show();
+    $('#freeRemaining').show();
+    $('#navPagination').show();
+    let id = $('#ex_title').attr('data-exam');
+    LoadQuestionsByExam(id);
+    countdown();
+})
 
 // load danh sách câu hỏi dựa vào id của đề thi
 function LoadQuestionsByExam(exam_id) {
 
     if (localStorage.getItem(`exam_${user_id}_${exam_id}`) !== null) {
         questions = JSON.parse(localStorage.getItem(`exam_${user_id}_${exam_id}`));
-        BindPagination();
     } else {
         $.ajax({
             url: 'controller/exam/load-questions.php',
@@ -234,7 +233,27 @@ function LoadQuestionsByExam(exam_id) {
                 console.log(data);
                 if (data.statusCode == 200 && data.content.length > 0) {
                     questions = data.content;
-                    BindPagination();
+                    $('#total_questions').text(questions.length);
+                    $('#answered_questions').text(questions.filter(x => x.checked).length);
+                    $('#questionsPagination').empty();
+
+                    let idx = 1;
+                    questions.forEach(q => {
+                        let li = `<li id="${q.id}"><a onclick="ShowQuestion(${q.id})"
+                            href="javascript:void(0);" class="${q.checked ? 'done' : ''}">${idx < 10 ? '0' + idx : idx}</a></li>`;
+                        $('#questionsPagination').append(li);
+                        idx++;
+                    })
+                    if (current_question_id > 0) {
+                        $(`#questionsPagination li#${current_question_id} a`).addClass('active');
+                    } else {
+                        current_question_id = questions[0].id;
+                    }
+                    let current_question = questions.filter(x => x.id == current_question_id)[0];
+                    current_index = $.inArray(current_question, questions);
+                    var currentLink = $("ul#questionsPagination li a").eq(current_index);
+                    currentLink.click();
+
                 }
             }
         })
@@ -245,42 +264,15 @@ function LoadQuestionsByExam(exam_id) {
 
 }
 
-function BindPagination() {
-    $('#questionsPagination').empty();
-
-    let idx = 1;
-    $('#total_questions').text(questions.length);
-    $('#answered_questions').text(questions.filter(x => x.checked).length);
-    questions.forEach(q => {
-        let li = `<li id="${q.id}"><a onclick="ShowQuestion(${q.id})"
-            href="javascript:void(0);" class="${q.checked ? 'done' : ''}">${idx < 10 ? '0' + idx : idx}</a></li>`;
-        $('#questionsPagination').append(li);
-        idx++;
-    })
-    if (current_question_id > 0) {
-        $(`#questionsPagination li#${current_question_id} a`).addClass('active');
-    } else {
-        current_question_id = questions[0].id;
-    }
-
-
-
-
-    if ($('#switchMode').is(':checked')) {
-        ShowQuestion(current_question_id);
-    } else {
-        questions.forEach(q => {
-            ShowQuestion(q.id);
-        })
-    }
-
-    $(`#questionsPagination li:first a`).addClass('active');
-    countdown();
-}
 
 
 //hiển thị nội dung của câu hỏi dựa vào id câu hỏi
-function ShowSingQuestion(id) {
+function ShowQuestion(id) {
+    //set class active cho câu hỏi được chọn
+    $(`#questionsPagination li a.active`).removeClass('active');
+    $(`#questionsPagination li#${id} a`).addClass('active');
+
+
     let isSingle = $('#switchMode').is(':checked');// lấy mode làm bài thi
     isSingle ? $('#navPagination').show() : $('#navPagination').hide();
 
@@ -290,6 +282,7 @@ function ShowSingQuestion(id) {
     });
 
     if (isSingle) {
+        $('#showQuestion').empty();
         let ro = $('.ex_random_options').data('ro');
         $.ajax({
             url: 'controller/option/get-by-question.php',
@@ -309,11 +302,11 @@ function ShowSingQuestion(id) {
                     current_index == questions.length - 1 ? $('#nextQuestion').addClass('disabled') : $('#nextQuestion').removeClass('disabled');
 
 
-                    //Đổ các đáp án tương ứng của câu hỏi
-                    options = data.content;
+                    //Lấy số thứ tự của câu hỏi
                     let number = $(`#questionsPagination li#${id} a`).text();
-                    $(`#questionsPagination li a.active`).removeClass('active');
-                    $(`#questionsPagination li#${id} a`).addClass('active');
+
+                    options = data.content;
+
 
                     //tiêu đề câu hỏi
                     let content = `<div class="test" id="${current_question.id}">
@@ -345,6 +338,23 @@ function ShowSingQuestion(id) {
                 }
             }
         })
+    } else {
+        // let _1stId = parseInt(questions[0].id);
+        // if (id != _1stId) {
+        //     var targetDiv = $("#showQuestion div.test#" + _1stId);
+        //     var targetOffset = targetDiv.offset().top - $("#showQuestion").offset().top - 50;
+        //     $("#showQuestion").scrollTop(targetOffset);
+        // }
+
+
+        var targetDiv = $("#showQuestion div.test#" + id);
+
+        if (targetDiv.length > 0 && $("#showQuestion").length > 0) {
+            var showQuestionOffset = $("#showQuestion").offset().top;
+            var targetOffset = targetDiv.offset().top - showQuestionOffset + $("#showQuestion").scrollTop() - 10;
+            $("#showQuestion").animate({ scrollTop: targetOffset }, 400);
+        }
+      
     }
 
 
@@ -354,6 +364,50 @@ function ShowMultiQuestions() {
         'height': '410px',
         'overflow-y': 'scroll'
     });
+    console.log(questions);
+    let ro = $('.ex_random_options').data('ro');
+    $('#showQuestion').empty();
+    let number = 1;
+    questions.forEach(q => {
+        $.ajax({
+            url: 'controller/option/get-by-question.php',
+            type: 'get',
+            data: { id: q.id, ro },
+            success: function (data) {
+                if (data.statusCode == 200) {
+
+                    //tiêu đề câu hỏi
+                    let content = `<div class="test" id="${q.id}">
+                                    <p class="question-info">
+                                        <h4 id="${q.id}">Câu hỏi số ${number} - Chủ đề: <span style="color:#2e66ad; font-weight: bold;">${q.topic}</span></h4>
+                                        <a class="fr btn-feedback btn-onclick report" id="${q.id}">
+                                                <img class="not-hover" src="assets/images/icons/icon-feedback.png">
+                                                <img class="hover" src="assets/images/icons/icon-feedback_hover.png">
+                                                <span>Báo lỗi</span>
+                                        </a>
+                                    </p>
+                        <div class="question">${q.title}</div>`;
+
+                    //đổ các đáp án
+                    let idx = 1;
+                    content += `<section id="${q.id}">`
+                    options.forEach(o => {
+                        content += `<label id="${o.id}" data-question = "${q.id}" 
+                                            class="${q.checked && q.checked == o.id ? 'checked' : ''}">
+                                            <span class="title">${String.fromCharCode(64 + idx++)}</span>
+                                            <input class="hide checkbox" type="checkbox" id="${o.id}" name="${q.id}"> ${o.content} 
+                                    </label>`
+
+                    });
+                    content += `</section>`
+
+                    content += `</div>`;
+                    $('#showQuestion').append(content);
+                    number++;
+                }
+            }
+        })
+    })
 }
 
 
@@ -365,9 +419,7 @@ $(document).on('change', "#switchMode", function (e) {
     if ($(this).is(':checked')) {
         ShowQuestion(current_question_id);
     } else {
-        questions.forEach(q => {
-            ShowQuestion(q.id);
-        })
+        ShowMultiQuestions();
     }
 
 })
