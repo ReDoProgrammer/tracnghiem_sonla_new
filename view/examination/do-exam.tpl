@@ -7,6 +7,13 @@
                     include('components/summary.tpl');
                     include('components/content.tpl');
                 ?>
+                <div class="form-inline mb-5" id="NumberOfCandidates">
+                    <div class="form-group">
+                        <label for="candidate">Theo bạn có bao nhiêu người tham gia thi trong kỳ này?</label>
+                        <input type="text" class="form-control required ml-5" id="txtNumberOfCandidate">
+                        <span id="msgNumberOfCandidates"></span>
+                    </div>
+                </div>
             </div>
             <div id="freeRemaining" class="summury-info co_dinh text-center ">
                 Thời gian còn lại: 

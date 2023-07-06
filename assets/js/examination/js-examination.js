@@ -18,6 +18,7 @@ $(function () {
     if (parseInt(id) && id > 0) {
         LoadExamSummary(id);
     }
+    $('#NumberOfCandidates').hide();
 
 
 
@@ -130,15 +131,17 @@ function LoadExamSummary(id) {
         type: 'get',
         data: { id },
         success: function (data) {
+            
             exam = data.content;
             if (exam.exam_status != 0) {
                 $('#btnOpenExam').addClass('disabled');
             }
-
+            
             total_times = exam.times;
 
 
             $('#ex_title').text(exam.title);
+            $('#ex_title').attr('data-forecast_candidates',exam.forecast_candidates);
             $('#ex_title').attr('data-exam', id);
             $('.ex_thumbnail').attr('src', exam.thumbnail);
             $('.ex_begin').text(exam.begin);
@@ -209,6 +212,9 @@ $('#btnOpenExam').click(function () {
     $('.TriSea-technologies-Switch').show();
     $('#freeRemaining').show();
     $('#navPagination').show();
+    
+    let isForeCast = $('#ex_title').data('forecast_candidates')==1;
+    isForeCast?$('#NumberOfCandidates').show():$('#NumberOfCandidates').hide();
     let id = $('#ex_title').attr('data-exam');
     LoadQuestionsByExam(id);
     countdown();
