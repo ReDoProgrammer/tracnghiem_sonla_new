@@ -4,7 +4,7 @@
         <div class="row">
             <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 get_address">
                 <label>Tỉnh, thành phố</label>
-                <select class="form-control selectpicker slProvinces" data-live-search="true"></select>
+                <select class="form-control slProvinces" data-live-search="true"></select>
             </div>
 
             <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 get_address">

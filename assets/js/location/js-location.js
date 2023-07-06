@@ -22,7 +22,6 @@ function LoadProvinces() {
                     }
                     $('.slProvinces').append(`<option value="${p.code}">${p.full_name}</option>`);
                 })
-                $('.slProvinces').selectpicker('refresh');
                 $(`.slProvinces option[value=${default_pro}]`).attr('selected', 'selected');
 
                 if (ADDRESS) {

@@ -172,8 +172,6 @@ $('.btnSubmitRegister').click(function () {
         return;
     }
 
-    if (!isPassport) { return; }
-
 
 
     //dữ liệu nhập là hợp lệ => tiến hành post dữ liệu để lưu vào csdl
@@ -325,7 +323,6 @@ function LoadPositions() {
                 positions.forEach(p => {
                     $('.slPositions').append(`<option value="${p.id}">${p.name}</option>`);
                 })
-                $('.slPositions').selectpicker('refresh');
             }
         }
     })
@@ -368,7 +365,6 @@ function LoadJobs() {
             jobs.forEach(j => {
                 $('.slJobs').append(`<option value="${j.id}">${j.name}</option>`)
             })
-            $('.slJobs').selectpicker('refresh');
         }
     })
 }
@@ -385,7 +381,6 @@ function LoadWorkPlaces() {
                 wps.forEach(w => {
                     $('.slWorkPlaces').append(`<option value="${w.id}">${w.name}</option>`);
                 })
-                $('.slWorkPlaces').selectpicker('refresh');
             } else {
 
             }
