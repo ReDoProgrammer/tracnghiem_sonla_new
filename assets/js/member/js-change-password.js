@@ -47,17 +47,12 @@ $('#btnSaveChanges').click(function () {
                 })
             }
             else {
-                if (data.statusCode == 403) {
-                    $('#msgConfirmNewPassword').text(data.title);
-                    $('#txtConfirmNewPassword').select();
-                } else {
-                    $.toast({
-                        heading: data.title,
-                        text: data.content,
-                        showHideTransition: 'fade',
-                        icon: data.icon
-                    })
-                }
+                $.toast({
+                    heading: data.title,
+                    text: data.content,
+                    showHideTransition: 'fade',
+                    icon: data.icon
+                })
             }
         }
     })
