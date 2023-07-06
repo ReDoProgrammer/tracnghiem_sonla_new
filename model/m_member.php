@@ -46,6 +46,38 @@ function CheckDuplicateEmail($email, $user_id)
     return $msg;
 }
 
+function mChangePassword($id,$current_password,$new_password){
+    $sql = "SELECT * FROM members WHERE id = '".$id."' AND password = '".MD5($current_password)."'";
+    $result = mysql_query($sql,dbconnect());
+    $msg = new Message();
+    if($result){
+        if(mysql_num_rows($result) == 0){
+            $msg->statusCode = 403;
+            $msg->icon = "error";
+            $msg->title = "Bad request!";
+            $msg->content = "Mật khẩu hiện tại không chính xác";
+        }else{
+            $sql = "UPDATE members SET password = '".MD5($new_password)."' WHERE id = '".$id."'";
+            $result = mysql_query($sql,dbconnect());
+            if($result){
+                $msg->title = "Đổi mật khẩu thành công!";
+                $msg->statusCode =200;
+                $msg->icon ="success";
+            }else{
+                $msg->icon ="error";
+                $msg->title = "Thay đổi mật khẩu thất bại!";
+                $msg->statusCode = 500;
+                $msg->content = mysql_error();
+            }
+        }
+    }else{
+        $msg->icon ="error";
+        $msg->title = "Thay đổi mật khẩu thất bại!";
+        $msg->statusCode = 500;
+        $msg->content = mysql_error();
+    }
+    return $msg;
+}
 function mChangeProfile(
     $id,
     $fullname,

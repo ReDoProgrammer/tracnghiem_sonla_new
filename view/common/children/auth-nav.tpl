@@ -75,6 +75,7 @@
                                                     <li class="active"><a href="index.php?module=member&act=profile">Thông tin thành viên</a>
                                                     </li>
                                                     <li><a href="index.php?module=member&act=change-profile">Thiết lập tài khoản</a></li>
+                                                    <li><a href="index.php?module=member&act=change-password">Đổi mật khẩu</a></li>
                                                 </ul>
                                             </div>
                                         </div>
