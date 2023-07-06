@@ -52,7 +52,6 @@ function mChangeProfile(
     $avatar,
     $birthdate,
     $gender,
-    $password,
     $phone,
     $email,
     $province_code,
@@ -90,7 +89,6 @@ function mChangeProfile(
         if ($isupload) {
             $sql = "UPDATE members
                 SET fullname = '" . $fullname . "',
-                    password = '" . MD5($password) . "',
                     avatar = '" . $avatarurl . "',
                     gender = '" . $gender . "',
                     birthdate = '" . $birthdate . "',

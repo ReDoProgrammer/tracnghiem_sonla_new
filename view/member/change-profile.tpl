@@ -72,21 +72,7 @@
                             <input type:text class="form-control pf_email" id="pf_email"/>
                             <span class="text-danger fw-bold msgValidation" id="msgEmail"></span>
                         </div>
-                    </div>
-
-                   <div class="row">
-                        <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
-                            <label>Mật khẩu mới</label>
-                            <input type="password" class="form-control" id="txtNewPassword"/>
-                            <span class="text-danger fw-bold msgValidation" id="msgNewPassword"></span>
-                        </div>
-                         <div class="form-group col-xs-24 col-sm-24 col-md-12 col-lg-12">
-                            <label>Xác nhận mật khẩu mới</label>
-                            <input type="password" class="form-control" id="txtConfirmNewPassword"/>
-                            <span class="text-danger fw-bold msgValidation" id="msgConfirmNewPassword"></span>
-                        </div>
-                   </div>
-                    
+                    </div>                  
                 </div>
             </div>
 

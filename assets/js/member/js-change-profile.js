@@ -43,8 +43,6 @@ $('#btnSaveChanges').click(function () {
     let gender = $('#rbtM').is(':checked') ? 1 : $('#rbtF').is(':checked') ? 0 : -1;
     let phone = $('#pf_phone').val();
     let email = $('#pf_email').val();
-    let new_password = $('#txtNewPassword').val();
-    let confirm_new_password = $('#txtConfirmNewPassword').val();
     let province_code = $('#slProvinces option:selected').val();
     let district_code = $('#slDistricts option:selected').val();
     let ward_code = $('#slWards option:selected').val();
@@ -60,8 +58,6 @@ $('#btnSaveChanges').click(function () {
         return;
     }
     $('#msgFullname').text('');
-    $('#msgNewPassword').text('');
-    $('#msgConfirmNewPassword').text('');
     $('#msgPhone').text('');
     $('#msgEmail').text('');
     if (validateEmail(email)) {
@@ -131,23 +127,9 @@ $('#btnSaveChanges').click(function () {
             return;
         }
     }
-    if (validatePassword(new_password).length > 0) {
-        $('#msgNewPassword').text(validatePassword(new_password));
-        $('#txtNewPassword').select();
-        return;
-    }
+   
 
-    if (validatePassword(confirm_new_password).length > 0) {
-        $('#msgConfirmNewPassword').text(validatePassword(confirm_new_password));
-        $('#txtConfirmNewPassword').select();
-        return;
-    }
-
-    if (new_password != confirm_new_password) {
-        $('#msgConfirmNewPassword').text('Mật khẩu ở 2 lần nhập không giống nhau!');
-        $('#txtConfirmNewPassword').select();
-        return;
-    }
+ 
 
     let formData = new FormData();
 
@@ -158,7 +140,6 @@ $('#btnSaveChanges').click(function () {
     formData.append("birthdate", formatDate(birthdate));
     formData.append("phone", phone);
     formData.append("email", email);
-    formData.append("password", new_password);
     formData.append("province_code", province_code);
     formData.append("district_code", district_code);
     formData.append("ward_code", ward_code);
@@ -175,7 +156,6 @@ $('#btnSaveChanges').click(function () {
         processData: false,
         contentType: false,
         success: function (data) {
-            console.log(data);
             if (data.statusCode == 200) {
                 Swal.fire({
                     icon: data.icon,
@@ -202,6 +182,7 @@ function LoadMemberDetail() {
         url: 'controller/member/detail.php',
         type: 'get',
         success: async function (data) {
+            console.log(data);
             if (data.statusCode == 200) {
                 let p = data.content;
                 $('#pf_username').val(p.username);
@@ -234,9 +215,15 @@ function LoadMemberDetail() {
                 $('#slProvinces').trigger('change');
 
 
-                $('#slJobs').val(p.job_id);
-                $('#slWorkplaces').val(p.workplace_id);
-                $('#slPositions').val(p.position_id);
+                if(p.get_job !='0'){
+                    $('#slJobs').val(p.job_id);
+                }
+                if(p.get_workplace!='0'){
+                    $('#slWorkplaces').val(p.workplace_id);
+                }
+                if(p.get_position !='0'){
+                    $('#slPositions').val(p.position_id);
+                }
                 $('#txtWorkingUnit').val(p.working_unit);
             }
         }
@@ -346,20 +333,7 @@ var onFileSelected = function (e) {
     }
 };
 
-function validatePassword(pwd) {
-    // Kiểm tra các ràng buộc
-    var hasWhitespace = /\s/.test(pwd);
-    var hasEnoughLength = pwd.length >= 6;
-    var hasEnoughCharacterTypes = /[a-zA-Z]/.test(pwd) && /\d/.test(pwd);
-    if (hasWhitespace) {
-        return 'Mật khẩu không được chứa khoảng trắng.';
-    } else if (!hasEnoughLength) {
-        return 'Mật khẩu phải có ít nhất 6 kí tự.';
-    } else if (!hasEnoughCharacterTypes) {
-        return 'Mật khẩu phải chứa ít nhất 1 kí tự chữ cái và 1 kí tự số.';
-    }
-    return '';
-}
+
 
 function validateEmail(email) {
     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
