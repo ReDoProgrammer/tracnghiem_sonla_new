@@ -27,7 +27,7 @@ $(function () {
 
 
 var arrDistricts = [];
-var arrCandidates = [];
+var arrTotalTimes = [];
 var arrArerage = [];
 
 function LoadChart() {
@@ -40,7 +40,7 @@ function LoadChart() {
                 if(data.content.length>0){
                     $('#e_title').text(data.content[0].title);
                     arrDistricts = data.content.map(x => x.district);
-                    arrCandidates = data.content.map(x=>x.candidates);
+                    arrTotalTimes = data.content.map(x=>x.total_times);
                     arrArerage = data.content.map(x=>x.average_mark);
                     // Tạo dữ liệu mẫu cho biểu đồ
                     var data = {
@@ -56,8 +56,8 @@ function LoadChart() {
                             },
                             {
                                 type: 'bar',
-                                label: 'Số người tham gia',
-                                data: arrCandidates,
+                                label: 'Số luợt thi',
+                                data: arrTotalTimes,
                                 backgroundColor: 'rgb(255, 99, 71)'
                             }
                         ]
