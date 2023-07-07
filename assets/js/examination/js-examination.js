@@ -238,6 +238,7 @@ $('#btnOpenExam').click(function () {
     isForeCast?$('#NumberOfCandidates').show():$('#NumberOfCandidates').hide();
     let id = $('#ex_title').attr('data-exam');
     LoadQuestionsByExam(id);
+    $('#current_times').text(current_times);
     countdown();
 })
 
