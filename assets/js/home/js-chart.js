@@ -36,6 +36,7 @@ function LoadChart() {
         type: 'get',
         data: { province_code: $('#slProvinces option:selected').val() },
         success: function (data) {
+            console.log(data.content.length)
             if (data.statusCode == 200) {
                 if(data.content.length>0){
                     $('#e_title').text(data.content[0].title);
@@ -90,7 +91,9 @@ function LoadChart() {
                         options: options
                     });
                     $('#h2Notice').hide();
+                    $('#combinedChart').show();
                 }else{
+                    $('#combinedChart').hide();
                     $('#h2Notice').show();
                 }
                 
