@@ -59,6 +59,25 @@ $('#btnSaveExamResult').click(async function (e) {
     let spent_duration = $('.ex_duration').data('duration') - localStorage.getItem('duration');
 
 
+    let forecast_candidates = 0;
+
+   
+    if($('#ex_title').data('forecast_candidates') == 1){
+        let forecast = $('#txtNumberOfCandidate').val();
+        if(!isInteger(forecast) || forecast<1){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tham gia dự đoán!',
+                text: 'Vui lòng nhập số thí sinh mà bạn dự đoán tham gia thi'               
+              })
+              $('#txtNumberOfCandidate').select();
+              return;
+        }
+        forecast_candidates = parseInt($('#txtNumberOfCandidate').val());
+    }
+
+    
+
     let submited = true;
 
     //chỉ kiểm tra các câu hỏi chưa làm khi thời gian làm bài chưa hết
@@ -98,9 +117,11 @@ $('#btnSaveExamResult').click(async function (e) {
                 result: questions,
                 spent_duration,
                 times: $('#btnOpenExam span.exam_times').text(),
-                exam_date
+                exam_date,
+                forecast_candidates
             },
             success: function (data) {
+                console.log(data)
                 if (data.statusCode == 201) {
                     Swal.fire({
                         title: `${data.title}`,
