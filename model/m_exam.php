@@ -266,8 +266,9 @@ function exResultSummary($result_id)
             COUNT(CASE WHEN erd.option_id = 0 THEN 1 END) AS unchoosed,
             COUNT(CASE WHEN erd.option_id !=0 THEN 1 END) AS choosed,
             COUNT( erd.exam_result_id ) AS total_questions,
+            e.forecast_candidates as hasForeCast,
             er.spent_duration,
-            forecast_candidates,
+            er.forecast_candidates,
             DATE_FORMAT(er.created_at, '%d/%m/%Y %H:%i') AS exam_date
             FROM exams e
             INNER JOIN exam_results er ON er.exam_id = e.id

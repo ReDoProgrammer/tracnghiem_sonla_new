@@ -23,6 +23,9 @@
                             <span class="aw_not_correct"></span> Sai: <b id="exWrong"></b>
                             <span class=""></span> Chưa chọn: <b id="exUnchoosed"></b>
                         </p>
+                        <h4 style="margin-top: 15px;margin-bottom: 0" id="hasForeCast" class="text-info">
+                            Dự đoán số thí sinh: <span id="forecast_candidate" style="font-weight:bold; color:red;"></span>
+                            </h4>
                     </div>
                 </div>
                 <div class="body-result-2 list-question-number2 toggle_list_q">

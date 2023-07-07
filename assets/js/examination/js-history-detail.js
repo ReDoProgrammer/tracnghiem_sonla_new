@@ -4,6 +4,7 @@ $(async function () {
         Summary(id);
         Pagination(id);
     }
+    $('#hasForeCast').hide();
 
 })
 
@@ -25,6 +26,10 @@ function Summary(id) {
                 $('#exWrong').text(exam.wrong);
                 $('#exUnchoosed').text(exam.unchoosed);
                 $('#exMarks').text(`${exam.correct * exam.mark_per_question}/${exam.mark_per_question * exam.total_questions}`);
+                if(exam.hasForeCast == 1){
+                    $('#hasForeCast').show();
+                    $('#forecast_candidate').text(`${exam.forecast_candidates} thí sinh`);
+                }
             }
 
         }
