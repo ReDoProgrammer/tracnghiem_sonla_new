@@ -12,11 +12,12 @@ $(function () {
                     $('#slProvinces').append(`<option value="${p.code}">${p.full_name}</option>`);
                 })
                 $('#slProvinces').val(defPro);
+                LoadChart();
             }
         }
     })
 
-    LoadChart();
+   
     $('#slProvinces').change(function () {
         LoadChart();
     })
