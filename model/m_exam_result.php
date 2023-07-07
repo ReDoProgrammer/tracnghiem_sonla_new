@@ -37,6 +37,7 @@ function erSave($exam_id, $member_id,$times,$spent_duration,$exam_date,$forecast
 {
     $sql = "INSERT INTO exam_results(member_id,exam_id,times,spent_duration,started_at,forecast_candidates,created_by)
             VALUES('".$member_id."','".$exam_id."','".$times."','".$spent_duration."','".$exam_date."','".$forecast_candidates."','".$member_id."')";
+
     $result = mysql_query($sql,dbconnect());
     $msg = new Message();
     if($result && mysql_affected_rows()>0){
