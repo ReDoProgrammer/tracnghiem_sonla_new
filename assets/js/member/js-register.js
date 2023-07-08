@@ -24,6 +24,7 @@ $(function () {
 
 $('.btnSubmitRegister').click(function () {
 
+    $('.msgValidation').text('');
     let fullname = $('#txtFullname').val().trim();
     let username = $('#txtUsername').val().trim();
     let password = $('#txtPassword').val();
@@ -56,7 +57,7 @@ $('.btnSubmitRegister').click(function () {
             type: 'get',
             data: { username },
             success: function (count) {
-                isPassport = count == 0;
+                console.log(count)
                 if (count > 0) {
                     $('#msgUsername').text("- Tài khoản này đã tồn tại trên hệ thống!");
                     $('#txtUsername').select();
@@ -123,9 +124,9 @@ $('.btnSubmitRegister').click(function () {
             type: 'get',
             data: { phone },
             success: function (count) {
-                isPassport = count == 0;
+                console.log(count)
                 if (count > 0) {
-                    $('#msgPhong').text('Số điện thoại này đã được dùng để đăng ký với hệ thống!');
+                    $('#msgPhone').text('Số điện thoại này đã được dùng để đăng ký với hệ thống!');
                     $('#txtPhone').select();
                     return;
                 }
@@ -246,11 +247,11 @@ $('.btnSubmitRegister').click(function () {
 
                 })
             } else {
-                Swal.fire({
-                    icon: data.icon,
-                    title: data.title,
-                    text: data.content
-                })
+                // Swal.fire({
+                //     icon: data.icon,
+                //     title: data.title,
+                //     text: data.content
+                // })
             }
         }
     })
