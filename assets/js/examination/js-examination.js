@@ -61,22 +61,22 @@ $('#btnSaveExamResult').click(async function (e) {
 
     let forecast_candidates = 0;
 
-   
-    if($('#ex_title').data('forecast_candidates') == 1){
+
+    if ($('#ex_title').data('forecast_candidates') == 1) {
         let forecast = $('#txtNumberOfCandidate').val();
-        if(!isInteger(forecast) || forecast<1){
+        if (!isInteger(forecast) || forecast < 1) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Tham gia dự đoán!',
-                text: 'Vui lòng nhập số thí sinh mà bạn dự đoán tham gia thi'               
-              })
-              $('#txtNumberOfCandidate').select();
-              return;
+                text: 'Vui lòng nhập số thí sinh mà bạn dự đoán tham gia thi'
+            })
+            $('#txtNumberOfCandidate').select();
+            return;
         }
         forecast_candidates = parseInt($('#txtNumberOfCandidate').val());
     }
 
-    
+
 
     let submited = true;
 
@@ -107,8 +107,7 @@ $('#btnSaveExamResult').click(async function (e) {
 
 
     if (submited) {
-        localStorage.clear();
-        clearInterval(countdownInterval);
+
         $.ajax({
             url: 'controller/exam/save-result.php',
             type: 'post',
@@ -123,6 +122,8 @@ $('#btnSaveExamResult').click(async function (e) {
             success: function (data) {
                 console.log(data)
                 if (data.statusCode == 201) {
+                    localStorage.clear();
+                    clearInterval(countdownInterval);
                     Swal.fire({
                         title: `${data.title}`,
                         showDenyButton: true,
@@ -152,17 +153,14 @@ function LoadExamSummary(id) {
         type: 'get',
         data: { id },
         success: function (data) {
-            
             exam = data.content;
             if (exam.exam_status != 0) {
                 $('#btnOpenExam').addClass('disabled');
             }
-            
+
             total_times = exam.times;
-
-
             $('#ex_title').text(exam.title);
-            $('#ex_title').attr('data-forecast_candidates',exam.forecast_candidates);
+            $('#ex_title').attr('data-forecast_candidates', exam.forecast_candidates);
             $('#ex_title').attr('data-exam', id);
             $('.ex_thumbnail').attr('src', exam.thumbnail);
             $('.ex_begin').text(exam.begin);
@@ -195,7 +193,7 @@ function LoadExamSummary(id) {
             }
         },
         error: function (jqXHR, exception) {
-            console.log(jqXHR);
+            console.log(jqXHR, exception);
         }
     })
 }
@@ -206,6 +204,7 @@ function LoadTimes() {
         type: 'get',
         data: { exam_id },
         success: function (data) {
+            console.log(data);
             current_times = data.content;
             current_times++;
             if (data.statusCode == 200) {
@@ -233,22 +232,22 @@ $('#btnOpenExam').click(function () {
     $('.TriSea-technologies-Switch').show();
     $('#freeRemaining').show();
     $('#navPagination').show();
-    
-    let isForeCast = $('#ex_title').data('forecast_candidates')==1;
-    isForeCast?$('#NumberOfCandidates').show():$('#NumberOfCandidates').hide();
+
+    let isForeCast = $('#ex_title').data('forecast_candidates') == 1;
+    isForeCast ? $('#NumberOfCandidates').show() : $('#NumberOfCandidates').hide();
     let id = $('#ex_title').attr('data-exam');
     LoadQuestionsByExam(id);
     $('#current_times').text(current_times);
     countdown();
 })
 
-function Report(id){
-    let q = questions.find(x=>x.id == id);
+function Report(id) {
+    let q = questions.find(x => x.id == id);
     console.log(q);
     Swal.fire({
-        title:`<strong>Phản hồi lỗi câu hỏi <b class="text-danger">${q.title}</b></strong>`,
+        title: `<strong>Phản hồi lỗi câu hỏi <b class="text-danger">${q.title}</b></strong>`,
         html:
-          `<div class="panel">            
+            `<div class="panel">            
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-group">
@@ -271,12 +270,12 @@ function Report(id){
         focusConfirm: false,
         customClass: 'swal-wide',
         confirmButtonText:
-          '<i class="fa fa-thumbs-up"></i> Great!',
+            '<i class="fa fa-thumbs-up"></i> Great!',
         confirmButtonAriaLabel: 'Thumbs up, great!',
         cancelButtonText:
-          '<i class="fa fa-thumbs-down"></i>',
+            '<i class="fa fa-thumbs-down"></i>',
         cancelButtonAriaLabel: 'Thumbs down'
-      })
+    })
 }
 
 // load danh sách câu hỏi dựa vào id của đề thi
