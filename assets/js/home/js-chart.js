@@ -28,7 +28,7 @@ $(function () {
 
 var arrDistricts = [];
 var arrTotalTimes = [];
-var arrArerage = [];
+var arrCandidates = [];
 
 function LoadChart() {
     $.ajax({
@@ -37,27 +37,28 @@ function LoadChart() {
         data: { province_code: $('#slProvinces option:selected').val() },
         success: function (data) {
             if (data.statusCode == 200) {
+                console.log(data)
                 if(data.content.length>0){
                     $('#e_title').text(data.content[0].title);
                     arrDistricts = data.content.map(x => x.district);
                     arrTotalTimes = data.content.map(x=>x.total_times);
-                    arrArerage = data.content.map(x=>x.average_mark);
+                    arrCandidates = data.content.map(x=>x.candidates);
                     // Tạo dữ liệu mẫu cho biểu đồ
                     var data = {
                         labels: arrDistricts,
                         datasets: [
                             {
                                 type: 'line',
-                                label: 'Điểm trung bình',
-                                data: arrArerage,
+                                label: 'Số lượt thi',
+                                data: arrTotalTimes,
                                 fill: false,
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 tension: 0.4
                             },
                             {
                                 type: 'bar',
-                                label: 'Số luợt thi',
-                                data: arrTotalTimes,
+                                label: 'Số thí sinh',
+                                data: arrCandidates,
                                 backgroundColor: 'rgb(255, 99, 71)'
                             }
                         ]
