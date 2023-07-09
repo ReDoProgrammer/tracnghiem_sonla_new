@@ -24,6 +24,38 @@
 </div>
 
 
+<!-- Modal -->
+<div id="modalChart" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+         <table class="table table-bordered table-stripped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Đơn vị công tác</th>
+                <th>Số người tham gia</th>
+                <th>Điểm trung bình</th>
+            </tr>
+            </thead>
+            <tbody id="tblStat"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
  <hr/>
  <script src="assets/plugins/chart/chart.js"></script>
  <script src="assets/plugins/chart/chartjs-plugin-datalabels.js"></script>
