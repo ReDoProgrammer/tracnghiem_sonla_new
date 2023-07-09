@@ -16,7 +16,7 @@ function statDistrict($code){
     FROM wards w
     INNER JOIN districts d ON w.district_code = d.code
     INNER JOIN members m ON m.ward_code = w.code
-    INNER JOIN workplaces wp ON m.workplace_id = wp.id
+    LEFT JOIN workplaces wp ON m.workplace_id = wp.id
     INNER JOIN exam_results er ON er.member_id = m.id
     INNER JOIN exam_result_details erd ON erd.exam_result_id = er.id
     INNER JOIN exams e ON er.exam_id = e.id

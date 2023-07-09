@@ -20,19 +20,17 @@ function LoadChart() {
                     arrTotalTimes = data.content.map(x => x.total_times);
                     arrCandidates = data.content.map(x => x.candidates);
 
-                    var chart = Chart.getChart("combinedChart"); // Lấy biểu đồ hiện tại trên canvas
-                    if (chart) {
-                        chart.destroy(); // Xóa biểu đồ
-                    }
+
 
 
                     // Vẽ biểu đồ kết hợp
                     var combinedChartCanvas = document.getElementById('combinedChart');
+                    var chart = Chart.getChart("combinedChart"); // Lấy biểu đồ hiện tại trên canvas
 
 
-                    var combinedChart = new Chart(combinedChartCanvas, {
-                        type: 'bar',
-                        data: {
+                    if (chart) {
+                        // Cập nhật dữ liệu và cấu hình mới cho biểu đồ
+                        chart.data = {
                             labels: arrDistricts.map(function (district) {
                                 return district.district;
                             }),
@@ -54,8 +52,8 @@ function LoadChart() {
                                     type: 'line'
                                 }
                             ]
-                        },
-                        options: {
+                        };
+                        chart.options = {
                             responsive: true,
                             maintainAspectRatio: false,
                             scales: {
@@ -76,26 +74,75 @@ function LoadChart() {
                                     }
                                 ]
                             }
-                        }
-                    });
+                        };
+                        chart.update(); // Cập nhật biểu đồ
+                    } else {
+                        var combinedChart = new Chart(combinedChartCanvas, {
+                            type: 'bar',
+                            data: {
+                                labels: arrDistricts.map(function (district) {
+                                    return district.district;
+                                }),
+                                datasets: [
+                                    {
+                                        label: 'Số thí sinh tham dự',
+                                        data: arrCandidates,
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        borderWidth: 1,
+                                        yAxisID: 'candidates-y-axis'
+                                    },
+                                    {
+                                        label: 'Số lượt thi',
+                                        data: arrTotalTimes,
+                                        borderColor: 'rgba(255, 99, 132, 1)',
+                                        borderWidth: 1,
+                                        yAxisID: 'times-y-axis',
+                                        type: 'line'
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            id: 'candidates-y-axis',
+                                            position: 'left',
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        {
+                                            id: 'times-y-axis',
+                                            position: 'right',
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        });
+                    }
 
                     // Bắt sự kiện click vào biểu đồ
                     $(combinedChartCanvas).on('click', function (event) {
                         var activePoints = combinedChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
                         if (activePoints.length > 0) {
                             var clickedDistrict = arrDistricts[activePoints[0].index];
-                            console.log(clickedDistrict.district); // In code của quận, huyện được click vào
                             $.ajax({
-                                url:'controller/statistic/statistic-via-district.php',
-                                type:'get',
-                                data:{code:clickedDistrict.code},
-                                success:function(data){
-                                    if(data.statusCode == 200){
-                                        $('#modalChart.modal-title').text(`Chi tiết ${clickedDistrict.district}`);
+                                url: 'controller/statistic/statistic-via-district.php',
+                                type: 'get',
+                                data: { code: clickedDistrict.code },
+                                success: function (data) {
+                                    if (data.statusCode == 200) {
+                                        $('.modal-title').text(`Chi tiết ${clickedDistrict.district}`);
                                         $('#modalChart').modal();
                                         $('#tblStat').empty();
                                         let idx = 1;
-                                        data.content.forEach(tr=>{
+                                        data.content.forEach(tr => {
                                             let r = `<tr>
                                                 <td>${idx++}</td>
                                                 <td class="fw-bold text-primary">${tr.workplace}</td>
