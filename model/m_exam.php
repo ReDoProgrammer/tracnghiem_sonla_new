@@ -258,7 +258,7 @@ function exResultPagination($id)
 function exResultSummary($result_id)
 {
     session_start();
-    $p = $_SESSION['profile'];
+    $p = (array)$_SESSION['profile'];
     $sql = "SELECT 
             er.id, e.exam_code, e.title, e.duration,e.mark_per_question,
             COUNT(CASE WHEN erd.question_answer = erd.option_id THEN 1 END) AS correct,
@@ -294,7 +294,7 @@ function exResultSummary($result_id)
 function exHistory($page, $pageSize, $search)
 {
     session_start();
-    $p = $_SESSION['profile'];
+    $p = (array)$_SESSION['profile'];
     $sql = "SELECT 
             er.id, e.exam_code, e.title, er.times,
             COUNT(CASE WHEN erd.question_answer = erd.option_id THEN 1 END) AS correct,
@@ -338,7 +338,7 @@ function save($exam_id,$result,$times,$spent_duration,$exam_date,$forecast_candi
 {
     $msg = new Message();
     session_start();
-    $p = $_SESSION['profile'];
+    $p = (array)$_SESSION['profile'];
     $er = erSave($exam_id, $p['id'], $times, $spent_duration, $exam_date,$forecast_candidates);
     if ($er->statusCode != 201) {
         return $er;
@@ -545,3 +545,4 @@ function EarliestExam()
     return mysql_fetch_array($exam);
 }
 
+    

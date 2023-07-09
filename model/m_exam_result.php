@@ -12,8 +12,9 @@ include_once('classes/m_message.php');
 
 function erGetTimes($exam_id){
     session_start();
-    $p = $_SESSION['profile'];
+    $p =  (array)$_SESSION['profile'];
     $sql = "SELECT * FROM exam_results WHERE member_id='".$p['id']."' AND exam_id = '".$exam_id."'";
+
     $result = mysql_query($sql,dbconnect());
     
     $msg = new Message();
@@ -37,8 +38,8 @@ function erSave($exam_id, $member_id,$times,$spent_duration,$exam_date,$forecast
 {
     $sql = "INSERT INTO exam_results(member_id,exam_id,times,spent_duration,started_at,forecast_candidates,created_by)
             VALUES('".$member_id."','".$exam_id."','".$times."','".$spent_duration."','".$exam_date."','".$forecast_candidates."','".$member_id."')";
-
-    $result = mysql_query($sql,dbconnect());
+    
+$result = mysql_query($sql,dbconnect());
     $msg = new Message();
     if($result && mysql_affected_rows()>0){
         $insertedId = mysql_insert_id();
