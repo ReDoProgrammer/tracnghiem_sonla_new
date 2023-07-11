@@ -191,7 +191,7 @@ function mbList($wp,$search, $page, $pageSize)
             CASE WHEN m.get_workplace = 1 THEN wp.name ELSE '' END AS workplace,
             m.working_unit,
             CASE WHEN m.get_job = 1 THEN j.name ELSE '' END AS job,
-            CASE WHEN m.get_position = 1 THEN p.name ELSE '' END AS position,
+            CASE WHEN m.get_position = 1 THEN m.position ELSE '' END AS position,
             DATE_FORMAT(applied_date,'%d/%m/%Y %T') AS applied_date,
             DATE_FORMAT(lasttime_login,'%d/%m/%Y %T') AS lasttime_login    
             FROM members m
@@ -199,7 +199,6 @@ function mbList($wp,$search, $page, $pageSize)
             LEFT JOIN wards w ON m.ward_code = w.code
             LEFT JOIN districts d ON m.district_code = d.code
             LEFT JOIN provinces pr ON m.province_code = pr.code
-            LEFT JOIN positions p ON m.position_id= p.id
             LEFT JOIN jobs j ON m.job_id = j.id
             WHERE (m.username LIKE '%" . $search . "%'
             OR  m.fullname LIKE '%" . $search . "%'

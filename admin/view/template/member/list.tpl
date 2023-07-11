@@ -60,8 +60,8 @@
                                                     Email
                                                 </th>
                                                 <th>Địa chỉ</th>
+                                                <th>Đơn vị</th>
                                                 <th>Đơn vị công tác</th>
-                                                <th>Nơi làm việc</th>
                                                 <th>Nghề nghiệp</th>
                                                 <th>Chức vụ</th>
                                                 <th class="text-center">
