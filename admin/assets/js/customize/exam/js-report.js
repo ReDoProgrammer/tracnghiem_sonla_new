@@ -12,6 +12,17 @@ $(function () {
     $("#ckbMax").change(function () {
         $('#btnSearch').click();
     });
+    let dBegin = new Date();
+    dBegin.addDays(-10);
+    $('#dtpBegin').datetimepicker({
+        defaultDate: dBegin,
+        format: 'DD/MM/YYYY HH:mm',
+    });
+    $('#dtpEnd').datetimepicker({
+        defaultDate: new Date(),
+        format: 'DD/MM/YYYY HH:mm',
+        minDate: new Date()
+    });
 })
 
 $('#btnSearch').click(function () {
@@ -89,3 +100,9 @@ $('#slPageSize').on('change', function () {
     pageSize = $('#slPageSize option:selected').text();
     $('#btnSearch').click();
 })
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
