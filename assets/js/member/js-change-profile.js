@@ -22,7 +22,6 @@ $(async function () {
 
     LoadJobs();
     LoadWorkPlaces();
-    LoadPositions();
     LoadMemberDetail();
 
     $(document).on('change', '#slProvinces', function () {
@@ -49,7 +48,7 @@ $('#btnSaveChanges').click(function () {
     let address = $('#txtAddress').val();
     let job_id = $('#slJobs option:selected').val();
     let workplace_id = $('#slWorkplaces option:selected').val();
-    let position_id = $('#slPositions option:selected').val();
+    let position = $('#txtPosition').val();
     let working_unit = $('#txtWorkingUnit').val();
 
     if (fullname.trim().length == 0) {
@@ -146,7 +145,7 @@ $('#btnSaveChanges').click(function () {
     formData.append("address", address);
     formData.append("job_id", job_id);
     formData.append("workplace_id", workplace_id);
-    formData.append("position_id", position_id);
+    formData.append("position", position);
     formData.append("working_unit", working_unit);
 
     $.ajax({
@@ -239,19 +238,6 @@ function LoadWorkPlaces() {
             if (data.statusCode == 200) {
                 data.content.forEach(w => {
                     $('#slWorkplaces').append(`<option value="${w.id}">${w.name}</option>`);
-                })
-            }
-        }
-    })
-}
-function LoadPositions() {
-    $.ajax({
-        url: 'controller/position/list.php',
-        type: 'get',
-        success: function (data) {
-            if (data.statusCode == 200) {
-                data.content.forEach(p => {
-                    $('#slPositions').append(`<option value="${p.id}">${p.name}</option>`);
                 })
             }
         }

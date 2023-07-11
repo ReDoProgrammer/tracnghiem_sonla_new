@@ -92,7 +92,7 @@ function mChangeProfile(
     $address,
     $job_id,
     $workplace_id,
-    $position_id,
+    $position,
     $working_unit
 ) {
     $avatarurl = '';
@@ -132,7 +132,7 @@ function mChangeProfile(
                     address = '" . $address . "',
                     job_id = '" . $job_id . "',
                     workplace_id = '" . $workplace_id . "',
-                    position_id = '" . $position_id . "',
+                    position = '" . $position . "',
                     working_unit = '" . $working_unit . "',
                     get_gender = 1,
                     get_birthdate = 1,

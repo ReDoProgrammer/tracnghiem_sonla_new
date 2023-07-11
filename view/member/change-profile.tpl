@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-xs-24 col-sm-12 col-md-8 col-lg-8 form-group">
                     <label>Chức vụ</label>
-                    <input type="text" class="form-control required" placeholder="Chức vụ" id="txtPosision"/>
+                    <input type="text" class="form-control required" placeholder="Chức vụ" id="txtPosition"/>
                 </div>
             </div>
 
