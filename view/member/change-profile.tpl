@@ -104,18 +104,18 @@
                     <select class="form-control" id="slJobs"></select>
                 </div>
                 <div class="col-xs-24 col-sm-12 col-md-8 col-lg-8 form-group">
-                    <label>Đơn vị công tác</label>
+                    <label>Đơn vị</label>
                     <select class="form-control" id="slWorkplaces"></select>
                 </div>
                 <div class="col-xs-24 col-sm-12 col-md-8 col-lg-8 form-group">
                     <label>Chức vụ</label>
-                    <select class="form-control" id="slPositions"></select>
+                    <input type="text" class="form-control required" placeholder="Chức vụ" id="txtPosision"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24 form-group">
-                    <label>Bộ phận, phòng ban</label>
+                    <label>Đơn vị công tác</label>
                     <input type:text class = "form-control txtWorkingUnit" id="txtWorkingUnit"
                     placeholder = "Đơn vị, bộ phận, phòng ban"/> 
                 </div>
