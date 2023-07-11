@@ -6,7 +6,9 @@
     $page = $_GET['page'];
     $pageSize = $_GET['pageSize'];
     $max = $_GET['max'];
-    $result = LoadResultByExamsAndWorkplaces($exams,$workplaces,$page,$pageSize,$max);
+    $begin = $_GET['begin'];
+    $end = $_GET['end'];
+    $result = LoadResultByExamsAndWorkplaces($exams,$workplaces,$page,$pageSize,$max,$begin,$end);
     header("Content-Type: application/json");
     echo json_encode($result);
 ?>

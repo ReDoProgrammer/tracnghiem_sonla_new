@@ -211,7 +211,7 @@ function History($page, $search, $pageSize, $workplaces, $exams)
 
     return $msg;
 }
-function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $max)
+function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $max,$begin,$end)
 {
 
     $sql = "SELECT m.id AS candidate,er.id AS result_id,m.username,m.fullname,
@@ -239,7 +239,7 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
             JOIN exam_results er ON er.member_id = m.id
             JOIN exam_result_details erd ON erd.exam_result_id = er.id 
             JOIN exams e ON er.exam_id = e.id 
-            WHERE 1 = 1";
+            WHERE er.created_at>='".$begin."' AND er.created_at <='".$end."'";
     if ($workplaces) {
         $sql .= " AND wp.id IN (";
         for ($i = 0; $i < count($workplaces); $i++) {
