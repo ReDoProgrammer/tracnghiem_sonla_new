@@ -30,7 +30,7 @@
                             <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-3 mt-5"> 
                                 <label>Tới ngày<span class="style2">(*)</span></label>                    
                                 <div class='input-group date'  style="z-index:20000000000000;">
-                                <input type='text' class="form-control" id='dtpBegin'/>
+                                <input type='text' class="form-control" id='dtpEnd'/>
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -95,6 +95,9 @@
                                                 <th class="text-center">
                                                     Nghề nghiệp
                                                 </th>
+                                                 <th class="text-center">
+                                                    Đơn vị
+                                                </th>
                                                 <th class="text-center">
                                                     Đơn vị công tác
                                                 </th>
@@ -157,6 +160,9 @@
 <script src="assets/js/customize/exam/js-list.js"></script>
 <script src="assets/js/customize/workplace/js-provinces-workplaces.js"></script>
 <script src="assets/js/customize/exam/js-report.js"></script>
+<link href="assets/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<script src="assets/plugins/datetimepicker/moment.min.js"></script>
+<script src="assets/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
 <style>
   table {

@@ -134,7 +134,8 @@ function History($page, $search, $pageSize, $workplaces, $exams)
                     WHEN m.gender = 0 THEN 'Nữ'
                     ELSE 'Khác'
                 END AS gender,
-                m.get_birthdate,DATE_FORMAT( m.get_birthdate,'%d/%m/%Y') AS birthdate,
+                m.get_birthdate,
+                CASE WHEN m.getbirthdate = 1 THEN DATE_FORMAT( m.get_birthdate,'%d/%m/%Y')  ELSE '' END AS birthdate,
                 m.phone,m.email,
                 m.get_job,j.name AS job,
                 m.get_workplace,wp.name AS workplace,
@@ -219,11 +220,13 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
                     WHEN m.gender = 0 THEN 'Nữ'
                     ELSE 'Khác'
                 END AS gender,
-                m.get_birthdate,DATE_FORMAT( m.get_birthdate,'%d/%m/%Y') AS birthdate,
+                m.get_birthdate,
+                CASE WHEN m.get_birthdate = 1 THEN DATE_FORMAT( m.birthdate,'%d/%m/%Y') ELSE '' END AS birthdate,
                 m.phone,m.email,
                 m.get_job,j.name AS job,
-                m.get_workplace,wp.name AS workplace,
-                m.get_position,p.name AS position,
+                m.get_workplace,wp.name AS workplace, m.working_unit,
+                m.get_position,
+                CASE WHEN m.get_position = 1 THEN m.position ELSE '' END AS position,
                 e.title AS exam,
                 er.times,
                 (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question) AS mark ,
@@ -233,7 +236,6 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
             FROM members m
             LEFT JOIN jobs j ON m.job_id = j.id
             LEFT JOIN workplaces wp ON m.workplace_id = wp.id
-            LEFT JOIN positions p ON m.position_id = p.id
             JOIN exam_results er ON er.member_id = m.id
             JOIN exam_result_details erd ON erd.exam_result_id = er.id 
             JOIN exams e ON er.exam_id = e.id 
