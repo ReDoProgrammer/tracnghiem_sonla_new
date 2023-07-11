@@ -16,14 +16,38 @@
             <div class="col-sm-12">
                 <div class="box box-warning">
                     <div class="box-body">
-                        <div class="row">   
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-right" style="margin-top:5px">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="ckbMax" name="ckbMax" checked>
-                                <label class="form-check-label">Chỉ lấy bài thi điểm cao nhất</label>
+                        <div class="row">                           
+                            <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-3 mt-5"> 
+                                <label>Từ ngày<span class="style2">(*)</span></label>                    
+                                <div class='input-group date'  style="z-index:20000000000000;">
+                                <input type='text' class="form-control" id='dtpBegin'/>
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                </div>
                             </div>
-                        </div>                         
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:5px">
+
+                            <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-3 mt-5"> 
+                                <label>Tới ngày<span class="style2">(*)</span></label>                    
+                                <div class='input-group date'  style="z-index:20000000000000;">
+                                <input type='text' class="form-control" id='dtpBegin'/>
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                </div>
+                            </div>
+                        
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:35px; padding-left:30px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="ckbMax" name="ckbMax" checked>
+                                    <label class="form-check-label">Chỉ lấy bài thi điểm cao nhất</label>
+                                </div>
+                            </div>                         
+                                                        
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px">
                                 <div class="input-group input-group-sm">                                    
                                     <select class="selectpicker" id="slExams" data-live-search="true" multiple></select>
                                     <select class="selectpicker" id="slUnits" data-live-search="true" multiple></select>
@@ -38,7 +62,7 @@
                                         </button>
                                     </span>
                                 </div>
-                            </div>                           
+                            </div>
                         </div>
 
                         <div class="panel panel-success" style="margin-top:5px">
