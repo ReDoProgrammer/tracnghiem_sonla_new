@@ -94,14 +94,15 @@
 
             <div class="row">
                 <div class="form-group col-xs-24 col-sm-24 col-md-24 col-lg-24 get_workplace">
-                    <label>Đơn vị công tác</label>
+                    <label>Đơn vị</label>
                     <select class="form-control selectpicker slWorkPlaces" data-live-search="true"></select>
                 </div>
             </div>
 
              <div class="row get_workingunit">
                 <div class="form-group col-xs-24 col-sm-24 col-md-24 col-lg-24 mt-5">
-                    <input type="text" class="form-control txtWorkingUnit" placeholder="Bộ phận, phòng ban làm việc" value=""/>
+                    <label>Đơn vị công tác</label>
+                    <input type="text" class="form-control txtWorkingUnit" placeholder="Đơn vị công tác" value=""/>
                 </div> 
             </div>
 
@@ -112,7 +113,7 @@
                 </div>
                 <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 get_position">
                     <label>Chức vụ</label>
-                    <select class="form-control slPositions"></select>
+                    <input type="text" placeholder="Chức vụ" class="form-control required" id="txtPosition"/>
                 </div>
             </div>
 

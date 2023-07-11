@@ -19,7 +19,7 @@ $district_code = $_POST['district_code'];
 $ward_code = $_POST['ward_code'];
 $address = $_POST['address'];
 $job_id = $_POST['job_id'];
-$position_id = $_POST['position_id'];
+$position = $_POST['position'];
 $workplace_id = $_POST['workplace_id'];
 $working_unit = $_POST['working_unit'];
 $avatar = $_FILES['avatar'];
@@ -35,7 +35,7 @@ $cfWorkPlace = $_POST['cfWorkPlace'];
 $cfWorkingUnit = $_POST['cfWorkingUnit'];
 
 $result =Register($fullname,$avatar,$username,$password,$email,$phone,$gender,$birthdate,
-$province_code,$district_code,$ward_code,$address,$job_id,$position_id,$workplace_id,$working_unit,
+$province_code,$district_code,$ward_code,$address,$job_id,$position,$workplace_id,$working_unit,
 $cfBirthdate,$cfGender,$cfAddress,$cfJob,$cfPosition,$cfWorkPlace,$cfWorkingUnit);
 header("Content-Type: application/json");
 echo json_encode($result);

@@ -4,7 +4,7 @@ var BIRTHDATE = true,
     JOB = true,
     POSITION = true,
     WORKPLACE = true;
-WORKINGUNIT = true;
+    WORKINGUNIT = true;
 
 $(function () {
     $('.msgValidation').empty();
@@ -13,9 +13,7 @@ $(function () {
     if (JOB) {
         LoadJobs();
     }
-    if (POSITION) {
-        LoadPositions();
-    }
+
     if (WORKPLACE) {
         LoadWorkPlaces();
     }
@@ -40,7 +38,7 @@ $('.btnSubmitRegister').click(function () {
     let ward_code = ADDRESS ? $('.slWards option:selected').val() : '';
     let address = ADDRESS ? $('.txtAddress').val().trim() : '';
     let job_id = JOB ? $('.slJobs option:selected').val() : '';
-    let position_id = POSITION ? $('.slPositions option:selected').val() : '';
+    let position = POSITION ? $('#txtPosition').val() : '';
     let workplace_id = WORKPLACE ? $('.slWorkPlaces option:selected').val() : '';
     let workingunit = $('.txtWorkingUnit').val();
 
@@ -57,7 +55,6 @@ $('.btnSubmitRegister').click(function () {
             type: 'get',
             data: { username },
             success: function (count) {
-                console.log(count)
                 if (count > 0) {
                     $('#msgUsername').text("- Tài khoản này đã tồn tại trên hệ thống!");
                     $('#txtUsername').select();
@@ -124,7 +121,6 @@ $('.btnSubmitRegister').click(function () {
             type: 'get',
             data: { phone },
             success: function (count) {
-                console.log(count)
                 if (count > 0) {
                     $('#msgPhone').text('Số điện thoại này đã được dùng để đăng ký với hệ thống!');
                     $('#txtPhone').select();
@@ -159,12 +155,12 @@ $('.btnSubmitRegister').click(function () {
     }
 
 
-    if (POSITION && position_id == null) {
-        $('.divWarningMsg').slideDown(200);
-        $('.divWarningMsg').text('Vui lòng chọn chức vụ!');
-        $('.divWarningMsg').delay(3000).slideUp(2000);
-        return;
-    }
+    // if (POSITION) {
+    //     $('.divWarningMsg').slideDown(200);
+    //     $('.divWarningMsg').text('Vui lòng chọn chức vụ!');
+    //     $('.divWarningMsg').delay(3000).slideUp(2000);
+    //     return;
+    // }
 
     if (WORKPLACE && workplace_id == null) {
         $('.divWarningMsg').slideDown(200);
@@ -191,7 +187,7 @@ $('.btnSubmitRegister').click(function () {
     formData.append("ward_code", ward_code);
     formData.append("address", address);
     formData.append("job_id", job_id);
-    formData.append("position_id", position_id);
+    formData.append("position", position);
     formData.append("workplace_id", workplace_id);
     formData.append("working_unit", workingunit);
 
@@ -203,6 +199,7 @@ $('.btnSubmitRegister').click(function () {
     formData.append("cfPosition", POSITION ? 1 : 0);
     formData.append("cfWorkPlace", WORKPLACE ? 1 : 0);
     formData.append("cfWorkingUnit", WORKINGUNIT ? 1 : 0);
+
 
 
     $.ajax({
@@ -247,16 +244,18 @@ $('.btnSubmitRegister').click(function () {
 
                 })
             } else {
+                console.log(data);
                 // Swal.fire({
                 //     icon: data.icon,
                 //     title: data.title,
                 //     text: data.content
                 // })
             }
+        },
+        error: function (jqXHR, exception) {
+            console.log(jqXHR,exception);
         }
     })
-
-
 })
 
 function ShowRegisterRules() {
@@ -314,20 +313,6 @@ function ConfigInputs() {
 }
 
 
-function LoadPositions() {
-    $.ajax({
-        url: 'controller/position/list.php',
-        type: 'get',
-        success: function (data) {
-            if (data.statusCode == 200) {
-                let positions = data.content;
-                positions.forEach(p => {
-                    $('.slPositions').append(`<option value="${p.id}">${p.name}</option>`);
-                })
-            }
-        }
-    })
-}
 
 
 

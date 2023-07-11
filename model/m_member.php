@@ -380,7 +380,7 @@ function Register(
     $ward_code,
     $address,
     $job_id,
-    $position_id,
+    $position,
     $workplace_id,
     $working_unit,
     $cfBirthdate,
@@ -434,7 +434,7 @@ function Register(
             $sql .= ",job_id = '" . $job_id . "'";
         }
         if ($cfPosition) {
-            $sql .= ",position_id = '" . $position_id . "'";
+            $sql .= ",position = '" . $position . "'";
         }
         if ($cfWorkPlace) {
             $sql .= ",workplace_id = '" . $workplace_id . "'";

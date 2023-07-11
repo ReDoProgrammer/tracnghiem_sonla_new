@@ -22,8 +22,7 @@
 
             <div class="form-group col-xs-24 col-sm-12 col-md-12 col-lg-12 get_address">
                 <label>Chi tiết</label>
-                <input type="text" class="form-control required input txtAddress" placeholder="Địa chỉ" value="" 
-                    name="custom_fields[address]" onkeypress="validErrorHidden(this);" data-mess="" />
+                <input type="text" class="form-control required input txtAddress" placeholder="Địa chỉ" value="" data-mess="" />
             </div>
         </div>
     </div>
