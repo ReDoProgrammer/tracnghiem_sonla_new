@@ -220,9 +220,7 @@ function LoadMemberDetail() {
                 if(p.get_workplace!='0'){
                     $('#slWorkplaces').val(p.workplace_id);
                 }
-                if(p.get_position !='0'){
-                    $('#slPositions').val(p.position_id);
-                }
+                $('#txtPosition').val(p.position);
                 $('#txtWorkingUnit').val(p.working_unit);
             }
         }

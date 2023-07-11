@@ -117,7 +117,7 @@
                 <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24 form-group">
                     <label>Đơn vị công tác</label>
                     <input type:text class = "form-control txtWorkingUnit" id="txtWorkingUnit"
-                    placeholder = "Đơn vị, bộ phận, phòng ban"/> 
+                    placeholder = "Đơn vị công tác"/> 
                 </div>
             </div>
         </div>
