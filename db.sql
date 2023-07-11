@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Jul 11, 2023 at 11:56 PM
+-- Generation Time: Jul 12, 2023 at 12:00 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.6
 
@@ -492,7 +492,7 @@ INSERT INTO `configs` VALUES (2, 'GET_ADDRESS', '1', 'MEMBER', 'REGISTER', 'Đ�
 INSERT INTO `configs` VALUES (3, 'GET_GENDER', '1', 'MEMBER', 'REGISTER', 'Giới tính', '', '2023-06-05 22:20:50', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (5, 'GET_JOB', '1', 'MEMBER', 'REGISTER', 'Nghề nghiệp', '', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (6, 'GET_POSITION', '1', 'MEMBER', 'REGISTER', 'Chức vụ', '', '2023-06-05 09:51:26', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (4, 'GET_WORKPLACE', '1', 'MEMBER', 'REGISTER', 'Đơn vị công tác', '', '2023-06-05 09:52:33', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (4, 'GET_WORKPLACE', '1', 'MEMBER', 'REGISTER', 'Đơn vị', '', '2023-06-05 09:52:33', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (10, 'RULES', 'https://www.google.com/maps?ll=21.32752,103.9095&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=1570758637398736261', 'MEMBER', 'PRE_REGISTER', 'Nội quy đăng ký thành viên', '', '2023-06-06 21:01:02', 0, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (29, 'SITE_ICON', 'assets/images/logo-doan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (30, 'SITE_LOGO', 'assets/images/logo-tinhdoan.png', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 23:57:16', 18, '0000-00-00 00:00:00', 0);
@@ -513,7 +513,7 @@ INSERT INTO `configs` VALUES (24, 'SITE_GOOGLEMAP', 'https://www.google.com/maps
 INSERT INTO `configs` VALUES (25, 'SITE_FACEBOOK', 'https://www.facebook.com?page=icttracnghiem', 'GLOBAL', 'BASIC', '<label>Link Facebook:<span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:53:05', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (26, 'SITE_ADDRESS', 'Số 06, ngõ 2A, phố Xuân Thủy, tổ 8, phường Chiềng Lề, thành phố Sơn La, tỉnh Sơn La', 'GLOBAL', 'BASIC', '<label>Địa chỉ <span class="style2">(*)</span></label>', 'input:text', '2023-06-08 18:54:15', 18, '0000-00-00 00:00:00', 0);
 INSERT INTO `configs` VALUES (27, 'SITE_BANNER', '/assets/imagesimages/gui/banner.jpg', 'GLOBAL', 'BASIC', '', 'img', '2023-06-08 18:54:15', 18, '0000-00-00 00:00:00', 0);
-INSERT INTO `configs` VALUES (32, 'GET_WORKINGUNIT', '1', 'MEMBER', 'REGISTER', 'Chỗ làm việc', 'input', '2023-06-22 11:26:59', 18, '0000-00-00 00:00:00', 0);
+INSERT INTO `configs` VALUES (32, 'GET_WORKINGUNIT', '1', 'MEMBER', 'REGISTER', 'Đơn vị công tác', 'input', '2023-06-22 11:26:59', 18, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -2976,7 +2976,7 @@ INSERT INTO `members` VALUES (45, 'redo', 'd00f5d5217896fb7fd601412cb890830', ''
 INSERT INTO `members` VALUES (46, 'vyndm11', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Đoàn Minh Vy', 'vyndm11@gmail.com', '0888170516', '2000-01-31', 1, 1, 1, 1, 1, 1, 'Nhân viên', 1, '2023-07-06 21:41:47', 0, '2023-07-06 22:31:20', '127.0.0.1', 0, '', '14', '116', '03649', 'test địa chỉ', 1, 5, '', 8, 0, '');
 INSERT INTO `members` VALUES (47, 'khangnpm1', 'd00f5d5217896fb7fd601412cb890830', '', 'Nguyễn Phúc Minh Khang', 'khangnpm1@gmail.com', '0911170516', '2000-01-31', 1, 1, 1, 1, 1, 1, '', 1, '2023-07-06 22:51:44', 0, '2023-07-09 14:06:28', '127.0.0.1', 1, '', '14', '121', '03856', 'fdasfsa', 1, 1, '', 6, 0, '');
 INSERT INTO `members` VALUES (49, 'test123', 'd00f5d5217896fb7fd601412cb890830', '', 'TEST', 'test123@gmail.com', '0985123456', '2000-01-31', 1, 1, 1, 1, 1, 1, 'Đơn vị công tác', 1, '2023-07-11 19:51:32', 0, '2023-07-11 19:51:33', '127.0.0.1', 1, '', '14', '121', '03856', 'Địa chỉ', 1, 0, 'Chức vụ test', 8, 0, '');
-INSERT INTO `members` VALUES (50, 'test12345', 'd00f5d5217896fb7fd601412cb890830', '', 'test12345', 'test12345@gmail.com', '0988432198', '2000-01-31', 1, 1, 1, 1, 1, 1, 'don vi cong tac', 1, '2023-07-11 22:50:53', 0, '2023-07-11 22:50:55', '127.0.0.1', 1, '', '14', '119', '03787', 'dia chi chi tiet', 1, 0, 'chuc vu', 8, 0, '');
+INSERT INTO `members` VALUES (50, 'test12345', 'd00f5d5217896fb7fd601412cb890830', '', 'test12345', 'test12345@gmail.com', '0988432198', '2000-01-31', 1, 1, 1, 1, 1, 1, 'don vi cong tac', 1, '2023-07-11 22:50:53', 0, '2023-07-11 22:57:05', '127.0.0.1', 1, '', '14', '119', '03787', 'dia chi chi tiet', 1, 0, 'chuc vu', 8, 0, '');
 
 -- --------------------------------------------------------
 

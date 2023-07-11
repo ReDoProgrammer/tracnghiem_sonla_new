@@ -57,8 +57,7 @@
                                         class="fa fa-chevron-right fa-fw"></i>Danh sách danh bạ</a></li>
                             <li><a href="index.php?module=workplace&amp;act=list"><i
                                         class="fa fa-chevron-right fa-fw"></i>Danh mục đơn vị công tác</a></li>
-                             <li><a href="index.php?module=position&amp;act=list"><i
-                                        class="fa fa-chevron-right fa-fw"></i>Danh mục chức vụ</a></li>
+                             
                             <li><a href="index.php?module=dmphong&amp;act=list"><i
                                         class="fa fa-chevron-right fa-fw"></i>Danh mục phòng ban</a></li>
 
