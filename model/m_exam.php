@@ -443,6 +443,7 @@ function GetQuestions($exam_id)
         }
         $number_of_questions =intval($arr[0]['number_of_questions']);
         $random_questions = intval($arr[0]['random_questions']);
+       
         
         $sql = "SELECT * FROM( ";
                 foreach($arr as $i=>$t){
@@ -453,7 +454,7 @@ function GetQuestions($exam_id)
                         FROM questions q
                         INNER JOIN topics t ON q.topic_id = t.id
                         WHERE q.topic_id = ".$t['topic_id']."";
-                        $sql.= $random_questions==1?" ORDER BY RAND()":"";
+                        $sql.= $random_questions==1?" ORDER BY RAND()":" ORDER BY q.id";
                         $sql.= " LIMIT ".$limit."
                     ) AS q".$i;
                     $sql .= $t == end($arr)?"":" UNION ";
