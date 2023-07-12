@@ -528,6 +528,12 @@ $(document).on('click', "#showQuestion label", function () {
 
     localStorage.setItem(`exam_${user_id}_${exam_id}`, JSON.stringify(questions));
 
+    let crIdx = $.inArray(question, questions);
+   
+    if(crIdx == questions.length-1){
+        $('#btnSaveExamResult').click();
+    }
+
 })
 
 var countdownInterval;
