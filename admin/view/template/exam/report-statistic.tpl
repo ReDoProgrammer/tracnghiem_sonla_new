@@ -47,21 +47,34 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px">
-                                <div class="input-group input-group-sm">                                    
-                                    <select class="selectpicker" id="slExams" data-live-search="true" multiple></select>
+                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin-top:5px">
+                                <select class="selectpicker" id="slProvinces" data-live-search="true" style="width:100% important!;"></select>
+                            </div>
+                             <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin-top:5px">
+                                <select class="selectpicker" id="slDistricts" data-live-search="true" multiple></select>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:5px">
+                                <select class="selectpicker" id="slExams" data-live-search="true" multiple style="width:100% !important;"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-8 col-lg-8" style="margin-top:5px">
+                                <div class="input-group input-group-sm" style="width: 100% !important;">                                    
                                     <select class="selectpicker" id="slUnits" data-live-search="true" multiple></select>
-                                    <span class="input-group-btn">   
-                                        <button class="btn btn-warning btn-flat" id="btnSearch">
-                                            <i class="fa fa-search" aria-hidden="true"></i>
-                                            Load
-                                        </button>
-                                        <button class="btn btn-info bg-info btn-flat btn-margin ml-2" id="btnExportExcel">
-                                            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                                            Xuất Excel
-                                        </button>
-                                    </span>
                                 </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2" style="margin-top:5px">
+                                <button class="btn btn-warning btn-flat" id="btnSearch" style="width:100% !important;">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                    Load dữ liệu
+                                </button>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2" style="margin-top:5px">
+                                <button class="btn btn-info bg-info btn-flat btn-margin ml-2" id="btnExportExcel" style="width:100% !important;">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    Xuất Excel
+                                </button>
                             </div>
                         </div>
 
