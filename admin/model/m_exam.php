@@ -277,10 +277,12 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
                 $sql .= ")";
             }
             $sql .= " GROUP BY m.id, er.id
-            ) AS subquery
-            GROUP BY subquery.candidate
-            ORDER BY subquery.total_marks DESC, subquery.spent_duration ASC
-            ";
+            ) AS subquery";
+            if($max == 1){
+                $sql .="";
+            }
+            
+            $sql.=" GROUP BY subquery.candidate ORDER BY subquery.mark DESC, subquery.spent_duration ASC";
 
            
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả

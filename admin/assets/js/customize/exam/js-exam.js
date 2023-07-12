@@ -437,8 +437,8 @@ $('#btnSaveChanges').click(function () {
         return;
     }
 
-    let dB = new Date(begin);
-    let dE = new Date(end);
+    let dB = new Date(Date2TimeStamp(begin));
+    let dE = new Date(Date2TimeStamp(begin));
     if (dE < dB) {
         $('#errNoChecked').text('Ngày kết thúc cuộc thi không thể bé hơn ngày bắt đầu');
         $('#errNoChecked').show().fadeOut(5000);
