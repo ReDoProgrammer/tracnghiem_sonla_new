@@ -132,6 +132,9 @@
                                                  <th class="text-center">
                                                    Thời gian làm bài
                                                 </th>
+                                                <th class="text-center">
+                                                   Dự đoán thí sinh
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody id="tblData">

@@ -211,56 +211,78 @@ function History($page, $search, $pageSize, $workplaces, $exams)
 
     return $msg;
 }
-function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $max,$begin,$end)
+function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $max,$begin,$end,$province,$districts)
 {
 
-    $sql = "SELECT m.id AS candidate,er.id AS result_id,m.username,m.fullname,
-                CASE 
-                    WHEN m.gender = 1 THEN 'Nam'
-                    WHEN m.gender = 0 THEN 'Nữ'
-                    ELSE 'Khác'
-                END AS gender,
-                m.get_birthdate,
-                CASE WHEN m.get_birthdate = 1 THEN DATE_FORMAT( m.birthdate,'%d/%m/%Y') ELSE '' END AS birthdate,
-                m.phone,m.email,
-                m.get_job,j.name AS job,
-                m.get_workplace,wp.name AS workplace, m.working_unit,
-                m.get_position,
-                CASE WHEN m.get_position = 1 THEN m.position ELSE '' END AS position,
-                e.title AS exam,
-                er.times,
-                (COUNT(CASE WHEN erd.option_id =erd.question_answer THEN 1 END)*e.mark_per_question) AS mark ,
-                COUNT(erd.question_id)*e.mark_per_question AS total_marks,
-                DATE_FORMAT(er.started_at,'%d/%m/%Y %T') AS exam_date,
-                er.spent_duration 
+    $sql = "SELECT subquery.candidate, subquery.result_id, subquery.username, subquery.fullname, subquery.gender, subquery.get_birthdate,
+                subquery.birthdate, subquery.phone, subquery.email, subquery.get_job, subquery.job, subquery.get_workplace,
+                subquery.workplace, subquery.working_unit, subquery.get_position, subquery.position, subquery.exam, subquery.times,
+                subquery.mark, subquery.total_marks, subquery.exam_date, subquery.spent_duration, subquery.forecast_candidate,
+                subquery.isForecast
+            FROM
+            (
+            SELECT m.id AS candidate, er.id AS result_id, m.username, m.fullname,
+                    CASE
+                        WHEN m.gender = 1 THEN 'Nam'
+                        WHEN m.gender = 0 THEN 'Nữ'
+                        ELSE 'Khác'
+                    END AS gender,
+                    m.get_birthdate,
+                    CASE WHEN m.get_birthdate = 1 THEN DATE_FORMAT(m.birthdate, '%d/%m/%Y') ELSE '' END AS birthdate,
+                    m.phone, m.email,
+                    m.get_job, j.name AS job,
+                    m.get_workplace, wp.name AS workplace, m.working_unit,
+                    m.get_position,
+                    CASE WHEN m.get_position = 1 THEN m.position ELSE '' END AS position,
+                    e.title AS exam,
+                    er.times,
+                    (COUNT(CASE WHEN erd.option_id = erd.question_answer THEN 1 END) * e.mark_per_question) AS mark,
+                    (SELECT COUNT(question_id) * e.mark_per_question
+                    FROM exam_result_details erd2
+                    WHERE erd2.exam_result_id = er.id) AS total_marks,
+                    DATE_FORMAT(er.started_at, '%d/%m/%Y %T') AS exam_date,
+                    er.spent_duration,
+                    CASE WHEN e.forecast_candidates = 1 THEN er.forecast_candidates ELSE 0 END AS forecast_candidate,
+                    e.forecast_candidates AS isForecast
             FROM members m
             LEFT JOIN jobs j ON m.job_id = j.id
             LEFT JOIN workplaces wp ON m.workplace_id = wp.id
             JOIN exam_results er ON er.member_id = m.id
-            JOIN exam_result_details erd ON erd.exam_result_id = er.id 
-            JOIN exams e ON er.exam_id = e.id 
-            WHERE er.created_at>='".$begin."' AND er.created_at <='".$end."'";
-    if ($workplaces) {
-        $sql .= " AND wp.id IN (";
-        for ($i = 0; $i < count($workplaces); $i++) {
-            $sql .= $i < count($workplaces) - 1 ? $workplaces[$i] . "," : $workplaces[$i];
-        }
-        $sql .= ")";
-    }
-    if ($exams) {
-        $sql .= " AND e.id IN (";
-        for ($i = 0; $i < count($exams); $i++) {
-            $sql .= $i < count($exams) - 1 ? $exams[$i] . "," : $exams[$i];
-        }
-        $sql .= ")";
-    }
-    if ($max == 1) {
-        $sql .= " GROUP BY m.id,e.id ORDER BY total_marks DESC";
-    } else {
-        $sql .= " GROUP BY m.id,er.id";
-    }
+            JOIN exam_result_details erd ON erd.exam_result_id = er.id
+            JOIN exams e ON er.exam_id = e.id
+            WHERE er.created_at >= '".$begin."' AND er.created_at <= '".$end."'
+            AND m.province_code = '".$province."'";
+            
+            if($districts){
+                $sql .= " AND m.district_code IN (";
+                for ($i = 0; $i < count($districts); $i++) {
+                    $sql .= $i < count($districts) - 1 ? $districts[$i] . "," : $districts[$i];
+                }
+                $sql .= ")";
+            }
 
+            if ($workplaces) {
+                $sql .= " AND wp.id IN (";
+                for ($i = 0; $i < count($workplaces); $i++) {
+                    $sql .= $i < count($workplaces) - 1 ? $workplaces[$i] . "," : $workplaces[$i];
+                }
+                $sql .= ")";
+            }
 
+            if ($exams) {
+                $sql .= " AND e.id IN (";
+                for ($i = 0; $i < count($exams); $i++) {
+                    $sql .= $i < count($exams) - 1 ? $exams[$i] . "," : $exams[$i];
+                }
+                $sql .= ")";
+            }
+            $sql .= " GROUP BY m.id, er.id
+            ) AS subquery
+            GROUP BY subquery.candidate
+            ORDER BY subquery.total_marks DESC, subquery.spent_duration ASC
+            ";
+
+           
     //Tính số trang của kết quả tìm được dựa vào kích thước trang & số dòng của kết quả
     $pages = 1;
     if (strcmp($pageSize, "All") != 0) {
@@ -270,8 +292,6 @@ function LoadResultByExamsAndWorkplaces($exams, $workplaces, $page, $pageSize, $
         $pages = $totalRows % $pageSize == 0 ? $totalRows / $pageSize : floor($totalRows / $pageSize) + 1;
         $sql .= " LIMIT " . ($page - 1) * $pageSize . "," . $pageSize . "";
     }
-
-
 
     $result = mysql_query($sql, dbconnect());
 

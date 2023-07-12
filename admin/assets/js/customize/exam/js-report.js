@@ -12,7 +12,7 @@ $(function () {
         defaultDate: dBegin,
         format: 'DD/MM/YYYY HH:mm'
     });
-    $('#btnSearch').click();
+    
     $("#pagination").on("click", "li a", function (event) {
         event.preventDefault();
         page = $(this).text();
@@ -30,6 +30,8 @@ $(function () {
     $('#slDistricts').on('change', function () {
         LoadWardsByDist($(this).val())
     })
+
+    
     
 })
 
@@ -61,13 +63,13 @@ function LoadDistrictsByPro(province_code) {
         type: 'get',
         data: { province_code },
         success: function (data) {       
-                console.log(data);    
                 $('#slDistricts').empty();
                 data.forEach(d => {
                     $('#slDistricts').append(`<option value="${d.code}">${d.full_name}</option>`);
                 })
                 $('#slDistricts').selectpicker('refresh');
-                $(`#slDistricts`).trigger('change');           
+                $(`#slDistricts`).trigger('change');     
+                $('#btnSearch').click();      
 
         }
     })
@@ -110,6 +112,8 @@ $('#btnExportExcel').click(function () {
 function LoadData() {
     let exams = $('#slExams').selectpicker('val');
     let workplaces = $('#slUnits').selectpicker('val');
+    let province = $('#slProvinces').selectpicker('val');
+    let districts = $('#slDistricts').selectpicker('val');
     let begin = $('#dtpBegin').val();
     let end = $('#dtpEnd').val();
     $.ajax({
@@ -121,13 +125,16 @@ function LoadData() {
             page, pageSize,
             max: $('#ckbMax').is(':checked') ? 1 : 0,
             begin: Date2TimeStamp(begin),
-            end: Date2TimeStamp(end)
+            end: Date2TimeStamp(end),
+            province,
+            districts
         },
         success: function (data) {
             console.log(data)
+            $('#tblData').empty();
             if (data.statusCode == 200) {
                 let idx = pageSize != 'All' ? (page - 1) * pageSize : 0;
-                $('#tblData').empty();
+                
                 data.content.forEach(t => {
                     let tr = `<tr id = "${t.result_id}">
                                 <td>${++idx}</td>
@@ -146,6 +153,7 @@ function LoadData() {
                                 <td class="text-center fw-bold text-info">${t.mark}/${t.total_marks}</td>
                                 <td class="text-nowrap">${t.exam_date}</td>
                                 <td class="text-center fw-bold text-info">${formatDuration(t.spent_duration)}</td>
+                                <td class="text-right">${t.isForecast ==1?t.forecast_candidate:''}</td>
                                
                     </tr>`;
                     $('#tblData').append(tr);
