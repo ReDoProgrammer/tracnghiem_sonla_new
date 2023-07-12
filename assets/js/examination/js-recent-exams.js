@@ -39,24 +39,23 @@ $(function () {
 })
 
 function slider() {
-
     // Auto scroll variables
     var slider = $('.slider');
     var isScrolling = false;
     var scrollInterval;
-
-    // Clone the slides
-    var firstSlide = $('.slide:first-child');
-    var clonedFirstSlide = firstSlide.clone();
-    slider.append(clonedFirstSlide);
+    var slideWidth = $('.slide').outerWidth();
+    var currentSlideIndex = 0;
 
     // Auto scroll function
     function startScroll() {
         if (!isScrolling) {
             isScrolling = true;
-            slider.animate({ scrollLeft: '+=' + firstSlide.outerWidth() }, 'slow', function () {
-                if (slider.scrollLeft() === 0) {
-                    slider.scrollLeft(firstSlide.outerWidth());
+            currentSlideIndex++;
+            var newScrollLeft = currentSlideIndex * slideWidth;
+            slider.animate({ scrollLeft: newScrollLeft }, 'slow', function () {
+                if (currentSlideIndex === slider.find('.slide').length - 1) {
+                    currentSlideIndex = 0;
+                    slider.scrollLeft(0);
                 }
                 isScrolling = false;
             });
@@ -76,10 +75,7 @@ function slider() {
     // Stop auto scroll on hover
     slider.on('mouseenter', function () {
         clearInterval(scrollInterval);
-    });
-
-    // Resume auto scroll on mouseleave
-    slider.on('mouseleave', function () {
+    }).on('mouseleave', function () {
         startAutoScroll();
     });
 
@@ -93,13 +89,16 @@ function slider() {
     // Prev button
     $('.prev-btn').on('click', function () {
         clearInterval(scrollInterval);
-        slider.animate({ scrollLeft: '-=' + firstSlide.outerWidth() }, 'slow', function () {
-            if (slider.scrollLeft() === 0) {
-                var lastSlide = $('.slide:last-child');
-                slider.prepend(lastSlide);
-                slider.scrollLeft(firstSlide.outerWidth());
-            }
-            startAutoScroll();
-        });
+        currentSlideIndex--;
+        if (currentSlideIndex < 0) {
+            currentSlideIndex = slider.find('.slide').length - 1;
+            slider.scrollLeft(currentSlideIndex * slideWidth);
+        } else {
+            var newScrollLeft = currentSlideIndex * slideWidth;
+            slider.animate({ scrollLeft: newScrollLeft }, 'slow');
+        }
+        startAutoScroll();
     });
+
+
 }
