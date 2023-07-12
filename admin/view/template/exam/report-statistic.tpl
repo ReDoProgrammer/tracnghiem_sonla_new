@@ -48,13 +48,13 @@
 
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin-top:5px">
-                                <select class="selectpicker" id="slProvinces" data-live-search="true" style="width:100% important!;"></select>
+                                <select class="form-control slProvinces selectpicker" id="slProvinces" data-live-search="true"></select>
                             </div>
                              <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin-top:5px">
-                                <select class="selectpicker" id="slDistricts" data-live-search="true" multiple></select>
+                                <select class="form-control selectpicker slDistricts" id="slDistricts" data-live-search="true" multiple></select>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-top:5px">
-                                <select class="selectpicker" id="slExams" data-live-search="true" multiple style="width:100% !important;"></select>
+                                <select class="form-control selectpicker" data-live-search="true" multiple id="slExams"  style="width:100% !important;"></select>
                             </div>
                         </div>
 
